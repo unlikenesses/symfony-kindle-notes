@@ -25,6 +25,14 @@ class Kernel extends BaseKernel
         }
     }
 
+    public function getCacheDir()
+    {
+        if ($this->environment === 'dev') {
+            return '/tmp/symfony/kindle/cache';
+        }
+        return parent::getCacheDir();
+    }
+
     public function getProjectDir(): string
     {
         return \dirname(__DIR__);

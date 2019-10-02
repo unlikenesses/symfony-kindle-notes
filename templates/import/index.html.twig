@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Import{% endblock %}
+
+{% block body %}
+<form method="post" enctype="multipart/form-data" class="">
+    <input type="hidden" name="token" value="{{ csrf_token('import') }}">
+    <div class="field">
+        <input type="file" name="clippings_file">
+    </div>
+    <button class="" type="submit">Import</button>
+</form>
+{% endblock %}
