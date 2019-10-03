@@ -5,9 +5,12 @@
 {% block body %}
 <form method="post" enctype="multipart/form-data" class="">
     <input type="hidden" name="token" value="{{ csrf_token('import') }}">
-    <div class="field">
-        <input type="file" name="clippings_file">
+    <div class="form-group">
+        <div class="custom-file">
+            <input type="file" name="clippings_file" class="custom-file-input">
+            <label class="custom-file-label" for="clippings_file">Clippings File</label>
+        </div>
     </div>
-    <button class="" type="submit">Import</button>
+    <button class="btn btn-primary" type="submit">Import</button>
 </form>
 {% endblock %}
