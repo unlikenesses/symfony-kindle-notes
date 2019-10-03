@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-interface Parser
+interface ParserInterface
 {
     public function parseFile(string $filename): array;
 

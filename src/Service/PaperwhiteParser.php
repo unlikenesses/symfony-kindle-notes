@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-class PaperwhiteParser implements Parser
+class PaperwhiteParser implements ParserInterface
 {
     const SEPARATOR = '==========';
     const HIGHLIGHT_STRING = 'your highlight';

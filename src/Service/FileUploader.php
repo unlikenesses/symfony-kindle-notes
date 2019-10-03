@@ -3,8 +3,8 @@
 namespace App\Service;
 
 use Gedmo\Sluggable\Util\Urlizer;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class FileUploader
 {

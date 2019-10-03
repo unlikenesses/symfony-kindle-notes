@@ -28,12 +28,8 @@ class ImportController extends AbstractController
         if (!$this->isCsrfTokenValid('import', $request->request->get('token'))) {
             throw new InvalidCsrfTokenException();
         }
-        $books = $fileHandler->handleFile(
-            $request->files->get('clippings_file'),
-            $this->getParameter('clippings_directory')
-        );
+        $books = $fileHandler->handleFile($request->files->get('clippings_file'));
+
         return $this->json($books);
-//        echo '<pre>';print_r($books);echo'</pre>';
-//        die();
     }
 }
