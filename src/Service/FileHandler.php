@@ -16,22 +16,25 @@ class FileHandler
      */
     private $parser;
 
-    /**
-     * @var string
-     */
-    private $clippingsDirectory;
-
-    public function __construct(FileUploader $uploader, ParserInterface $parser, string $clippingsDirectory)
+    public function __construct(FileUploader $uploader, ParserInterface $parser)
     {
         $this->uploader = $uploader;
         $this->parser = $parser;
-        $this->clippingsDirectory = $clippingsDirectory;
     }
 
     public function handleFile(UploadedFile $file): array
     {
         $filename = $this->uploader->upload($file);
+        $parsedBooks = $this->parser->parseFile($filename);
+        $this->storeNotes($parsedBooks);
 
-        return $this->parser->parseFile($this->clippingsDirectory . '/' . $filename);
+        return $parsedBooks;
+    }
+
+    private function storeNotes(array $parsedBooks)
+    {
+        foreach ($parsedBooks as $book) {
+            
+        }
     }
 }

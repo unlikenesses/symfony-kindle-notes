@@ -13,9 +13,9 @@ class FileUploader
      */
     private $destination;
 
-    public function __construct(string $destination)
+    public function __construct(string $clippingsDirectory)
     {
-        $this->destination = $destination;
+        $this->destination = $clippingsDirectory;
     }
 
     public function upload(UploadedFile $uploadedFile): string
@@ -31,6 +31,6 @@ class FileUploader
             // TODO
         }
 
-        return $newFilename;
+        return $this->destination . '/' . $newFilename;
     }
 }
