@@ -19,6 +19,15 @@ class BookRepository extends ServiceEntityRepository
         parent::__construct($registry, Book::class);
     }
 
+    public function findOneByTitleString(string $titleString): ?Book
+    {
+        return $this->createQueryBuilder('b')
+            ->andWhere('b.titleString = :val')
+            ->setParameter('val', $titleString)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     // /**
     //  * @return Book[] Returns an array of Book objects
     //  */

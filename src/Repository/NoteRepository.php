@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Book;
 use App\Entity\Note;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -19,32 +20,29 @@ class NoteRepository extends ServiceEntityRepository
         parent::__construct($registry, Note::class);
     }
 
-    // /**
-    //  * @return Note[] Returns an array of Note objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findNoteInBook(array $note, Book $book): ?Note
     {
-        return $this->createQueryBuilder('n')
-            ->andWhere('n.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('n.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $date = '';
 
-    /*
-    public function findOneBySomeField($value): ?Note
-    {
-        return $this->createQueryBuilder('n')
-            ->andWhere('n.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        if (isset($note['meta']['date'])) {
+            $timestamp = strtotime($note['meta']['date']);
+            $date = date('Y-m-d H:i:s', $timestamp);
+        }
+
+        $query = $this->createQueryBuilder('n')
+            ->andWhere('n.book = :book')
+            ->andWhere('n.date = :date')
+            ->setParameter('book', $book)
+            ->setParameter('date', $date);
+
+        if (isset($note['meta']['page'])) {
+            $query->andWhere('n.page = :page')->setParameter('page', $note['meta']['page']);
+        }
+
+        if (isset($note['meta']['location'])) {
+            $query->andWhere('n.location = :location')->setParameter('location', $note['meta']['location']);
+        }
+
+        return $query->getQuery()->getOneOrNullResult();
     }
-    */
 }

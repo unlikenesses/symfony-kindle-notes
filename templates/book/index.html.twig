@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Books{% endblock %}
+
+{% block body %}
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Notes</th>
+        </tr>
+        {% for book in books %}
+            <tr>
+                <td valign="top">
+                    {{ book.title }}
+                </td>
+                <td valign="top">
+                    {{ book.authorFirstName }} {{ book.authorLastName }}
+                </td>
+                <td valign="top">
+                    {% for note in book.notes %}
+                        <p>{{ note.note }}</p>
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

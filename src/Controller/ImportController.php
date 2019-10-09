@@ -16,8 +16,7 @@ class ImportController extends AbstractController
      */
     public function index(): Response
     {
-
-        return $this->render('import/index.html.twig', []);
+        return $this->render('import/index.html.twig');
     }
 
     /**
@@ -28,8 +27,8 @@ class ImportController extends AbstractController
         if (!$this->isCsrfTokenValid('import', $request->request->get('token'))) {
             throw new InvalidCsrfTokenException();
         }
-        $books = $fileHandler->handleFile($request->files->get('clippings_file'));
+        $fileHandler->handleFile($request->files->get('clippings_file'));
 
-        return $this->json($books);
+        return $this->redirectToRoute('books');
     }
 }
