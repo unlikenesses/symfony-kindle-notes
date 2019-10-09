@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\NoteSaver;
 use App\Service\FileHandler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,12 +23,13 @@ class ImportController extends AbstractController
     /**
      * @Route("/import", name="import", methods={"POST"})
      */
-    public function import(Request $request, FileHandler $fileHandler): Response
+    public function import(Request $request, FileHandler $fileHandler, NoteSaver $noteSaver): Response
     {
         if (!$this->isCsrfTokenValid('import', $request->request->get('token'))) {
             throw new InvalidCsrfTokenException();
         }
-        $fileHandler->handleFile($request->files->get('clippings_file'));
+        $books = $fileHandler->handleFile($request->files->get('clippings_file'));
+        $noteSaver->storeNotes($books);
 
         return $this->redirectToRoute('books');
     }
