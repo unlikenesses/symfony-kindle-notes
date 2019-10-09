@@ -20,6 +20,11 @@
                 <td valign="top">
                     {% for note in book.notes %}
                         <p>{{ note.note }}</p>
+                        <footer class="blockquote-footer">
+                            {{ note.date|date('d/m/Y h:m:s') }} &mdash;
+                            {{ note.page ? "Page #{note.page}": '' }}
+                            {{ note.location ? "Location #{note.location}": '' }}
+                        </footer>
                     {% endfor %}
                 </td>
             </tr>
