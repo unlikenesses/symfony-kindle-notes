@@ -47,7 +47,7 @@ class Book
     private $year;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Note", mappedBy="book", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Note", mappedBy="book", orphanRemoval=true, fetch="EAGER")
      */
     private $notes;
 
