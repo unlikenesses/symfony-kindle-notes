@@ -5,6 +5,8 @@ namespace App\Service;
 use DateTime;
 use App\Entity\Book;
 use App\Entity\Note;
+use App\Repository\BookRepository;
+use App\Repository\NoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class NoteSaver
@@ -14,9 +16,21 @@ class NoteSaver
      */
     private $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    /**
+     * @var BookRepository
+     */
+    private $bookRepository;
+
+    /**
+     * @var NoteRepository
+     */
+    private $noteRepository;
+
+    public function __construct(EntityManagerInterface $entityManager, BookRepository $bookRepository, NoteRepository $noteRepository)
     {
         $this->entityManager = $entityManager;
+        $this->bookRepository = $bookRepository;
+        $this->noteRepository = $noteRepository;
     }
 
     public function storeNotes(array $parsedBooks): void
@@ -30,8 +44,7 @@ class NoteSaver
     {
         $newBook = false;
         $numNotes = 0;
-        $bookRepository = $this->entityManager->getRepository(Book::class);
-        $bookToAdd = $bookRepository->findOneByTitleString($book['metadata']['titleString']);
+        $bookToAdd = $this->bookRepository->findOneByTitleString($book['metadata']['titleString']);
         if (!$bookToAdd) {
             $newBook = true;
             $bookToAdd = $this->addBook($book['metadata']);
@@ -61,10 +74,9 @@ class NoteSaver
 
     private function saveImportedNote(array $note, Book $book): bool
     {
-        $noteRepository = $this->entityManager->getRepository(Note::class);
         if (isset($note['highlight']) &&
             isset($note['meta']) &&
-            ! $noteRepository->findNoteInBook($note, $book)) {
+            ! $this->noteRepository->findNoteInBook($note, $book)) {
             $date = '';
             $page = '';
             $location = '';
