@@ -3,7 +3,7 @@
 {% block title %}Books{% endblock %}
 
 {% block body %}
-    <table>
+    <table class="book-table">
         <tr>
             <th>Date</th>
             <th>Title</th>
@@ -12,16 +12,16 @@
         </tr>
         {% for book in books %}
             <tr>
-                <td valign="top">
+                <td>
                     {{ book.notes.count > 0 ? book.notes.last.date|date('d/m/Y') : '' }}
                 </td>
-                <td valign="top">
+                <td>
                     {{ book.title }}
                 </td>
-                <td valign="top">
+                <td>
                     {{ book.authorFirstName }} {{ book.authorLastName }}
                 </td>
-                <td valign="top">
+                <td>
                     {% for note in book.notes %}
                         <p>{{ note.note }}</p>
                         <footer class="blockquote-footer">
