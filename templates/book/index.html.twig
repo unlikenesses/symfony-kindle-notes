@@ -23,7 +23,7 @@
                 </td>
                 <td>
                     {% for note in book.notes %}
-                        <p>{{ note.note }}</p>
+                        <p class="note">{{ note.note }}</p>
                         <footer class="blockquote-footer">
                             {{ note.date|date('d/m/Y h:i:s') }} &mdash;
                             {{ note.page ? "Page #{note.page}": '' }}
