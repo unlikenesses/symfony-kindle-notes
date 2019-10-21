@@ -14,7 +14,7 @@ class FileReader
     {
         try {
             $this->fileHandle = fopen($filename, 'r');
-        } catch (\Exception $e)  {
+        } catch (\Exception $e) {
             dd($e); // TODO: proper error handling
         }
     }
