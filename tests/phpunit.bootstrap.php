@@ -21,10 +21,12 @@ function bootstrap()
         'command' => 'doctrine:database:drop',
         '--if-exists' => '1',
         '--force' => '1',
+        '--quiet' => '1',
     ]));
 
     $run(new \Symfony\Component\Console\Input\ArrayInput([
         'command' => 'doctrine:database:create',
+        '--quiet' => '1',
     ]));
 
     $run(new \Symfony\Component\Console\Input\ArrayInput([
