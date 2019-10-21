@@ -66,10 +66,10 @@ class PaperwhiteParser implements ParserInterface
             }
             $this->book = [];
             $this->inBook = false;
-        } else if (stristr($line, self::HIGHLIGHT_STRING)) {
+        } elseif (stristr($line, self::HIGHLIGHT_STRING)) {
             $this->clipping['meta'] = $this->parseMeta($line);
             $this->clipping['type'] = 1;
-        } else if (stristr($line, self::NOTE_STRING)) {
+        } elseif (stristr($line, self::NOTE_STRING)) {
             $this->clipping['meta'] = $this->parseMeta($line);
             $this->clipping['type'] = 2;
         } else {
