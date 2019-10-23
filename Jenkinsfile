@@ -21,6 +21,6 @@ docker-compose up -d'''
     }
   }
   environment {
-    COMPOSE_PROJECT_NAME = '"${env.JOB_NAME}-${env.BUILD_ID}"'
+    COMPOSE_PROJECT_NAME = "${env.JOB_NAME}-${env.BUILD_ID}"
   }
 }
