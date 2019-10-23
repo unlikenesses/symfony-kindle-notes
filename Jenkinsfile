@@ -3,7 +3,8 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'docker-compose up -d'
+        sh '''docker-compose down
+docker-compose up -d'''
         sh 'docker exec -w /app symfony_kindle composer install'
       }
     }
