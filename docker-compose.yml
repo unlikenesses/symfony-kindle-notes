@@ -14,7 +14,7 @@ services:
       - 8458:443
     volumes:
       - .:/app
-      - /reports/coverage:/app/reports/coverage
+      - ./reports/coverage:/app/reports/coverage
     environment:
       docker: 'true'
       WEB_DOCUMENT_ROOT: '/app/public'
