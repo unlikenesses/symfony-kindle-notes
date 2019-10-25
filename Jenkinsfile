@@ -14,7 +14,9 @@ pipeline {
       }
     }
     stage('Coverage') {
-      step([$class: 'CloverPublisher', cloverReportDir: 'reports/coverage/', cloverReportFileName: 'coverage.xml'])
+      steps {
+        step([$class: 'CloverPublisher', cloverReportDir: 'reports/coverage/', cloverReportFileName: 'coverage.xml'])
+      }
     }
     stage('Cleanup') {
       steps {
