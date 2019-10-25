@@ -1,6 +1,12 @@
 pipeline {
   agent any
   stages {
+    stage('Clean') {
+      steps {
+        sh 'docker-compose down -v'
+        delete_dir()
+      }
+    }
     stage('Build') {
       agent any
       steps {
@@ -16,11 +22,6 @@ pipeline {
     stage('Coverage') {
       steps {
         step([$class: 'CloverPublisher', cloverReportDir: 'reports/coverage/', cloverReportFileName: 'coverage.xml'])
-      }
-    }
-    stage('Cleanup') {
-      steps {
-        sh 'docker-compose down -v'
       }
     }
   }
