@@ -1,12 +1,6 @@
 pipeline {
   agent any
   stages {
-    stage('Clean') {
-      steps {
-        sh 'docker-compose down -v'
-        deleteDir()
-      }
-    }
     stage('Build') {
       agent any
       steps {
@@ -24,9 +18,11 @@ pipeline {
         step([$class: 'CloverPublisher', cloverReportDir: 'reports/coverage/', cloverReportFileName: 'coverage.xml'])
       }
     }
-  }
-  environment {
-    COMPOSE_PROJECT_NAME = "${env.JOB_NAME}-${env.BUILD_ID}"
+    stage('Clean') {
+      steps {
+        sh 'docker-compose down -v'
+      }
+    }
   }
   options {
     disableConcurrentBuilds()
