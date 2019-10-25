@@ -4,7 +4,7 @@ pipeline {
     stage('Clean') {
       steps {
         sh 'docker-compose down -v'
-        delete_dir()
+        deleteDir()
       }
     }
     stage('Build') {
