@@ -13,6 +13,9 @@ pipeline {
         sh 'docker exec -w /app symfony_kindle php ./bin/phpunit --coverage-clover=\'reports/coverage/coverage.xml\' --coverage-html=\'reports/coverage\' --coverage-crap4j=\'reports/crap4j.xml\''
       }
     }
+    stage('Coverage') {
+      step([$class: 'CloverPublisher', cloverReportDir: 'reports/coverage/', cloverReportFileName: 'coverage.xml'])
+    }
     stage('Cleanup') {
       steps {
         sh 'docker-compose down -v'
