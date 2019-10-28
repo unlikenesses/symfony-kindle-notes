@@ -18,11 +18,11 @@ pipeline {
         step([$class: 'CloverPublisher', cloverReportDir: '/reports/coverage', cloverReportFileName: 'coverage.xml'])
       }
     }
-    post {
-      cleanup {
-        sh 'docker-compose down -v'
-        cleanWs()
-      }
+  }  
+  post {
+    cleanup {
+      sh 'docker-compose down -v'
+      cleanWs()
     }
   }
 }
