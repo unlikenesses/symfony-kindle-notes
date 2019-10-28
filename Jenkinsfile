@@ -24,7 +24,4 @@ pipeline {
       }
     }
   }
-  options {
-    disableConcurrentBuilds()
-  }
 }
