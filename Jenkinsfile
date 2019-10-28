@@ -21,7 +21,7 @@ pipeline {
     stage('Lines of Code') { 
       steps { 
         sh 'env'
-        sh 'phploc --count-tests --exclude vendor/ --log-csv reports/phploc.csv --log-xml reports/phploc.xml .' 
+        sh 'phploc --count-tests --exclude vendor/ --log-csv /reports/phploc.csv --log-xml /reports/phploc.xml .' 
       } 
     }
   }  
