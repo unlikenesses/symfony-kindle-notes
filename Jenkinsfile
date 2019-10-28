@@ -15,7 +15,6 @@ pipeline {
     }
     stage('Coverage') {
       steps {
-        step([$class: 'CloverPublisher', cloverReportDir: '/reports/coverage', cloverReportFileName: 'coverage.xml'])
         publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '/reports/coverage', reportFiles: 'index.html', reportName: 'Coverage Report', reportTitles: ''])
       }
     }
