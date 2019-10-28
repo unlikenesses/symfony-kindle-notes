@@ -21,6 +21,7 @@ pipeline {
     stage('Clean') {
       steps {
         sh 'docker-compose down -v'
+        cleanWs()
       }
     }
   }
