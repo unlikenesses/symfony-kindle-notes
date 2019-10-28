@@ -25,6 +25,7 @@ pipeline {
     }
     stage('Lines of Code') { 
       steps { 
+        sh 'pwd'
         sh 'phploc --count-tests --exclude vendor/ --log-csv ./reports/phploc.csv --log-xml ./reports/phploc.xml .' 
       } 
     }
