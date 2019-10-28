@@ -18,6 +18,9 @@ pipeline {
         step([$class: 'CloverPublisher', cloverReportDir: '/reports/coverage', cloverReportFileName: 'coverage.xml'])
       }
     }
+    stage('Publish Crap4J') {
+        step([$class: 'hudson.plugins.crap4j.Crap4JPublisher', reportPattern: 'reports/crap4j.xml'])
+    }
   }  
   post {
     cleanup {
