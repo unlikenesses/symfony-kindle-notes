@@ -10,7 +10,7 @@ pipeline {
     }
     stage('Test') {
       steps {
-        sh 'docker exec -w /app symfony_kindle php ./bin/phpunit --coverage-clover=\'reports/coverage/coverage.xml\' --coverage-html=\'reports/coverage\' --coverage-crap4j=\'reports/crap4j.xml\''
+        sh 'docker exec -w /app symfony_kindle php ./bin/phpunit --coverage-clover=\'reports/coverage/coverage.xml\' --coverage-html=\'reports/coverage\''
       }
     }
     stage('Coverage') {
@@ -18,10 +18,10 @@ pipeline {
         step([$class: 'CloverPublisher', cloverReportDir: '/reports/coverage', cloverReportFileName: 'coverage.xml'])
       }
     }
-    stage('Publish Crap4J') {
-      steps {
-        step([$class: 'Crap4JPublisher', reportPattern: 'reports/crap4j.xml'])
-      }
+    stage('Lines of Code') { 
+      steps { 
+        sh 'vendor/bin/phploc --count-tests --exclude vendor/ --log-csv reports/phploc.csv --log-xml reports/phploc.xml .' 
+      } 
     }
   }  
   post {
