@@ -1,8 +1,5 @@
 pipeline {
   agent any
-  environment {
-    PATH = '~/.composer/vendor/bin:${env.PATH}'
-  }
   stages {
     stage('Build') {
       agent any
