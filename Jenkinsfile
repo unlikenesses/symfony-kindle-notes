@@ -1,6 +1,11 @@
 pipeline {
   agent any
   stages {
+    stage('Prepare directories') {
+      steps {
+        sh 'mkdir -p reports'
+      }
+    }
     stage('Build') {
       agent any
       steps {
