@@ -19,7 +19,9 @@ pipeline {
       }
     }
     stage('Publish Crap4J') {
+      steps {
         step([$class: 'hudson.plugins.crap4j.Crap4JPublisher', reportPattern: 'reports/crap4j.xml'])
+      }
     }
   }  
   post {
