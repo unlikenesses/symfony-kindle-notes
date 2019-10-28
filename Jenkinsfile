@@ -19,9 +19,9 @@ pipeline {
       }
     }
     post {
-      always {
+      cleanup {
         sh 'docker-compose down -v'
-        sh 'rm -rf ${WORKSPACE}'
+        cleanWs()
       }
     }
   }
