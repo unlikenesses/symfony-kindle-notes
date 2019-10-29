@@ -8,6 +8,7 @@ use App\Entity\Note;
 use App\Repository\BookRepository;
 use App\Repository\NoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\Security;
 
 class NoteSaver
 {
@@ -26,11 +27,17 @@ class NoteSaver
      */
     private $noteRepository;
 
-    public function __construct(EntityManagerInterface $entityManager, BookRepository $bookRepository, NoteRepository $noteRepository)
+    /**
+     * @var Security
+     */
+    private $security;
+
+    public function __construct(EntityManagerInterface $entityManager, BookRepository $bookRepository, NoteRepository $noteRepository, Security $security)
     {
         $this->entityManager = $entityManager;
         $this->bookRepository = $bookRepository;
         $this->noteRepository = $noteRepository;
+        $this->security = $security;
     }
 
     public function storeNotes(array $parsedBooks): void
@@ -65,7 +72,8 @@ class NoteSaver
         $book->setTitleString($metadata['titleString'])
             ->setTitle($metadata['title'])
             ->setAuthorFirstName($metadata['firstName'])
-            ->setAuthorLastName($metadata['lastName']);
+            ->setAuthorLastName($metadata['lastName'])
+            ->setUser($this->security->getUser());
         $this->entityManager->persist($book);
         $this->entityManager->flush();
 
