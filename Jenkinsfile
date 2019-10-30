@@ -30,7 +30,8 @@ pipeline {
     }
     stage('Lines of Code') { 
       steps { 
-        sh 'phploc --count-tests --exclude vendor/ --log-csv /reports/phploc.csv --log-xml /reports/phploc.xml .' 
+        sh 'phploc --count-tests --exclude vendor/ --log-csv reports/phploc.csv --log-xml reports/phploc.xml .' 
+        plot csvFileName: 'plot-1a09c728-5906-428b-b39b-0bd28feda868.csv', csvSeries: [[displayTableFlag: true, exclusionValues: '', file: 'reports/phploc.csv', inclusionFlag: 'OFF', url: '']], group: 'LOC', style: 'line', title: 'PHP LOC'
       } 
     }
   }  
