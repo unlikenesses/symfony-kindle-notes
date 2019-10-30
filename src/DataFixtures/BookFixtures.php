@@ -21,6 +21,7 @@ class BookFixtures extends Fixture implements FixtureGroupInterface
     {
         $user = new User();
         $user->setEmail('test@example.com');
+        $user->setPassword('test');
         $manager->persist($user);
         $this->user = $user;
     }
