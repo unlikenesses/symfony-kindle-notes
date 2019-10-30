@@ -13,6 +13,11 @@ pipeline {
         sh 'docker exec -w /app symfony_kindle composer install'
       }
     }
+    stage('PHP CS Fixer') {
+      steps {
+        sh 'php-cs-fixer fix --dry-run --no-interaction --diff -vvv src/'
+      }
+    }
     stage('Test') {
       steps {
         sh 'docker exec -w /app symfony_kindle php ./bin/phpunit --coverage-clover=\'reports/coverage/coverage.xml\' --coverage-html=\'reports/coverage\''
