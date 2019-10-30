@@ -7,7 +7,6 @@ pipeline {
       }
     }
     stage('Build') {
-      agent any
       steps {
         sh 'docker-compose up -d'
         sh 'docker exec -w /app symfony_kindle composer install'
