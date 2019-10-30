@@ -13,11 +13,6 @@ pipeline {
         sh 'docker exec -w /app symfony_kindle composer install'
       }
     }
-    stage('PHP CS Fixer') {
-      steps {
-        sh 'php-cs-fixer fix --dry-run --no-interaction --diff -vvv src/'
-      }
-    }
     stage('Test') {
       steps {
         sh 'docker exec -w /app symfony_kindle php ./bin/phpunit --coverage-clover=\'reports/coverage/coverage.xml\' --coverage-html=\'reports/coverage\''
@@ -30,7 +25,7 @@ pipeline {
     }
     stage('PHP_CodeSniffer') {
       steps {
-        sh 'phpcs --standard=PSR2 --report=checkstyle --report-file=reports/checkstyle.xml src || true'
+        sh 'phpcs --standard=PSR2 --report=checkstyle --report-file=reports/checkstyle.xml src || exit 0'
         recordIssues(tools: [checkStyle(pattern: '**/reports/checkstyle.xml')])
       }
     }
