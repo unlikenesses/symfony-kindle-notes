@@ -28,6 +28,12 @@ pipeline {
         step([$class: 'CloverPublisher', cloverReportDir: '/reports/coverage', cloverReportFileName: 'coverage.xml'])
       }
     }
+    stage('PHP_CodeSniffer') {
+      steps {
+        sh 'phpcs --standard=PSR2 --report=checkstyle --report-file=reports/checkstyle.xml src'
+        recordIssues tool: checkStyle()
+      }
+    }
     stage('Lines of Code') { 
       steps { 
         sh 'phploc --count-tests --exclude vendor/ --log-csv reports/phploc.csv --log-xml reports/phploc.xml .' 
@@ -35,9 +41,4 @@ pipeline {
       } 
     }
   }  
-  post {
-    cleanup {
-      cleanWs()
-    }
-  }
 }
