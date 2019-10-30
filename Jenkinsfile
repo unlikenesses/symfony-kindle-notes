@@ -25,7 +25,7 @@ pipeline {
     }
     stage('PHP_CodeSniffer') {
       steps {
-        sh 'phpcs --standard=PSR2 --report=checkstyle --report-file=reports/checkstyle.xml src'
+        sh 'phpcs --standard=PSR2 --report=checkstyle --report-file=reports/checkstyle.xml src || exit 0'
         recordIssues(tools: [checkStyle(pattern: '**/reports/checkstyle.xml')])
       }
     }
