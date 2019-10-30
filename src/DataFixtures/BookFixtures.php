@@ -17,7 +17,7 @@ class BookFixtures extends Fixture implements FixtureGroupInterface
         return ['testing'];
     }
     
-    private function createUser(): void
+    private function createUser(ObjectManager $manager): void
     {
         $user = new User();
         $user->setEmail('test@example.com');
@@ -27,7 +27,7 @@ class BookFixtures extends Fixture implements FixtureGroupInterface
 
     public function load(ObjectManager $manager)
     {
-        $this->createUser();
+        $this->createUser($manager);
         $book = new Book();
         $book->setTitle('Test title')
             ->setTitleString('Test title')
