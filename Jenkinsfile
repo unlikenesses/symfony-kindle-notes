@@ -39,7 +39,7 @@ pipeline {
             yaxis: 'Lines of Code',
             csvSeries: [[
                 exclusionValues: 'Lines of Code (LOC),Comment Lines of Code (CLOC),Non-Comment Lines of Code (NCLOC),Logical Lines of Code (LLOC)',
-                file: 'build/logs/phploc.csv',
+                file: 'reports/phploc.csv',
                 inclusionFlag: 'INCLUDE_BY_STRING', displayTableFlag: false, url: ''
             ]],
             numBuilds: '100', style: 'line', exclZero: false, keepRecords: false, logarithmic: false, yaxisMaximum: '', yaxisMinimum: ''
@@ -49,7 +49,7 @@ pipeline {
             yaxis: 'Count',
             csvSeries: [[
                 exclusionValues: 'Directories,Files,Namespaces',
-                file: 'build/logs/phploc.csv',
+                file: 'reports/phploc.csv',
                 inclusionFlag: 'INCLUDE_BY_STRING', displayTableFlag: false, url: ''
             ]],
             numBuilds: '100', style: 'line', exclZero: false, keepRecords: false, logarithmic: false, yaxisMaximum: '', yaxisMinimum: ''
@@ -59,7 +59,7 @@ pipeline {
             yaxis: 'Average Lines of Code',
             csvSeries: [[
                 exclusionValues: 'Average Class Length (LLOC),Average Method Length (LLOC),Average Function Length (LLOC)',
-                file: 'build/logs/phploc.csv',
+                file: 'reports/phploc.csv',
                 inclusionFlag: 'INCLUDE_BY_STRING', displayTableFlag: false, url: ''
             ]],
             numBuilds: '100', style: 'line', exclZero: false, keepRecords: false, logarithmic: false, yaxisMaximum: '', yaxisMinimum: ''
@@ -69,7 +69,7 @@ pipeline {
             yaxis: 'Cyclomatic Complexity by Structure',
             csvSeries: [[
                 exclusionValues: 'Cyclomatic Complexity / Lines of Code,Cyclomatic Complexity / Number of Methods',
-                file: 'build/logs/phploc.csv',
+                file: 'reports/phploc.csv',
                 inclusionFlag: 'INCLUDE_BY_STRING', displayTableFlag: false, url: ''
             ]],
             numBuilds: '100', style: 'line', exclZero: false, keepRecords: false, logarithmic: false, yaxisMaximum: '', yaxisMinimum: ''
@@ -79,7 +79,7 @@ pipeline {
             yaxis: 'Count',
             csvSeries: [[
                 exclusionValues: 'Classes,Abstract Classes,Concrete Classes',
-                file: 'build/logs/phploc.csv',
+                file: 'reports/phploc.csv',
                 inclusionFlag: 'INCLUDE_BY_STRING', displayTableFlag: false, url: ''
             ]],
             numBuilds: '100', style: 'line', exclZero: false, keepRecords: false, logarithmic: false, yaxisMaximum: '', yaxisMinimum: ''
@@ -89,7 +89,7 @@ pipeline {
             yaxis: 'Count',
             csvSeries: [[
                 exclusionValues: 'Methods,Non-Static Methods,Static Methods,Public Methods,Non-Public Methods',
-                file: 'build/logs/phploc.csv',
+                file: 'reports/phploc.csv',
                 inclusionFlag: 'INCLUDE_BY_STRING', displayTableFlag: false, url: ''
             ]],
             numBuilds: '100', style: 'line', exclZero: false, keepRecords: false, logarithmic: false, yaxisMaximum: '', yaxisMinimum: ''
@@ -99,7 +99,7 @@ pipeline {
             yaxis: 'Count',
             csvSeries: [[
                 exclusionValues: 'Constants,Global Constants,Class Constants',
-                file: 'build/logs/phploc.csv',
+                file: 'reports/phploc.csv',
                 inclusionFlag: 'INCLUDE_BY_STRING', displayTableFlag: false, url: ''
             ]],
             numBuilds: '100', style: 'line', exclZero: false, keepRecords: false, logarithmic: false, yaxisMaximum: '', yaxisMinimum: ''
@@ -109,7 +109,7 @@ pipeline {
             yaxis: 'Count',
             csvSeries: [[
                 exclusionValues: 'Functions,Named Functions,Anonymous Functions',
-                file: 'build/logs/phploc.csv',
+                file: 'reports/phploc.csv',
                 inclusionFlag: 'INCLUDE_BY_STRING', displayTableFlag: false, url: ''
             ]],
             numBuilds: '100', style: 'line', exclZero: false, keepRecords: false, logarithmic: false, yaxisMaximum: '', yaxisMinimum: ''
@@ -119,7 +119,7 @@ pipeline {
             yaxis: 'Count',
             csvSeries: [[
                 exclusionValues: 'Test Classes,Test Methods',
-                file: 'build/logs/phploc.csv',
+                file: 'reports/phploc.csv',
                 inclusionFlag: 'INCLUDE_BY_STRING', displayTableFlag: false, url: ''
             ]],
             numBuilds: '100', style: 'line', exclZero: false, keepRecords: false, logarithmic: false, yaxisMaximum: '', yaxisMinimum: ''
@@ -129,7 +129,7 @@ pipeline {
             yaxis: 'Logical Lines of Code',
             csvSeries: [[
                 exclusionValues: 'Logical Lines of Code (LLOC),Classes Length (LLOC),Functions Length (LLOC),LLOC outside functions or classes',
-                file: 'build/logs/phploc.csv',
+                file: 'reports/phploc.csv',
                 inclusionFlag: 'INCLUDE_BY_STRING', displayTableFlag: false, url: ''
             ]],
             numBuilds: '100', style: 'line', exclZero: false, keepRecords: false, logarithmic: false, yaxisMaximum: '', yaxisMinimum: ''
@@ -139,7 +139,7 @@ pipeline {
             yaxis: 'Count',
             csvSeries: [[
                 exclusionValues: 'Interfaces,Traits,Classes,Methods,Functions,Constants',
-                file: 'build/logs/phploc.csv',
+                file: 'reports/phploc.csv',
                 inclusionFlag: 'INCLUDE_BY_STRING', displayTableFlag: false, url: ''
             ]],
             numBuilds: '100', style: 'line', exclZero: false, keepRecords: false, logarithmic: false, yaxisMaximum: '', yaxisMinimum: ''
