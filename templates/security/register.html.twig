@@ -1,10 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Register{% endblock %}
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{  asset('css/login.css') }}">
-{% endblock %}
 {% block body %}
     <form class="form-signin" method="post">
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('register') }}">
