@@ -1,17 +1,19 @@
 /* Book / Notes list */
 
-table.book-table td {
-  vertical-align: top;
-}
+table.book-table {
+  td {
+    vertical-align: top;
+  }
 
-table.book-table td, table.book-table th {
-  padding: 10px;
-}
+  td, th {
+    padding: 10px;
+  }
 
-p.note {
-  margin-bottom: 0;
-}
+  p.note {
+    margin-bottom: 0;
+  }
 
-footer.blockquote-footer {
-  margin-bottom: 15px;
+  footer.blockquote-footer {
+    margin-bottom: 15px;
+  }
 }
