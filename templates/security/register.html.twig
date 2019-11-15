@@ -1,6 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Register{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('auth') }}
+{% endblock %}
+
 {% block body %}
     <form class="form-signin" method="post">
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('register') }}">

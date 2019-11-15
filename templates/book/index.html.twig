@@ -2,6 +2,11 @@
 
 {% block title %}Books{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('books') }}
+{% endblock %}
+
 {% block body %}
     <table class="book-table">
         <tr>
