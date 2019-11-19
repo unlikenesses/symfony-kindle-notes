@@ -7,14 +7,16 @@ export default class BookListApp extends Component {
         super(props);
         this.state = {
             highlightedRowId: null,
-            books: []
+            books: [],
+            isLoaded: false
         };
         this.handleRowClick = this.handleRowClick.bind(this);
     }
     componentDidMount() {
         getBooks().then((data) => {
             this.setState({
-                books: data
+                books: data,
+                isLoaded: true
             });
         });
     }

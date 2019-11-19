@@ -3,7 +3,16 @@ import NoteList from './NoteList';
 import PropTypes from 'prop-types';
 
 export default function BookList(props) {
-    const { books, highlightedRowId, handleRowClick } = props;
+    const { books, highlightedRowId, handleRowClick, isLoaded } = props;
+    if (! isLoaded) {
+        return (
+            <div className="d-flex justify-content-center mt-5">
+                <div className="spinner-border" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+            </div>
+        )
+    }
     return (
         <table className="book-table">
             <thead>
@@ -37,5 +46,6 @@ export default function BookList(props) {
 BookList.propTypes = {
     books: PropTypes.array.isRequired,
     highlightedRowId: PropTypes.number,
-    handleRowClick: PropTypes.func.isRequired
+    handleRowClick: PropTypes.func.isRequired,
+    isLoaded: PropTypes.bool.isRequired
 };
