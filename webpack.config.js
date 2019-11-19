@@ -24,6 +24,7 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/js/app.js')
+    .addEntry('bookList', './assets/js/books.js')
     .addStyleEntry('auth', './assets/css/auth.scss')
     .addStyleEntry('books', './assets/css/books.scss')
 
@@ -68,7 +69,7 @@ Encore
     //.autoProvidejQuery()
 
     // uncomment if you use API Platform Admin (composer req api-admin)
-    //.enableReactPreset()
+    .enableReactPreset()
     //.addEntry('admin', './assets/js/admin.js')
 ;
 

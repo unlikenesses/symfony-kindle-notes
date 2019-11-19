@@ -8,35 +8,9 @@
 {% endblock %}
 
 {% block body %}
-    <table class="book-table">
-        <tr>
-            <th>Date</th>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Notes</th>
-        </tr>
-        {% for book in books %}
-            <tr>
-                <td>
-                    {{ book.notes.count > 0 ? book.notes.last.date|date('d/m/Y') : '' }}
-                </td>
-                <td>
-                    {{ book.title }}
-                </td>
-                <td>
-                    {{ book.authorFirstName }} {{ book.authorLastName }}
-                </td>
-                <td>
-                    {% for note in book.notes %}
-                        <p class="note">{{ note.note }}</p>
-                        <footer class="blockquote-footer">
-                            {{ note.date|date('d/m/Y h:i:s') }} &mdash;
-                            {{ note.page ? "Page #{note.page}": '' }}
-                            {{ note.location ? "Location #{note.location}": '' }}
-                        </footer>
-                    {% endfor %}
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
+    <div id="book-list"></div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('bookList') }}
 {% endblock %}
