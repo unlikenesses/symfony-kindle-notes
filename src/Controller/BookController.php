@@ -16,7 +16,7 @@ class BookController extends AbstractController
     public function index(EntityManagerInterface $entityManager): Response
     {
         $repository = $entityManager->getRepository(Book::class);
-        $books = $repository->findAll();
+        $books = $repository->findByUser($this->getUser());
 
         return $this->render('book/index.html.twig', [
             'books' => $books,
