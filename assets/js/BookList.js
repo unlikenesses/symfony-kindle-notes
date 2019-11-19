@@ -1,10 +1,11 @@
 import React from 'react';
+import Book from './Book';
 import NoteList from './NoteList';
 import PropTypes from 'prop-types';
 
 export default function BookList(props) {
-    const { books, highlightedRowId, handleRowClick, isLoaded } = props;
-    if (! isLoaded) {
+    const { books, notes, activeBook, handleBookClick, loadingBooks, loadingNotes } = props;
+    if (loadingBooks) {
         return (
             <div className="d-flex justify-content-center mt-5">
                 <div className="spinner-border" role="status">
@@ -14,38 +15,32 @@ export default function BookList(props) {
         )
     }
     return (
-        <table className="book-table">
-            <thead>
-            <tr>
-                <th>Date</th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Notes</th>
-            </tr>
-            </thead>
-            <tbody>
-            {books.map((row) => (
-                <tr
-                    key={row.id}
-                    className={highlightedRowId === row.id ? 'table-active' : ''}
-                    onClick={(event) => handleRowClick(row.id, event)}
-                >
-                    <td>{row.date}</td>
-                    <td>{row.title}</td>
-                    <td>{row.author}</td>
-                    <td>
-                        <NoteList notes={row.notes}/>
-                    </td>
-                </tr>
-            ))}
-            </tbody>
-        </table>
+        <div className="container-fluid p-0">
+            <div className="row no-gutters">
+                <div className="col-2 border-right">
+                    {books.map((row) => (
+                        <Book
+                            key={row.id}
+                            title={row.title}
+                            author={row.author}
+                            active={activeBook === row.id}
+                            onClick={(event) => handleBookClick(row.id, event)}
+                        />
+                    ))}
+                </div>
+                <div className="col p-3">
+                    <NoteList notes={notes} loadingNotes={loadingNotes}/>
+                </div>
+            </div>
+        </div>
     );
 }
 
 BookList.propTypes = {
     books: PropTypes.array.isRequired,
-    highlightedRowId: PropTypes.number,
-    handleRowClick: PropTypes.func.isRequired,
-    isLoaded: PropTypes.bool.isRequired
+    notes: PropTypes.array,
+    activeBook: PropTypes.number,
+    handleBookClick: PropTypes.func.isRequired,
+    loadingBooks: PropTypes.bool.isRequired,
+    loadingNotes: PropTypes.bool.isRequired
 };

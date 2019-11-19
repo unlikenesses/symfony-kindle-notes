@@ -2,9 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export default function NoteList(props) {
+    const { loadingNotes, notes } = props;
+    if (loadingNotes) {
+        return (
+            <div className="d-flex justify-content-center mt-5">
+                <div className="spinner-border" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+            </div>
+        )
+    }
     return (
         <div>
-            {props.notes.map((note) => (
+            {notes.map((note) => (
                 <div key={note.id}>
                     <p className="note">{note.note}</p>
                     <footer className="blockquote-footer">
@@ -20,5 +30,6 @@ export default function NoteList(props) {
 }
 
 NoteList.propTypes = {
-    notes: PropTypes.array
+    notes: PropTypes.array,
+    loadingNotes: PropTypes.bool
 };

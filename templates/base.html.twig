@@ -32,9 +32,7 @@
             {% endif %}
             </ul>
         </nav>
-        <div class="container">
         {% block body %}{% endblock %}
-        </div>
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
         {% endblock %}

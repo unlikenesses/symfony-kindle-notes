@@ -40,16 +40,10 @@ class ApiController extends AbstractController
 
     protected function createBookApiModel(Book $book): BookApiModel
     {
-        $notes = $book->getNotes();
         $model = new BookApiModel();
         $model->id = $book->getId();
-        $model->date = $this->getDateOfLastNote($notes);
         $model->title = $book->getTitle();
         $model->author = $book->getAuthorFirstName() . ' ' . $book->getAuthorLastName();
-        $model->notes = [];
-        foreach ($notes as $note) {
-            $model->notes[] = $this->createNoteApiModel($note);
-        }
 
         return $model;
     }

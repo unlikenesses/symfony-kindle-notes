@@ -1,33 +1,44 @@
 import React, {Component} from 'react';
 import BookList from './BookList';
-import { getBooks } from './api/book_api';
+import { getBooks, getNotesForBook } from './api/book_api';
 
 export default class BookListApp extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            highlightedRowId: null,
+            activeBook: null,
             books: [],
-            isLoaded: false
+            notes: [],
+            loadingBooks: true,
+            loadingNotes: false
         };
-        this.handleRowClick = this.handleRowClick.bind(this);
+        this.handleBookClick = this.handleBookClick.bind(this);
     }
     componentDidMount() {
         getBooks().then((data) => {
             this.setState({
                 books: data,
-                isLoaded: true
+                loadingBooks: false
             });
         });
     }
-    handleRowClick(rowId, event) {
-        this.setState({highlightedRowId: rowId});
+    handleBookClick(bookId, event) {
+        this.setState({
+            loadingNotes: true
+        });
+        getNotesForBook(bookId).then((data) => {
+            this.setState({
+                activeBook: bookId,
+                notes: data,
+                loadingNotes: false
+            });
+        })
     }
     render() {
         return (
             <BookList
                 {...this.state}
-                handleRowClick={this.handleRowClick}
+                handleBookClick={this.handleBookClick}
             />
         )
     }
