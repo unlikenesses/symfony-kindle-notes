@@ -22,13 +22,13 @@ export default class BookListApp extends Component {
             });
         });
     }
-    handleBookClick(bookId, event) {
+    handleBookClick(book, event) {
         this.setState({
             loadingNotes: true
         });
-        getNotesForBook(bookId).then((data) => {
+        getNotesForBook(book.id).then((data) => {
             this.setState({
-                activeBook: bookId,
+                activeBook: book,
                 notes: data,
                 loadingNotes: false
             });

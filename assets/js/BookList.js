@@ -23,13 +23,13 @@ export default function BookList(props) {
                             key={row.id}
                             title={row.title}
                             author={row.author}
-                            active={activeBook === row.id}
-                            onClick={(event) => handleBookClick(row.id, event)}
+                            active={activeBook != null && activeBook.id === row.id}
+                            onClick={(event) => handleBookClick(row, event)}
                         />
                     ))}
                 </div>
                 <div className="col p-3">
-                    <NoteList notes={notes} loadingNotes={loadingNotes}/>
+                    <NoteList book={activeBook} notes={notes} loadingNotes={loadingNotes}/>
                 </div>
             </div>
         </div>
@@ -39,7 +39,7 @@ export default function BookList(props) {
 BookList.propTypes = {
     books: PropTypes.array.isRequired,
     notes: PropTypes.array,
-    activeBook: PropTypes.number,
+    activeBook: PropTypes.object,
     handleBookClick: PropTypes.func.isRequired,
     loadingBooks: PropTypes.bool.isRequired,
     loadingNotes: PropTypes.bool.isRequired
