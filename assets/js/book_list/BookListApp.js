@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import BookList from './BookList';
+import Books from './books/Books';
 import { getBooks, getNotesForBook } from './api/book_api';
 
 export default class BookListApp extends Component {
@@ -8,7 +8,7 @@ export default class BookListApp extends Component {
         this.state = {
             activeBook: null,
             books: [],
-            notes: [],
+            notes: {},
             loadingBooks: true,
             loadingNotes: false
         };
@@ -36,7 +36,7 @@ export default class BookListApp extends Component {
     }
     render() {
         return (
-            <BookList
+            <Books
                 {...this.state}
                 handleBookClick={this.handleBookClick}
             />

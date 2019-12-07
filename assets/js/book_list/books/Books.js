@@ -1,9 +1,9 @@
 import React from 'react';
 import Book from './Book';
-import NoteList from './NoteList';
+import Notes from '../notes/Notes';
 import PropTypes from 'prop-types';
 
-export default function BookList(props) {
+export default function Books(props) {
     const { books, notes, activeBook, handleBookClick, loadingBooks, loadingNotes } = props;
     if (loadingBooks) {
         return (
@@ -29,16 +29,16 @@ export default function BookList(props) {
                     ))}
                 </div>
                 <div className="col p-3">
-                    <NoteList book={activeBook} notes={notes} loadingNotes={loadingNotes}/>
+                    <Notes book={activeBook} notes={notes} loadingNotes={loadingNotes}/>
                 </div>
             </div>
         </div>
     );
 }
 
-BookList.propTypes = {
+Books.propTypes = {
     books: PropTypes.array.isRequired,
-    notes: PropTypes.array,
+    notes: PropTypes.object,
     activeBook: PropTypes.object,
     handleBookClick: PropTypes.func.isRequired,
     loadingBooks: PropTypes.bool.isRequired,

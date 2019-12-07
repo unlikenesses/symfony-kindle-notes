@@ -8,6 +8,6 @@ export function getBooks() {
 export function getNotesForBook(bookId) {
     return fetch('/api/books/' + bookId + '/notes')
         .then(response => {
-            return response.json().then((data) => data.data);
+            return response.json().then((data) => data);
         });
 }

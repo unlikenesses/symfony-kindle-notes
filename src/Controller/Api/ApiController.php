@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Api;
 
 use App\Api\BookApiModel;
 use App\Api\NoteApiModel;
@@ -59,13 +59,5 @@ class ApiController extends AbstractController
         $model->type = $note->getType();
 
         return $model;
-    }
-
-    protected function getDateOfLastNote(Collection $notes): string
-    {
-        if ($notes->isEmpty()) {
-            return '';
-        }
-        return $notes->last()->getDate()->format('d/m/Y');
     }
 }

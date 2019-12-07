@@ -16,7 +16,7 @@ function BookTitle(props) {
     }
 }
 
-export default function NoteList(props) {
+export default function Notes(props) {
     const { book, loadingNotes, notes } = props;
     if (loadingNotes) {
         return (
@@ -27,21 +27,27 @@ export default function NoteList(props) {
             </div>
         )
     }
-    return (
-        <div>
-            <BookTitle book={book} />
-            {notes.map((note) => (
-                <Note
-                    key={note.id}
-                    note={note}
-                />
-            ))}
-        </div>
-    )
+    if (notes.data) {
+        return (
+            <div>
+                <BookTitle book={book}/>
+                <p>
+                    {notes.numHighlights} Highlights | {notes.numNotes} Notes
+                </p>
+                {notes.data.map((note) => (
+                    <Note
+                        key={note.id}
+                        note={note}
+                    />
+                ))}
+            </div>
+        )
+    }
+    return <div></div>
 }
 
-NoteList.propTypes = {
+Notes.propTypes = {
     book: PropTypes.object,
-    notes: PropTypes.array,
+    notes: PropTypes.object,
     loadingNotes: PropTypes.bool
 };

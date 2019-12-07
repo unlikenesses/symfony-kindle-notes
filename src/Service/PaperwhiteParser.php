@@ -38,6 +38,7 @@ class PaperwhiteParser implements ParserInterface
     private function cleanLine(string $line): string
     {
         $line = $this->removeBOM($line);
+
         return trim($line);
     }
 
