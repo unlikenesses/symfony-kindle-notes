@@ -6,6 +6,7 @@ use DateTime;
 use App\Entity\Book;
 use App\Entity\Note;
 use App\ValueObject\Book as BookObject;
+use App\ValueObject\Note as NoteObject;
 use App\Repository\BookRepository;
 use App\Repository\NoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -82,35 +83,36 @@ class NoteSaver
         return $book;
     }
 
-    private function saveImportedNote(array $note, Book $book): bool
+    private function saveImportedNote(NoteObject $note, Book $book): bool
     {
-        if (isset($note['highlight']) &&
-            isset($note['meta']) &&
-            ! $this->noteRepository->findNoteInBook($note, $book)) {
+        if ($note->getHighlight() &&
+            $note->getMeta() &&
+            ! $this->noteRepository->findNoteInBook($note->getMeta(), $book)) {
             $date = '';
             $page = '';
             $location = '';
             $noteText = '';
             $noteType = 0;
+            $noteMetadata = $note->getMeta();
 
-            if (isset($note['meta']['date'])) {
-                $date = new DateTime($note['meta']['date']);
+            if (isset($noteMetadata['date'])) {
+                $date = new DateTime($noteMetadata['date']);
             }
 
-            if (isset($note['meta']['page'])) {
-                $page = $note['meta']['page'];
+            if (isset($noteMetadata['page'])) {
+                $page = $noteMetadata['page'];
             }
 
-            if (isset($note['meta']['location'])) {
-                $location = $note['meta']['location'];
+            if (isset($noteMetadata['location'])) {
+                $location = $noteMetadata['location'];
             }
 
-            if (isset($note['highlight'])) {
-                $noteText = trim($note['highlight']);
+            if ($note->getHighlight()) {
+                $noteText = $note->getHighlight();
             }
 
-            if (isset($note['type'])) {
-                $noteType = trim($note['type']);
+            if ($note->getType()) {
+                $noteType = $note->getType();
             }
 
             $newNote = new Note();

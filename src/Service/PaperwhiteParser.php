@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\ValueObject\Book;
+use App\ValueObject\Note;
 
 class PaperwhiteParser implements ParserInterface
 {
@@ -21,9 +22,9 @@ class PaperwhiteParser implements ParserInterface
     private $books = [];
 
     /**
-     * @var array
+     * @var Note
      */
-    private $clipping = [];
+    private $note;
 
     /**
      * @var int
@@ -77,10 +78,11 @@ class PaperwhiteParser implements ParserInterface
             $this->bookPos = $this->bookPositionInFile($line);
             $this->populateBook($line);
             $this->inBook = true;
+            $this->note = new Note();
             return;
         }
         if ($line === self::SEPARATOR) {
-            // End of a clipping.
+            // End of a note.
             if ($this->bookPos < 0) {
                 $this->books[] = $this->book;
             } else {
@@ -88,15 +90,15 @@ class PaperwhiteParser implements ParserInterface
             }
             $this->inBook = false;
         } elseif (stristr($line, self::HIGHLIGHT_STRING)) {
-            $this->clipping['meta'] = $this->parseMeta($line);
-            $this->clipping['type'] = 1;
+            $this->note->setMeta($this->parseMeta($line));
+            $this->note->setType(1);
         } elseif (stristr($line, self::NOTE_STRING)) {
-            $this->clipping['meta'] = $this->parseMeta($line);
-            $this->clipping['type'] = 2;
+            $this->note->setMeta($this->parseMeta($line));
+            $this->note->setType(2);
         } else {
-            $this->clipping['highlight'] = $line;
-            $this->book->addNote($this->clipping);
-            $this->clipping = [];
+            $this->note->setHighlight($line);
+            $this->book->addNote($this->note);
+            $this->note = [];
         }
     }
 

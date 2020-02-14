@@ -10,7 +10,7 @@ class Book
     private $metadata;
 
     /**
-     * @var array
+     * @var array<Note>
      */
     private $notes = [];
 
@@ -29,7 +29,7 @@ class Book
         return $this->notes;
     }
 
-    public function addNote(array $note): void
+    public function addNote(Note $note): void
     {
         $this->notes[] = $note;
     }

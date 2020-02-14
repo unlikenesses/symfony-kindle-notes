@@ -20,12 +20,12 @@ class NoteRepository extends ServiceEntityRepository
         parent::__construct($registry, Note::class);
     }
 
-    public function findNoteInBook(array $note, Book $book): ?Note
+    public function findNoteInBook(array $noteMetadata, Book $book): ?Note
     {
         $date = '';
 
-        if (isset($note['meta']['date'])) {
-            $timestamp = strtotime($note['meta']['date']);
+        if (isset($noteMetadata['date'])) {
+            $timestamp = strtotime($noteMetadata['date']);
             $date = date('Y-m-d H:i:s', $timestamp);
         }
 
@@ -36,11 +36,11 @@ class NoteRepository extends ServiceEntityRepository
             ->setParameter('date', $date);
 
         if (isset($note['meta']['page'])) {
-            $query->andWhere('n.page = :page')->setParameter('page', $note['meta']['page']);
+            $query->andWhere('n.page = :page')->setParameter('page', $noteMetadata['page']);
         }
 
         if (isset($note['meta']['location'])) {
-            $query->andWhere('n.location = :location')->setParameter('location', $note['meta']['location']);
+            $query->andWhere('n.location = :location')->setParameter('location', $noteMetadata['location']);
         }
 
         return $query->getQuery()->getOneOrNullResult();
