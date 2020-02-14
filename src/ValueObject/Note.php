@@ -5,7 +5,7 @@ namespace App\ValueObject;
 class Note
 {
     /**
-     * @var array
+     * @var NoteMetadata
      */
     private $meta;
 
@@ -19,14 +19,14 @@ class Note
      */
     private $highlight;
 
-    public function getMeta(): ?array
+    public function getMeta(): ?NoteMetadata
     {
         return $this->meta;
     }
 
-    public function setMeta(array $meta): void
+    public function setMeta(NoteMetadata $metadata): void
     {
-        $this->meta = $meta;
+        $this->meta = $metadata;
     }
 
     public function getType(): int

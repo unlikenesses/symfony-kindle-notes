@@ -98,16 +98,16 @@ class NoteSaver
             $noteType = 0;
             $noteMetadata = $note->getMeta();
 
-            if (isset($noteMetadata['date'])) {
-                $date = new DateTime($noteMetadata['date']);
+            if ($noteMetadata->getDate()) {
+                $date = new DateTime($noteMetadata->getDate());
             }
 
-            if (isset($noteMetadata['page'])) {
-                $page = $noteMetadata['page'];
+            if ($noteMetadata->getPage()) {
+                $page = $noteMetadata->getPage();
             }
 
-            if (isset($noteMetadata['location'])) {
-                $location = $noteMetadata['location'];
+            if ($noteMetadata->getLocation()) {
+                $location = $noteMetadata->getLocation();
             }
 
             if ($note->getHighlight()) {

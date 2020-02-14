@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\ValueObject\Author;
+use App\ValueObject\NoteMetadata;
 
 interface ParserInterface
 {
@@ -12,5 +13,5 @@ interface ParserInterface
 
     public function parseAuthor(string $author): Author;
 
-    public function parseMeta(string $meta): array;
+    public function parseMeta(string $meta): NoteMetadata;
 }

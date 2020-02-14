@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Book;
 use App\Entity\Note;
+use App\ValueObject\NoteMetadata;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -20,12 +21,12 @@ class NoteRepository extends ServiceEntityRepository
         parent::__construct($registry, Note::class);
     }
 
-    public function findNoteInBook(array $noteMetadata, Book $book): ?Note
+    public function findNoteInBook(NoteMetadata $noteMetadata, Book $book): ?Note
     {
         $date = '';
 
-        if (isset($noteMetadata['date'])) {
-            $timestamp = strtotime($noteMetadata['date']);
+        if ($noteMetadata->getDate()) {
+            $timestamp = strtotime($noteMetadata->getDate());
             $date = date('Y-m-d H:i:s', $timestamp);
         }
 
@@ -35,12 +36,12 @@ class NoteRepository extends ServiceEntityRepository
             ->setParameter('book', $book)
             ->setParameter('date', $date);
 
-        if (isset($note['meta']['page'])) {
-            $query->andWhere('n.page = :page')->setParameter('page', $noteMetadata['page']);
+        if ($noteMetadata->getPage()) {
+            $query->andWhere('n.page = :page')->setParameter('page', $noteMetadata->getPage());
         }
 
-        if (isset($note['meta']['location'])) {
-            $query->andWhere('n.location = :location')->setParameter('location', $noteMetadata['location']);
+        if ($noteMetadata->getLocation()) {
+            $query->andWhere('n.location = :location')->setParameter('location', $noteMetadata->getLocation());
         }
 
         return $query->getQuery()->getOneOrNullResult();

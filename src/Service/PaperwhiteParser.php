@@ -5,6 +5,7 @@ namespace App\Service;
 use App\ValueObject\Book;
 use App\ValueObject\Note;
 use App\ValueObject\Author;
+use App\ValueObject\NoteMetadata;
 
 class PaperwhiteParser implements ParserInterface
 {
@@ -201,25 +202,25 @@ class PaperwhiteParser implements ParserInterface
         return new Author($firstName, $lastName);
     }
 
-    public function parseMeta(string $meta): array
+    public function parseMeta(string $meta): NoteMetadata
     {
-        $return = [];
+        $noteMetadata = new NoteMetadata();
 
         if (stristr($meta, 'page')) {
             preg_match("/page (\d*-?\d*)/", $meta, $output);
-            $return['page'] = $output[1];
+            $noteMetadata->setPage($output[1]);
         }
 
         if (stristr($meta, 'location')) {
             preg_match("/location (\d*-?\d*)/", $meta, $output);
-            $return['location'] = $output[1];
+            $noteMetadata->setLocation($output[1]);
         }
 
         if (stristr($meta, 'added')) {
             preg_match("/Added on (.*)/", $meta, $output);
-            $return['date'] = $output[1];
+            $noteMetadata->setDate($output[1]);
         }
 
-        return $return;
+        return $noteMetadata;
     }
 }
