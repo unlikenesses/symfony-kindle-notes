@@ -7,6 +7,7 @@ use App\Entity\Book;
 use App\Entity\Note;
 use App\ValueObject\Book as BookObject;
 use App\ValueObject\Note as NoteObject;
+use App\ValueObject\Author as AuthorObject;
 use App\Repository\BookRepository;
 use App\Repository\NoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -71,11 +72,13 @@ class NoteSaver
 
     private function addBook(array $metadata): Book
     {
+        /** @var AuthorObject $author */
+        $author = $metadata['author'];
         $book = new Book();
         $book->setTitleString($metadata['titleString'])
             ->setTitle($metadata['title'])
-            ->setAuthorFirstName($metadata['firstName'])
-            ->setAuthorLastName($metadata['lastName'])
+            ->setAuthorFirstName($author->getFirstName())
+            ->setAuthorLastName($author->getLastName())
             ->setUser($this->security->getUser());
         $this->entityManager->persist($book);
         $this->entityManager->flush();

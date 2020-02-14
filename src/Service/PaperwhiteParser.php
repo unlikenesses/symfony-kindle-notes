@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\ValueObject\Book;
 use App\ValueObject\Note;
+use App\ValueObject\Author;
 
 class PaperwhiteParser implements ParserInterface
 {
@@ -109,8 +110,7 @@ class PaperwhiteParser implements ParserInterface
             $this->book = new Book([
                 'titleString' => $line,
                 'title' => $parsedTitle['title'],
-                'lastName' => $parsedTitle['lastName'],
-                'firstName' => $parsedTitle['firstName'],
+                'author' => $parsedTitle['author'],
             ]);
         } else {
             $this->book = $this->books[$this->bookPos];
@@ -173,12 +173,11 @@ class PaperwhiteParser implements ParserInterface
 
         return [
             'title' => $title,
-            'lastName' => $parsedAuthor['lastName'],
-            'firstName' => $parsedAuthor['firstName']
+            'author' => $parsedAuthor,
         ];
     }
 
-    public function parseAuthor(string $author): array
+    public function parseAuthor(string $author): Author
     {
         $author = trim($author);
 
@@ -192,10 +191,8 @@ class PaperwhiteParser implements ParserInterface
             array_pop($nameArray);
             $firstName = implode(' ', $nameArray);
         }
-        return [
-            'lastName' => trim($lastName),
-            'firstName' => trim($firstName)
-        ];
+
+        return new Author($firstName, $lastName);
     }
 
     public function parseMeta(string $meta): array
