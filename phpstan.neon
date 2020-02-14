@@ -1,4 +1,6 @@
 parameters:
     level: 8
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
     autoload_directories:
         - %rootDir%/../../../src/Migrations
