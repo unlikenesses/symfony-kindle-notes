@@ -2,16 +2,37 @@
 
 namespace App\Service;
 
+use App\ValueObject\Book;
+
 class PaperwhiteParser implements ParserInterface
 {
     const SEPARATOR = '==========';
     const HIGHLIGHT_STRING = 'your highlight';
     const NOTE_STRING = 'your note';
 
-    private $book = [];
+    /**
+     * @var Book
+     */
+    private $book;
+
+    /**
+     * @var array<Book>
+     */
     private $books = [];
+
+    /**
+     * @var array
+     */
     private $clipping = [];
+
+    /**
+     * @var int
+     */
     private $bookPos = -1;
+
+    /**
+     * @var bool
+     */
     private $inBook = false;
 
     /**
@@ -65,7 +86,6 @@ class PaperwhiteParser implements ParserInterface
             } else {
                 $this->books[$this->bookPos] = $this->book;
             }
-            $this->book = [];
             $this->inBook = false;
         } elseif (stristr($line, self::HIGHLIGHT_STRING)) {
             $this->clipping['meta'] = $this->parseMeta($line);
@@ -75,7 +95,7 @@ class PaperwhiteParser implements ParserInterface
             $this->clipping['type'] = 2;
         } else {
             $this->clipping['highlight'] = $line;
-            $this->book['notes'][] = $this->clipping;
+            $this->book->addNote($this->clipping);
             $this->clipping = [];
         }
     }
@@ -84,13 +104,12 @@ class PaperwhiteParser implements ParserInterface
     {
         if ($this->bookPos < 0) {
             $parsedTitle = $this->parseTitleString($line);
-            $this->book['metadata'] = [
+            $this->book = new Book([
                 'titleString' => $line,
                 'title' => $parsedTitle['title'],
                 'lastName' => $parsedTitle['lastName'],
                 'firstName' => $parsedTitle['firstName'],
-            ];
-            $this->book['notes'] = [];
+            ]);
         } else {
             $this->book = $this->books[$this->bookPos];
         }
@@ -100,7 +119,8 @@ class PaperwhiteParser implements ParserInterface
     {
         $i = 0;
         foreach ($this->books as $book) {
-            if ($book['metadata']['titleString'] === $bookTitle) {
+            $metadata = $book->getMetadata();
+            if ($metadata['titleString'] === $bookTitle) {
                 return $i;
             }
             $i++;

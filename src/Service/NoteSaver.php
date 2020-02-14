@@ -5,6 +5,7 @@ namespace App\Service;
 use DateTime;
 use App\Entity\Book;
 use App\Entity\Note;
+use App\ValueObject\Book as BookObject;
 use App\Repository\BookRepository;
 use App\Repository\NoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -47,17 +48,18 @@ class NoteSaver
         }
     }
 
-    private function storeBookNotes(array $book): array
+    private function storeBookNotes(BookObject $book): array
     {
         $newBook = false;
         $numNotes = 0;
-        $bookToAdd = $this->bookRepository->findOneByTitleString($book['metadata']['titleString']);
+        $metadata = $book->getMetadata();
+        $bookToAdd = $this->bookRepository->findOneByTitleString($metadata['titleString']);
         if (!$bookToAdd) {
             $newBook = true;
-            $bookToAdd = $this->addBook($book['metadata']);
+            $bookToAdd = $this->addBook($metadata);
         }
 
-        foreach ($book['notes'] as $note) {
+        foreach ($book->getNotes() as $note) {
             if ($this->saveImportedNote($note, $bookToAdd)) {
                 $numNotes++;
             }
