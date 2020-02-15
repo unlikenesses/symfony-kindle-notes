@@ -49,6 +49,16 @@ class BookList
         $this->list[$this->pos] = $book;
     }
 
+    public function completeNote(Book $book): void
+    {
+        if ($this->pos < 0) {
+            $this->addBook($book);
+        } else {
+            $this->updateBook($book);
+        }
+        $this->inBook = false;
+    }
+
     public function findBookByTitleString(string $titleString): ?Book
     {
         $this->pos = -1;

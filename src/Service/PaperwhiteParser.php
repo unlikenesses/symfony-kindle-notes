@@ -49,13 +49,7 @@ class PaperwhiteParser implements ParserInterface
             return;
         }
         if ($line->equals(self::SEPARATOR)) {
-            // End of a note.
-            if ($this->bookList->getPos() < 0) {
-                $this->bookList->addBook($this->book);
-            } else {
-                $this->bookList->updateBook($this->book);
-            }
-            $this->bookList->toggleInBook();
+            $this->bookList->completeNote($this->book);
         } elseif ($line->contains(self::HIGHLIGHT_STRING)) {
             $this->note->setMeta($this->parseMeta($line->getLine()));
             $this->note->setType(1);
