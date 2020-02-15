@@ -10,6 +10,9 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class BookFixtures extends Fixture implements FixtureGroupInterface
 {
+    /**
+     * @var User
+     */
     private $user;
     
     public static function getGroups(): array
@@ -26,7 +29,7 @@ class BookFixtures extends Fixture implements FixtureGroupInterface
         $this->user = $user;
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $this->createUser($manager);
         $book = new Book();

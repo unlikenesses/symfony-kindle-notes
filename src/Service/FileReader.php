@@ -6,7 +6,7 @@ namespace App\Service;
 class FileReader
 {
     /**
-     * @var false|resource
+     * @var resource
      */
     private $fileHandle;
 
