@@ -62,6 +62,7 @@ class BookList
     public function findBookByTitleString(string $titleString): ?Book
     {
         $this->pos = -1;
+        $this->inBook = true;
         foreach ($this->list as $pos => $book) {
             $metadata = $book->getMetadata();
             if ($metadata['titleString'] === $titleString) {
