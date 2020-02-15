@@ -17,7 +17,7 @@ class ImportController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('import/index.html.twig');
+        return $this->render('import/index.html.twig', ['errors' => []]);
     }
 
     /**
@@ -27,6 +27,12 @@ class ImportController extends AbstractController
     {
         if (!$this->isCsrfTokenValid('import', $request->request->get('token'))) {
             throw new InvalidCsrfTokenException();
+        }
+        if (! $request->files->get('clippings_file')) {
+            return $this->render(
+                'import/index.html.twig',
+                ['errors' => ['Please specify a file to upload.']]
+            );
         }
         $books = $fileHandler->handleFile($request->files->get('clippings_file'));
         $noteSaver->storeNotes($books);

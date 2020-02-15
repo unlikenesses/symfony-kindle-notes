@@ -3,14 +3,19 @@
 {% block title %}Import{% endblock %}
 
 {% block body %}
-<form method="post" enctype="multipart/form-data" class="">
-    <input type="hidden" name="token" value="{{ csrf_token('import') }}">
-    <div class="form-group">
-        <div class="custom-file">
-            <input type="file" name="clippings_file" class="custom-file-input">
-            <label class="custom-file-label" for="clippings_file">Clippings File</label>
-        </div>
+    <div class="container mt-4">
+        <form method="post" enctype="multipart/form-data" class="">
+            <input type="hidden" name="token" value="{{ csrf_token('import') }}">
+            <div class="form-group">
+                <div class="custom-file">
+                    <input type="file" name="clippings_file" class="custom-file-input" required>
+                    <label class="custom-file-label" for="clippings_file">Clippings File</label>
+                </div>
+            </div>
+            <button class="btn btn-primary" type="submit">Import</button>
+            {% for error in errors %}
+                <div class="alert alert-danger mt-3">{{ error }}</div>
+            {% endfor %}
+        </form>
     </div>
-    <button class="btn btn-primary" type="submit">Import</button>
-</form>
 {% endblock %}

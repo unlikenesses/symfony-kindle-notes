@@ -11,10 +11,8 @@ class FileReader
 
     public function openFile(string $filename): void
     {
-        try {
-            $this->fileHandle = fopen($filename, 'r');
-        } catch (\Exception $e) {
-            dd($e); // TODO: proper error handling
+        if (! $this->fileHandle = fopen($filename, 'r')) {
+            trigger_error('There was an error attempting to open the file.');
         }
     }
 
