@@ -6,6 +6,7 @@ use App\ValueObject\Book;
 use App\ValueObject\Note;
 use App\ValueObject\Author;
 use App\ValueObject\FileLine;
+use App\ValueObject\BookList;
 use App\ValueObject\NoteMetadata;
 
 class PaperwhiteParser implements ParserInterface
@@ -20,47 +21,41 @@ class PaperwhiteParser implements ParserInterface
     private $book;
 
     /**
-     * @var array<Book>
+     * @var BookList
      */
-    private $books = [];
+    private $bookList;
 
     /**
      * @var Note
      */
     private $note;
 
-    /**
-     * @var int
-     */
-    private $bookPos;
-
-    /**
-     * @var bool
-     */
-    private $inBook = false;
+    public function __construct()
+    {
+        $this->bookList = new BookList();
+    }
 
     public function parseLine(FileLine $line): void
     {
         if ($line->isEmpty()) {
             return;
         }
-        if (! $this->inBook) {
+        if (! $this->bookList->getInBook()) {
             // First line of a note, i.e. the title
             $title = $line->getLine();
-            $this->bookPos = $this->getBookPosition($title);
+            $this->bookList->toggleInBook();
             $this->book = $this->createOrAssignBook($title);
-            $this->inBook = true;
             $this->note = new Note();
             return;
         }
         if ($line->equals(self::SEPARATOR)) {
             // End of a note.
-            if ($this->bookPos < 0) {
-                $this->books[] = $this->book;
+            if ($this->bookList->getPos() < 0) {
+                $this->bookList->addBook($this->book);
             } else {
-                $this->books[$this->bookPos] = $this->book;
+                $this->bookList->updateBook($this->book);
             }
-            $this->inBook = false;
+            $this->bookList->toggleInBook();
         } elseif ($line->contains(self::HIGHLIGHT_STRING)) {
             $this->note->setMeta($this->parseMeta($line->getLine()));
             $this->note->setType(1);
@@ -75,30 +70,17 @@ class PaperwhiteParser implements ParserInterface
 
     private function createOrAssignBook(string $titleString): Book
     {
-        if ($this->bookPos < 0) {
+        $book = $this->bookList->findBookByTitleString($titleString);
+        if (! $book) {
             $parsedTitle = $this->parseTitleString($titleString);
-            return new Book([
+            $book = new Book([
                 'titleString' => $titleString,
                 'title' => $parsedTitle['title'],
                 'author' => $parsedTitle['author'],
             ]);
-        } else {
-            return $this->books[$this->bookPos];
-        }
-    }
-
-    private function getBookPosition(string $bookTitle): int
-    {
-        $i = 0;
-        foreach ($this->books as $book) {
-            $metadata = $book->getMetadata();
-            if ($metadata['titleString'] === $bookTitle) {
-                return $i;
-            }
-            $i++;
         }
 
-        return -1;
+        return $book;
     }
 
     public function parseTitleString(string $titleString): array
@@ -193,8 +175,8 @@ class PaperwhiteParser implements ParserInterface
         return $noteMetadata;
     }
 
-    public function getBooks(): array
+    public function getBookList(): BookList
     {
-        return $this->books;
+        return $this->bookList;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\ValueObject\BookList;
 use App\ValueObject\FileLine;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -29,12 +30,12 @@ class FileHandler
         $this->parser = $parser;
     }
 
-    public function handleFile(UploadedFile $file): array
+    public function handleFile(UploadedFile $file): BookList
     {
         $filename = $this->uploader->upload($file);
         $this->readFile($filename);
 
-        return $this->parser->getBooks();
+        return $this->parser->getBookList();
     }
 
     private function readFile(string $filename): void

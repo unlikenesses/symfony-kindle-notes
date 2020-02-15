@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\ValueObject\Author;
+use App\ValueObject\BookList;
 use App\ValueObject\FileLine;
 use App\ValueObject\NoteMetadata;
 
@@ -16,5 +17,5 @@ interface ParserInterface
 
     public function parseMeta(string $meta): NoteMetadata;
 
-    public function getBooks(): array;
+    public function getBookList(): BookList;
 }

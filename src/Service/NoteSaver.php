@@ -8,6 +8,7 @@ use App\Entity\Note;
 use App\ValueObject\Book as BookObject;
 use App\ValueObject\Note as NoteObject;
 use App\ValueObject\Author as AuthorObject;
+use App\ValueObject\BookList as BookListObject;
 use App\Repository\BookRepository;
 use App\Repository\NoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -43,9 +44,9 @@ class NoteSaver
         $this->security = $security;
     }
 
-    public function storeNotes(array $parsedBooks): void
+    public function storeNotes(BookListObject $parsedBooks): void
     {
-        foreach ($parsedBooks as $book) {
+        foreach ($parsedBooks->getList() as $book) {
             $this->storeBookNotes($book);
         }
     }
