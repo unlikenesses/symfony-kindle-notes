@@ -5,6 +5,7 @@ namespace App\Service;
 use App\ValueObject\Book;
 use App\ValueObject\Note;
 use App\ValueObject\Author;
+use App\ValueObject\FileLine;
 use App\ValueObject\NoteMetadata;
 
 class PaperwhiteParser implements ParserInterface
@@ -38,52 +39,19 @@ class PaperwhiteParser implements ParserInterface
      */
     private $inBook = false;
 
-    /**
-     * @var FileReader
-     */
-    private $fileReader;
-
-    public function __construct(FileReader $fileReader)
+    public function parseLine(FileLine $line): void
     {
-        $this->fileReader = $fileReader;
-    }
-
-    public function parseFile(string $filename): array
-    {
-        $this->fileReader->openFile($filename);
-        while ($line = $this->fileReader->readLine()) {
-            $this->processLine($this->cleanLine($line));
-        }
-        $this->fileReader->closeFile();
-
-        return $this->books;
-    }
-
-    private function cleanLine(string $line): string
-    {
-        $line = $this->removeBOM($line);
-
-        return trim($line);
-    }
-
-    private function removeBOM(string $line): string
-    {
-        return preg_replace("/^\xEF\xBB\xBF/", '', $line);
-    }
-
-    private function processLine(string $line): void
-    {
-        if (strlen($line) <= 0) {
+        if ($line->isEmpty()) {
             return;
         }
         if (! $this->inBook) {
-            $this->bookPos = $this->bookPositionInFile($line);
-            $this->populateBook($line);
+            $this->bookPos = $this->bookPositionInFile($line->getLine());
+            $this->populateBook($line->getLine());
             $this->inBook = true;
             $this->note = new Note();
             return;
         }
-        if ($line === self::SEPARATOR) {
+        if ($line->equals(self::SEPARATOR)) {
             // End of a note.
             if ($this->bookPos < 0) {
                 $this->books[] = $this->book;
@@ -91,14 +59,14 @@ class PaperwhiteParser implements ParserInterface
                 $this->books[$this->bookPos] = $this->book;
             }
             $this->inBook = false;
-        } elseif (stristr($line, self::HIGHLIGHT_STRING)) {
-            $this->note->setMeta($this->parseMeta($line));
+        } elseif ($line->contains(self::HIGHLIGHT_STRING)) {
+            $this->note->setMeta($this->parseMeta($line->getLine()));
             $this->note->setType(1);
-        } elseif (stristr($line, self::NOTE_STRING)) {
-            $this->note->setMeta($this->parseMeta($line));
+        } elseif ($line->contains(self::NOTE_STRING)) {
+            $this->note->setMeta($this->parseMeta($line->getLine()));
             $this->note->setType(2);
         } else {
-            $this->note->setHighlight($line);
+            $this->note->setHighlight($line->getLine());
             $this->book->addNote($this->note);
         }
     }
@@ -221,5 +189,10 @@ class PaperwhiteParser implements ParserInterface
         }
 
         return $noteMetadata;
+    }
+
+    public function getBooks(): array
+    {
+        return $this->books;
     }
 }
