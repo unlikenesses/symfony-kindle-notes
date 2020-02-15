@@ -100,7 +100,6 @@ class PaperwhiteParser implements ParserInterface
         } else {
             $this->note->setHighlight($line);
             $this->book->addNote($this->note);
-            $this->note = [];
         }
     }
 
