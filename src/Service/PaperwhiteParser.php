@@ -32,7 +32,7 @@ class PaperwhiteParser implements ParserInterface
     /**
      * @var int
      */
-    private $bookPos = -1;
+    private $bookPos;
 
     /**
      * @var bool
@@ -45,8 +45,10 @@ class PaperwhiteParser implements ParserInterface
             return;
         }
         if (! $this->inBook) {
-            $this->bookPos = $this->bookPositionInFile($line->getLine());
-            $this->populateBook($line->getLine());
+            // First line of a note, i.e. the title
+            $title = $line->getLine();
+            $this->bookPos = $this->getBookPosition($title);
+            $this->book = $this->createOrAssignBook($title);
             $this->inBook = true;
             $this->note = new Note();
             return;
@@ -71,21 +73,21 @@ class PaperwhiteParser implements ParserInterface
         }
     }
 
-    private function populateBook(string $line): void
+    private function createOrAssignBook(string $titleString): Book
     {
         if ($this->bookPos < 0) {
-            $parsedTitle = $this->parseTitleString($line);
-            $this->book = new Book([
-                'titleString' => $line,
+            $parsedTitle = $this->parseTitleString($titleString);
+            return new Book([
+                'titleString' => $titleString,
                 'title' => $parsedTitle['title'],
                 'author' => $parsedTitle['author'],
             ]);
         } else {
-            $this->book = $this->books[$this->bookPos];
+            return $this->books[$this->bookPos];
         }
     }
 
-    private function bookPositionInFile(string $bookTitle): int
+    private function getBookPosition(string $bookTitle): int
     {
         $i = 0;
         foreach ($this->books as $book) {
@@ -119,8 +121,8 @@ class PaperwhiteParser implements ParserInterface
 
         // Check if the title ends with a closing bracket:
         if (substr($titleString, -1) === ')') {
-            preg_match('/\(([^)]*)\)[^(]*$/', $titleString, $out);
-            $author = $out[sizeof($out) - 1];
+            preg_match('/\(([^)]*)\)[^(]*$/', $titleString, $output);
+            $author = $output[sizeof($output) - 1];
             $title = trim(str_replace('(' . $author . ')', '', $titleString));
         } else {
             /*
