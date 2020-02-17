@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\Parser\Paperwhite;
 
 use App\ValueObject\Book;
 use App\ValueObject\Note;
@@ -8,6 +8,7 @@ use App\ValueObject\FileLine;
 use App\ValueObject\BookList;
 use App\ValueObject\TitleString;
 use App\ValueObject\NoteMetadata;
+use App\Service\Parser\ParserInterface;
 
 class PaperwhiteParser implements ParserInterface
 {
@@ -40,15 +41,17 @@ class PaperwhiteParser implements ParserInterface
         if ($line->isEmpty()) {
             return;
         }
-        if (! $this->bookList->getInBook()) {
-            $this->initialiseBook($line->getLine());
+        if (! $this->bookList->getInNote()) {
+            $this->initialiseNote($line->getLine());
         } elseif ($line->equals(self::SEPARATOR)) {
             $this->bookList->completeNote($this->book);
         } elseif ($line->contains(self::HIGHLIGHT_STRING)) {
-            $this->note->setMeta($this->parseNoteMetadata($line->getLine()));
+            $noteMetadata = new NoteMetadata($line->getLine());
+            $this->note->setMetadata($noteMetadata);
             $this->note->setType(1);
         } elseif ($line->contains(self::NOTE_STRING)) {
-            $this->note->setMeta($this->parseNoteMetadata($line->getLine()));
+            $noteMetadata = new NoteMetadata($line->getLine());
+            $this->note->setMetadata($noteMetadata);
             $this->note->setType(2);
         } else {
             $this->note->setHighlight($line->getLine());
@@ -56,7 +59,7 @@ class PaperwhiteParser implements ParserInterface
         }
     }
 
-    private function initialiseBook(string $title): void
+    private function initialiseNote(string $title): void
     {
         $this->book = $this->createOrAssignBook($title);
         $this->note = new Note();
@@ -76,28 +79,6 @@ class PaperwhiteParser implements ParserInterface
         }
 
         return $book;
-    }
-
-    public function parseNoteMetadata(string $metadata): NoteMetadata
-    {
-        $noteMetadata = new NoteMetadata();
-
-        if (stristr($metadata, 'page')) {
-            preg_match("/page (\d*-?\d*)/", $metadata, $output);
-            $noteMetadata->setPage($output[1]);
-        }
-
-        if (stristr($metadata, 'location')) {
-            preg_match("/location (\d*-?\d*)/", $metadata, $output);
-            $noteMetadata->setLocation($output[1]);
-        }
-
-        if (stristr($metadata, 'added')) {
-            preg_match("/Added on (.*)/", $metadata, $output);
-            $noteMetadata->setDate($output[1]);
-        }
-
-        return $noteMetadata;
     }
 
     public function getBookList(): BookList

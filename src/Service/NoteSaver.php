@@ -90,14 +90,14 @@ class NoteSaver
     private function saveImportedNote(NoteObject $note, Book $book): bool
     {
         if ($note->getHighlight() &&
-            $note->getMeta() &&
-            ! $this->noteRepository->findNoteInBook($note->getMeta(), $book)) {
+            $note->getMetadata() &&
+            ! $this->noteRepository->findNoteInBook($note->getMetadata(), $book)) {
             $date = '';
             $page = '';
             $location = '';
             $noteText = '';
             $noteType = 0;
-            $noteMetadata = $note->getMeta();
+            $noteMetadata = $note->getMetadata();
 
             if ($noteMetadata->getDate()) {
                 $date = new DateTime($noteMetadata->getDate());

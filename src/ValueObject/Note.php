@@ -7,7 +7,7 @@ class Note
     /**
      * @var NoteMetadata
      */
-    private $meta;
+    private $metadata;
 
     /**
      * @var int
@@ -19,14 +19,14 @@ class Note
      */
     private $highlight;
 
-    public function getMeta(): ?NoteMetadata
+    public function getMetadata(): ?NoteMetadata
     {
-        return $this->meta;
+        return $this->metadata;
     }
 
-    public function setMeta(NoteMetadata $metadata): void
+    public function setMetadata(NoteMetadata $metadata): void
     {
-        $this->meta = $metadata;
+        $this->metadata = $metadata;
     }
 
     public function getType(): int

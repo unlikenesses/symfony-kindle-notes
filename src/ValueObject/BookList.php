@@ -17,26 +17,16 @@ class BookList
     /**
      * @var bool
      */
-    private $inBook = false;
-
-    public function getPos(): int
-    {
-        return $this->pos;
-    }
+    private $inNote = false;
 
     public function getList(): array
     {
         return $this->list;
     }
 
-    public function getInBook(): bool
+    public function getInNote(): bool
     {
-        return $this->inBook;
-    }
-
-    public function toggleInBook(): void
-    {
-        $this->inBook = ! $this->inBook;
+        return $this->inNote;
     }
 
     public function addBook(Book $book): void
@@ -56,13 +46,13 @@ class BookList
         } else {
             $this->updateBook($book);
         }
-        $this->inBook = false;
+        $this->inNote = false;
     }
 
     public function findBookByTitleString(string $titleString): ?Book
     {
         $this->pos = -1;
-        $this->inBook = true;
+        $this->inNote = true;
         foreach ($this->list as $pos => $book) {
             $metadata = $book->getMetadata();
             if ($metadata['titleString'] === $titleString) {

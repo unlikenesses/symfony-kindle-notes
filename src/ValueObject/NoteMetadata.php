@@ -19,20 +19,30 @@ class NoteMetadata
      */
     private $date;
 
+    public function __construct(string $metadata)
+    {
+        if (stristr($metadata, 'page')) {
+            preg_match("/page (\d*-?\d*)/", $metadata, $output);
+            $this->page = $output[1];
+        }
+
+        if (stristr($metadata, 'location')) {
+            preg_match("/location (\d*-?\d*)/", $metadata, $output);
+            $this->location = $output[1];
+        }
+
+        if (stristr($metadata, 'added')) {
+            preg_match("/Added on (.*)/", $metadata, $output);
+            $this->date = $output[1];
+        }
+    }
+
     /**
      * @return string
      */
     public function getPage(): ?string
     {
         return $this->page;
-    }
-
-    /**
-     * @param string $page
-     */
-    public function setPage(string $page): void
-    {
-        $this->page = $page;
     }
 
     /**
@@ -44,26 +54,10 @@ class NoteMetadata
     }
 
     /**
-     * @param string $location
-     */
-    public function setLocation(string $location): void
-    {
-        $this->location = $location;
-    }
-
-    /**
      * @return string
      */
     public function getDate(): ?string
     {
         return $this->date;
-    }
-
-    /**
-     * @param string $date
-     */
-    public function setDate(string $date): void
-    {
-        $this->date = $date;
     }
 }

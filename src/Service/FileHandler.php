@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\ValueObject\BookList;
 use App\ValueObject\FileLine;
+use App\Service\Parser\ParserInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileHandler
