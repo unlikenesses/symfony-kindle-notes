@@ -2,6 +2,7 @@
 
 namespace App\Service\Parser\Paperwhite;
 
+use App\Exception\ParseAuthorException;
 use App\ValueObject\Book;
 use App\ValueObject\Note;
 use App\ValueObject\FileLine;
@@ -70,7 +71,11 @@ class PaperwhiteParser implements ParserInterface
         $book = $this->bookList->findBookByTitleString($titleString);
         if (! $book) {
             $titleStringObject = new TitleString($titleString);
-            $parsedTitle = $titleStringObject->parse();
+            try {
+                $parsedTitle = $titleStringObject->parse();
+            } catch (ParseAuthorException $e) {
+                trigger_error($e->getMessage());
+            }
             $book = new Book([
                 'titleString' => $titleString,
                 'title' => $parsedTitle['title'],

@@ -2,6 +2,8 @@
 
 namespace App\ValueObject;
 
+use App\Exception\ParseAuthorException;
+
 class TitleString
 {
     /**
@@ -57,7 +59,7 @@ class TitleString
         if ($author !== '') {
             $parsedAuthor = $this->parseAuthor($author);
         } else {
-            throw new \Exception('Could not parse author: ' . $this->titleString);
+            throw new ParseAuthorException();
         }
 
         return [
