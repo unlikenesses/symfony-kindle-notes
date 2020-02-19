@@ -68,7 +68,7 @@ class TitleString
         ];
     }
 
-    public function parseAuthor(string $author): Author
+    private function parseAuthor(string $author): Author
     {
         $author = trim($author);
 
