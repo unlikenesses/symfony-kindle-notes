@@ -3,15 +3,15 @@
 namespace App\Service\Parser\Paperwhite;
 
 use App\Exception\ParseAuthorException;
+use App\Service\Parser\TitleStringParserInterface;
 use App\ValueObject\Book;
 use App\ValueObject\Note;
 use App\ValueObject\FileLine;
 use App\ValueObject\BookList;
-use App\ValueObject\TitleString;
 use App\ValueObject\NoteMetadata;
-use App\Service\Parser\ParserInterface;
+use App\Service\Parser\LineReaderInterface;
 
-class PaperwhiteParser implements ParserInterface
+class PaperwhiteLineReader implements LineReaderInterface
 {
     const SEPARATOR = '==========';
     const HIGHLIGHT_STRING = 'your highlight';
@@ -32,9 +32,15 @@ class PaperwhiteParser implements ParserInterface
      */
     private $note;
 
-    public function __construct()
+    /**
+     * @var TitleStringParserInterface
+     */
+    private $titleStringParser;
+
+    public function __construct(TitleStringParserInterface $titleStringParser)
     {
         $this->bookList = new BookList();
+        $this->titleStringParser = $titleStringParser;
     }
 
     public function parseLine(FileLine $line): void
@@ -70,16 +76,15 @@ class PaperwhiteParser implements ParserInterface
     {
         $book = $this->bookList->findBookByTitleString($titleString);
         if (! $book) {
-            $titleStringObject = new TitleString($titleString);
             try {
-                $parsedTitle = $titleStringObject->parse();
+                $this->titleStringParser->parse($titleString);
             } catch (ParseAuthorException $e) {
                 trigger_error($e->getMessage());
             }
             $book = new Book([
                 'titleString' => $titleString,
-                'title' => $parsedTitle['title'],
-                'author' => $parsedTitle['author'],
+                'title' => $this->titleStringParser->getTitle(),
+                'author' => $this->titleStringParser->getAuthor(),
             ]);
         }
 

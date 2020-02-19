@@ -5,7 +5,7 @@ namespace App\Service\Parser;
 use App\ValueObject\BookList;
 use App\ValueObject\FileLine;
 
-interface ParserInterface
+interface LineReaderInterface
 {
     public function parseLine(FileLine $line): void;
 

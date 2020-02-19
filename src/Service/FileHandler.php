@@ -4,7 +4,7 @@ namespace App\Service;
 
 use App\ValueObject\BookList;
 use App\ValueObject\FileLine;
-use App\Service\Parser\ParserInterface;
+use App\Service\Parser\LineReaderInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileHandler
@@ -20,15 +20,15 @@ class FileHandler
     private $fileReader;
 
     /**
-     * @var ParserInterface
+     * @var LineReaderInterface
      */
-    private $parser;
+    private $lineReader;
 
-    public function __construct(FileUploader $uploader, FileReader $fileReader, ParserInterface $parser)
+    public function __construct(FileUploader $uploader, FileReader $fileReader, LineReaderInterface $lineReader)
     {
         $this->uploader = $uploader;
         $this->fileReader = $fileReader;
-        $this->parser = $parser;
+        $this->lineReader = $lineReader;
     }
 
     public function handleFile(UploadedFile $file): BookList
@@ -36,14 +36,14 @@ class FileHandler
         $filename = $this->uploader->upload($file);
         $this->readFile($filename);
 
-        return $this->parser->getBookList();
+        return $this->lineReader->getBookList();
     }
 
     private function readFile(string $filename): void
     {
         $this->fileReader->openFile($filename);
         while ($line = $this->fileReader->readLine()) {
-            $this->parser->parseLine(new FileLine($line));
+            $this->lineReader->parseLine(new FileLine($line));
         }
         $this->fileReader->closeFile();
     }

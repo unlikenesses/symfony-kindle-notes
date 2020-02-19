@@ -1,22 +1,24 @@
 <?php
 
-namespace App\ValueObject;
+namespace App\Service\Parser\Paperwhite;
 
+use App\ValueObject\Author;
 use App\Exception\ParseAuthorException;
+use App\Service\Parser\TitleStringParserInterface;
 
-class TitleString
+class PaperwhiteTitleStringParser implements TitleStringParserInterface
 {
     /**
      * @var string
      */
-    private $titleString;
+    private $title;
 
-    public function __construct(string $titleString)
-    {
-        $this->titleString = $titleString;
-    }
+    /**
+     * @var author
+     */
+    private $author;
 
-    public function parse(): array
+    public function parse(string $titleString): void
     {
         /*
             The idea is to split the title field into title string + author string.
@@ -35,17 +37,17 @@ class TitleString
         $title = '';
 
         // Check if the title ends with a closing bracket:
-        if (substr($this->titleString, -1) === ')') {
-            preg_match('/\(([^)]*)\)[^(]*$/', $this->titleString, $output);
+        if (substr($titleString, -1) === ')') {
+            preg_match('/\(([^)]*)\)[^(]*$/', $titleString, $output);
             $author = $output[sizeof($output) - 1];
-            $title = trim(str_replace('(' . $author . ')', '', $this->titleString));
+            $this->title = trim(str_replace('(' . $author . ')', '', $titleString));
         } else {
             /*
                 Check if there's a hyphen separated by spaces:
                 Don't bother if there's more than one instance, this is too hard to parse.
             */
-            if (substr_count($this->titleString, ' - ') === 1) {
-                list($partOne, $partTwo) = explode(' - ', $this->titleString);
+            if (substr_count($titleString, ' - ') === 1) {
+                list($partOne, $partTwo) = explode(' - ', $titleString);
                 /*
                     Now the problem here is that either part could be the author's name.
                     For now we have to assume it's part two, and leave it to the user to correct if not.
@@ -53,19 +55,14 @@ class TitleString
                     Maybe later check against a list of common names, e.g. https://github.com/hadley/data-baby-names
                 */
                 $author = $partTwo;
-                $title = trim($partOne);
+                $this->title = trim($partOne);
             }
         }
         if ($author !== '') {
-            $parsedAuthor = $this->parseAuthor($author);
+            $this->author = $this->parseAuthor($author);
         } else {
             throw new ParseAuthorException();
         }
-
-        return [
-            'title' => $title,
-            'author' => $parsedAuthor,
-        ];
     }
 
     private function parseAuthor(string $author): Author
@@ -84,5 +81,15 @@ class TitleString
         }
 
         return new Author($firstName, $lastName);
+    }
+
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function getAuthor(): Author
+    {
+        return $this->author;
     }
 }
