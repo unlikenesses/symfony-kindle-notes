@@ -89,7 +89,7 @@ class NoteSaver
 
     private function saveImportedNote(NoteObject $note, Book $book): bool
     {
-        if ($note->getHighlight() &&
+        if ($note->getText() &&
             $note->getMetadata() &&
             ! $this->noteRepository->findNoteInBook($note->getMetadata(), $book)) {
             $date = '';
@@ -111,8 +111,8 @@ class NoteSaver
                 $location = $noteMetadata->getLocation();
             }
 
-            if ($note->getHighlight()) {
-                $noteText = $note->getHighlight();
+            if ($note->getText()) {
+                $noteText = $note->getText();
             }
 
             if ($note->getType()) {

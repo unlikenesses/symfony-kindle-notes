@@ -4,10 +4,8 @@ namespace App\ValueObject;
 
 class Note
 {
-    /**
-     * @var NoteMetadata
-     */
-    private $metadata;
+    const TYPE_HIGHLIGHT = 1;
+    const TYPE_NOTE = 2;
 
     /**
      * @var int
@@ -15,18 +13,34 @@ class Note
     private $type;
 
     /**
+     * @var NoteMetadata
+     */
+    private $metadata;
+
+    /**
      * @var string
      */
-    private $highlight;
+    private $text;
+
+    private function __construct(int $type, NoteMetadata $metadata)
+    {
+        $this->type = $type;
+        $this->metadata = $metadata;
+    }
+
+    public static function asHighlight(NoteMetadata $metadata)
+    {
+        return new Note(self::TYPE_HIGHLIGHT, $metadata);
+    }
+
+    public static function asNote(NoteMetadata $metadata)
+    {
+        return new Note(self::TYPE_NOTE, $metadata);
+    }
 
     public function getMetadata(): ?NoteMetadata
     {
         return $this->metadata;
-    }
-
-    public function setMetadata(NoteMetadata $metadata): void
-    {
-        $this->metadata = $metadata;
     }
 
     public function getType(): int
@@ -34,18 +48,13 @@ class Note
         return $this->type;
     }
 
-    public function setType(int $type): void
+    public function getText(): ?string
     {
-        $this->type = $type;
+        return $this->text;
     }
 
-    public function getHighlight(): ?string
+    public function setText(string $text): void
     {
-        return $this->highlight;
-    }
-
-    public function setHighlight(string $highlight): void
-    {
-        $this->highlight = trim($highlight);
+        $this->text = trim($text);
     }
 }

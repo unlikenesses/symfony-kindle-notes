@@ -2,14 +2,15 @@
 
 namespace App\Service\Parser\Paperwhite;
 
-use App\Exception\ParseAuthorException;
-use App\Service\Parser\TitleStringParserInterface;
-use App\ValueObject\Book;
-use App\ValueObject\Note;
 use App\ValueObject\FileLine;
-use App\ValueObject\BookList;
 use App\ValueObject\NoteMetadata;
 use App\Service\Parser\LineReaderInterface;
+use App\Service\Parser\Actions\EmptyAction;
+use App\Service\Parser\Actions\ActionInterface;
+use App\Service\Parser\Actions\CreateNoteAction;
+use App\Service\Parser\Actions\UpdateNoteAction;
+use App\Service\Parser\Actions\CompleteNoteAction;
+use App\Service\Parser\Actions\CreateHighlightAction;
 
 class PaperwhiteLineReader implements LineReaderInterface
 {
@@ -17,82 +18,26 @@ class PaperwhiteLineReader implements LineReaderInterface
     const HIGHLIGHT_STRING = 'your highlight';
     const NOTE_STRING = 'your note';
 
-    /**
-     * @var Book
-     */
-    private $book;
-
-    /**
-     * @var BookList
-     */
-    private $bookList;
-
-    /**
-     * @var Note
-     */
-    private $note;
-
-    /**
-     * @var TitleStringParserInterface
-     */
-    private $titleStringParser;
-
-    public function __construct(TitleStringParserInterface $titleStringParser)
-    {
-        $this->bookList = new BookList();
-        $this->titleStringParser = $titleStringParser;
-    }
-
-    public function parseLine(FileLine $line): void
+    public function classifyLine(FileLine $line): ActionInterface
     {
         if ($line->isEmpty()) {
-            return;
+            return new EmptyAction();
         }
-        if (! $this->bookList->getInNote()) {
-            $this->initialiseNote($line->getLine());
-        } elseif ($line->equals(self::SEPARATOR)) {
-            $this->bookList->completeNote($this->book);
-        } elseif ($line->contains(self::HIGHLIGHT_STRING)) {
+
+        if ($line->equals(self::SEPARATOR)) {
+            return new CompleteNoteAction();
+        }
+
+        if ($line->contains(self::HIGHLIGHT_STRING)) {
             $noteMetadata = new NoteMetadata($line->getLine());
-            $this->note->setMetadata($noteMetadata);
-            $this->note->setType(1);
-        } elseif ($line->contains(self::NOTE_STRING)) {
+            return new CreateHighlightAction($noteMetadata);
+        }
+
+        if ($line->contains(self::NOTE_STRING)) {
             $noteMetadata = new NoteMetadata($line->getLine());
-            $this->note->setMetadata($noteMetadata);
-            $this->note->setType(2);
-        } else {
-            $this->note->setHighlight($line->getLine());
-            $this->book->addNote($this->note);
-        }
-    }
-
-    private function initialiseNote(string $title): void
-    {
-        $this->book = $this->createOrAssignBook($title);
-        $this->note = new Note();
-    }
-
-    private function createOrAssignBook(string $titleString): Book
-    {
-        $book = $this->bookList->findBookByTitleString($titleString);
-        if (! $book) {
-            try {
-                $this->titleStringParser->parse($titleString);
-            } catch (ParseAuthorException $e) {
-                trigger_error($e->getMessage());
-            }
-            $book = new Book([
-                'titleString' => $titleString,
-                'title' => $this->titleStringParser->getTitle(),
-                'author' => $this->titleStringParser->getAuthor(),
-            ]);
+            return new CreateNoteAction($noteMetadata);
         }
 
-        return $book;
-    }
-
-    public function getBookList(): BookList
-    {
-        return $this->bookList;
+        return new UpdateNoteAction($line->getLine());
     }
 }

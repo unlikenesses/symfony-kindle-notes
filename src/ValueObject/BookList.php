@@ -5,19 +5,19 @@ namespace App\ValueObject;
 class BookList
 {
     /**
-     * @var int
-     */
-    private $pos;
-
-    /**
      * @var array
      */
     private $list = [];
 
     /**
-     * @var bool
+     * @var Book
      */
-    private $inNote = false;
+    private $currentBook;
+
+    /**
+     * @var Note
+     */
+    private $currentNote;
 
     public function getList(): array
     {
@@ -26,37 +26,37 @@ class BookList
 
     public function getInNote(): bool
     {
-        return $this->inNote;
+        return $this->currentBook !== null;
     }
 
     public function addBook(Book $book): void
     {
         $this->list[] = $book;
+        $this->currentBook = $book;
     }
 
-    public function updateBook(Book $book): void
+    public function addNote(Note $note): void
     {
-        $this->list[$this->pos] = $book;
+        $this->currentNote = $note;
+        $this->currentBook->addNote($note);
     }
 
-    public function completeNote(Book $book): void
+    public function updateNote(string $text): void
     {
-        if ($this->pos < 0) {
-            $this->addBook($book);
-        } else {
-            $this->updateBook($book);
-        }
-        $this->inNote = false;
+        $this->currentNote->setText($text);
+    }
+
+    public function completeNote(): void
+    {
+        $this->currentBook = null;
     }
 
     public function findBookByTitleString(string $titleString): ?Book
     {
-        $this->pos = -1;
-        $this->inNote = true;
-        foreach ($this->list as $pos => $book) {
+        foreach ($this->list as $book) {
             $metadata = $book->getMetadata();
             if ($metadata['titleString'] === $titleString) {
-                $this->pos = $pos;
+                $this->currentBook = $book;
                 return $book;
             }
         }

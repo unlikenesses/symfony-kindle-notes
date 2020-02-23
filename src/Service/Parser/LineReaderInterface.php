@@ -2,12 +2,10 @@
 
 namespace App\Service\Parser;
 
-use App\ValueObject\BookList;
 use App\ValueObject\FileLine;
+use App\Service\Parser\Actions\ActionInterface;
 
 interface LineReaderInterface
 {
-    public function parseLine(FileLine $line): void;
-
-    public function getBookList(): BookList;
+    public function classifyLine(FileLine $line): ActionInterface;
 }
