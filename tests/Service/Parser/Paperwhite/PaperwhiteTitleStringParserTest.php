@@ -8,6 +8,9 @@ use PHPUnit\Framework\TestCase;
 
 class PaperwhiteTitleStringParserTest extends TestCase
 {
+    /**
+     * @var PaperwhiteTitleStringParser
+     */
     private $parser;
 
     public function setUp()

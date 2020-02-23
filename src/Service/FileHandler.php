@@ -2,12 +2,12 @@
 
 namespace App\Service;
 
-use App\Service\Parser\TitleStringParserInterface;
 use App\ValueObject\BookList;
 use App\ValueObject\FileLine;
 use App\Service\Parser\LineReaderInterface;
 use App\Service\Parser\Actions\ActionInterface;
 use App\Service\Parser\Actions\InitialiseNoteAction;
+use App\Service\Parser\TitleStringParserInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileHandler
