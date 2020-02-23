@@ -39,6 +39,16 @@ class PaperwhiteTitleStringParserTest extends TestCase
                 'Rights of War and Peace (2005 ed.) vol. 1 (Book I)',
                 new Author('Hugo', 'Grotius'),
             ],
+            [
+                'Die Leiden des jungen Werther (Goethe, Johann Wolfgang von)',
+                'Die Leiden des jungen Werther',
+                new Author('Johann Wolfgang von', 'Goethe'),
+            ],
+            [
+                'The Wisdom of Father Brown - Chesterton, G. K.',
+                'The Wisdom of Father Brown',
+                new Author('G. K.', 'Chesterton'),
+            ],
         ];
     }
 }
