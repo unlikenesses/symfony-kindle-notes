@@ -2,6 +2,7 @@
 
 namespace App\Tests\Service\Parser\Paperwhite;
 
+use App\Exception\ParseAuthorException;
 use App\ValueObject\Author;
 use App\Service\Parser\Paperwhite\PaperwhiteTitleStringParser;
 use PHPUnit\Framework\TestCase;
@@ -26,6 +27,13 @@ class PaperwhiteTitleStringParserTest extends TestCase
         $this->parser->parse($titleString);
         $this->assertEquals($expectedTitle, $this->parser->getTitle());
         $this->assertEquals($expectedAuthor, $this->parser->getAuthor());
+    }
+
+    public function testAnExceptionIsThrownIfTheAuthorCannotBeParsed()
+    {
+        $titleString = 'This Title - Is Difficult - To Parse';
+        $this->expectException(ParseAuthorException::class);
+        $this->parser->parse($titleString);
     }
 
     public function getTitleStringTests()
