@@ -1,0 +1,8 @@
+alias bc="./bin/console"
+alias mm="./bin/console make:migration"
+alias m="./bin/console doctrine:migrations:migrate"
+alias fix="./bin/console doctrine:fixtures:load"
+alias p="./bin/phpunit"
+alias pf="./bin/phpunit --filter"
+alias cd="composer dump-autoload"
+alias cu="composer update"
