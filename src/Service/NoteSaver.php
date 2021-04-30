@@ -119,13 +119,16 @@ class NoteSaver
                 $noteType = $note->getType();
             }
 
+            $hash = md5($page.$location.$date->format('U').$noteText);
+
             $newNote = new Note();
             $newNote->setDate($date)
                 ->setPage($page)
                 ->setLocation($location)
                 ->setNote($noteText)
                 ->setType($noteType)
-                ->setBook($book);
+                ->setBook($book)
+                ->setHash($hash);
             $this->entityManager->persist($newNote);
             $this->entityManager->flush();
 
