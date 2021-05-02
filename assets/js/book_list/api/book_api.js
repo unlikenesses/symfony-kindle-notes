@@ -11,3 +11,12 @@ export function getNotesForBook(bookId) {
             return response.json().then((data) => data);
         });
 }
+
+export function deleteNote(noteId) {
+    return fetch('/api/notes/' + noteId, {
+        method: 'DELETE'
+    })
+        .then(response => {
+            return response.json().then((data) => data);
+        });
+}

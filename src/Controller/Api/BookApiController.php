@@ -27,6 +27,9 @@ class BookApiController extends ApiController
         $numHighlights = 0;
         $numNotes = 0;
         foreach ($book->getNotes() as $note) {
+            if (! is_null($note->getDeletedAt())) {
+                continue;
+            }
             $models[] = $this->createNoteApiModel($note);
             if ($note->getType() === 1) {
                 $numHighlights++;

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Books from './books/Books';
-import { getBooks, getNotesForBook } from './api/book_api';
+import { getBooks, getNotesForBook, deleteNote } from './api/book_api';
 
 export default class BookListApp extends Component {
     constructor(props) {
@@ -10,9 +10,12 @@ export default class BookListApp extends Component {
             books: [],
             notes: {},
             loadingBooks: true,
-            loadingNotes: false
+            loadingNotes: false,
+            deletingNote: 0,
         };
         this.handleBookClick = this.handleBookClick.bind(this);
+        this.getNotes = this.getNotes.bind(this);
+        this.deleteNote = this.deleteNote.bind(this);
     }
     componentDidMount() {
         getBooks().then((data) => {
@@ -22,13 +25,12 @@ export default class BookListApp extends Component {
             });
         });
     }
-    handleBookClick(book, event) {
+    getNotes(book) {
         this.setState({
             loadingNotes: true
         });
         getNotesForBook(book.id).then((data) => {
             this.setState({
-                activeBook: book,
                 notes: data,
                 loadingNotes: false
             });
@@ -37,13 +39,34 @@ export default class BookListApp extends Component {
                 left: 0,
                 behavior: 'smooth'
             });
-        })
+        });
+    }
+    handleBookClick(book, event) {
+        this.setState({
+            activeBook: book
+        });
+        this.getNotes(book);
+    }
+    deleteNote(note, event) {
+        if (confirm('Delete this note?')) {
+            this.setState({
+                deletingNote: note.id
+            });
+            deleteNote(note.id).then((data) => {
+                console.log(data);
+                this.setState({
+                    deletingNote: 0
+                });
+                this.getNotes(this.state.activeBook);
+            });
+        }
     }
     render() {
         return (
             <Books
                 {...this.state}
                 handleBookClick={this.handleBookClick}
+                deleteNote={this.deleteNote}
             />
         )
     }

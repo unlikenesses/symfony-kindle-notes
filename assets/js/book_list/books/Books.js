@@ -4,7 +4,7 @@ import Notes from '../notes/Notes';
 import PropTypes from 'prop-types';
 
 export default function Books(props) {
-    const { books, notes, activeBook, handleBookClick, loadingBooks, loadingNotes } = props;
+    const { books, notes, activeBook, handleBookClick, loadingBooks, loadingNotes, deleteNote, deletingNote } = props;
     if (loadingBooks) {
         return (
             <div className="d-flex justify-content-center mt-5">
@@ -29,7 +29,13 @@ export default function Books(props) {
                     ))}
                 </div>
                 <div className="col p-3">
-                    <Notes book={activeBook} notes={notes} loadingNotes={loadingNotes}/>
+                    <Notes
+                        book={activeBook}
+                        notes={notes}
+                        loadingNotes={loadingNotes}
+                        deleteNote={deleteNote}
+                        deletingNote={deletingNote}
+                    />
                 </div>
             </div>
         </div>
@@ -42,5 +48,7 @@ Books.propTypes = {
     activeBook: PropTypes.object,
     handleBookClick: PropTypes.func.isRequired,
     loadingBooks: PropTypes.bool.isRequired,
-    loadingNotes: PropTypes.bool.isRequired
+    loadingNotes: PropTypes.bool.isRequired,
+    deleteNote: PropTypes.func.isRequired,
+    deletingNote: PropTypes.number.isRequired
 };

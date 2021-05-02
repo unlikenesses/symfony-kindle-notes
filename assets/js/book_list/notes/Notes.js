@@ -20,9 +20,12 @@ export default function Notes(props) {
     const { book, loadingNotes, notes } = props;
     if (loadingNotes) {
         return (
-            <div className="d-flex justify-content-center mt-5">
-                <div className="spinner-border" role="status">
-                    <span className="sr-only">Loading...</span>
+            <div>
+                <BookTitle book={book}/>
+                <div className="d-flex justify-content-center mt-5">
+                    <div className="spinner-border" role="status">
+                        <span className="sr-only">Loading...</span>
+                    </div>
                 </div>
             </div>
         )
@@ -38,6 +41,8 @@ export default function Notes(props) {
                     <Note
                         key={note.id}
                         note={note}
+                        deleteNote={props.deleteNote}
+                        deletingNote={props.deletingNote}
                     />
                 ))}
             </div>
@@ -49,5 +54,7 @@ export default function Notes(props) {
 Notes.propTypes = {
     book: PropTypes.object,
     notes: PropTypes.object,
-    loadingNotes: PropTypes.bool
+    loadingNotes: PropTypes.bool,
+    deleteNote: PropTypes.func.isRequired,
+    deletingNote: PropTypes.number.isRequired
 };
