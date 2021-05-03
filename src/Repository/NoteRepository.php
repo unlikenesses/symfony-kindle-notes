@@ -21,6 +21,16 @@ class NoteRepository extends ServiceEntityRepository
         parent::__construct($registry, Note::class);
     }
 
+    public function getUndeletedNotesForBook(Book $book)
+    {
+        return $this->createQueryBuilder('n')
+            ->andWhere('n.book = :book')
+            ->andWhere('n.deletedAt IS NULL')
+            ->setParameter('book', $book)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findNoteInBook(NoteMetadata $noteMetadata, Book $book): ?Note
     {
         $date = '';

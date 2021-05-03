@@ -3,11 +3,7 @@ import PropTypes from 'prop-types';
 
 export default function Note(props) {
     const { note, deleteNote, deletingNote } = props;
-    const handleDelete = (note) => {
-        console.log('woof');
-        deleteNote(note);
-    }
-    const deletingText = deletingNote == note.id ? 'Deleting...' : 'Delete';
+    const deletingText = deletingNote === note.id ? 'Deleting...' : 'Delete';
     return (
         <div className="card mb-3">
             <div className="card-header d-flex justify-content-between">

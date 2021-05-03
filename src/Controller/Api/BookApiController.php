@@ -3,11 +3,20 @@
 namespace App\Controller\Api;
 
 use App\Entity\Book;
+use App\Entity\Note;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class BookApiController extends ApiController
 {
+    private $em;
+
+    public function __construct(EntityManagerInterface $em)
+    {
+        $this->em = $em;
+    }
+
     /**
      * @Route("/api/books", name="apiBooks")
      */
@@ -26,10 +35,7 @@ class BookApiController extends ApiController
         $models = [];
         $numHighlights = 0;
         $numNotes = 0;
-        foreach ($book->getNotes() as $note) {
-            if (! is_null($note->getDeletedAt())) {
-                continue;
-            }
+        foreach ($this->getNotes($book) as $note) {
             $models[] = $this->createNoteApiModel($note);
             if ($note->getType() === 1) {
                 $numHighlights++;
@@ -43,5 +49,12 @@ class BookApiController extends ApiController
             'numHighlights' => $numHighlights,
             'numNotes' => $numNotes,
         ]);
+    }
+
+    private function getNotes(Book $book)
+    {
+        $noteRepo = $this->em->getRepository(Note::class);
+
+        return $noteRepo->getUndeletedNotesForBook($book);
     }
 }
