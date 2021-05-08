@@ -15,4 +15,19 @@ class BookController extends AbstractController
     {
         return $this->render('book/index.html.twig');
     }
+
+    /**
+     * @Route("/truncate-db", name="truncate_db")
+     */
+    public function truncateDb(): Response
+    {
+        $conn = $this->getDoctrine()->getConnection();
+        $sql = 'SET FOREIGN_KEY_CHECKS = 0;';
+        $sql .= 'TRUNCATE TABLE note; TRUNCATE TABLE book;';
+        $sql .= 'SET FOREIGN_KEY_CHECKS = 1;';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+
+        return $this->redirectToRoute('show_import');
+    }
 }
