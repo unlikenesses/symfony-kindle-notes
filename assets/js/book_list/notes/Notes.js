@@ -16,7 +16,7 @@ function BookTitle(props) {
     }
 }
 
-export default function Notes(props) {
+const Notes = (props) => {
     const { book, loadingNotes, notes } = props;
     if (loadingNotes) {
         return (
@@ -50,6 +50,8 @@ export default function Notes(props) {
     }
     return <div></div>
 }
+
+export default Notes;
 
 Notes.propTypes = {
     book: PropTypes.object,

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default function Note(props) {
+const Note = (props) => {
     const { note, deleteNote, deletingNote } = props;
     const deletingText = deletingNote === note.id ? 'Deleting...' : 'Delete';
     return (
@@ -28,6 +28,8 @@ export default function Note(props) {
         </div>
     )
 }
+
+export default Note;
 
 Note.propTypes = {
     note: PropTypes.object.isRequired,

@@ -3,7 +3,7 @@ import Book from './Book';
 import Notes from '../notes/Notes';
 import PropTypes from 'prop-types';
 
-export default function Books(props) {
+const Books = (props) => {
     const { books, notes, activeBook, handleBookClick, loadingBooks, loadingNotes, deleteNote, deletingNote } = props;
     if (loadingBooks) {
         return (
@@ -41,6 +41,8 @@ export default function Books(props) {
         </div>
     );
 }
+
+export default Books;
 
 Books.propTypes = {
     books: PropTypes.array.isRequired,

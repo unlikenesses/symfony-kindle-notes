@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default function Book(props) {
+const Book = (props) => {
     return (
         <div className="border-bottom p-3 book" onClick={props.onClick}>
             <h5>{props.title}</h5>
@@ -9,6 +9,8 @@ export default function Book(props) {
         </div>
     )
 }
+
+export default Book;
 
 Book.propTypes = {
     title: PropTypes.string,

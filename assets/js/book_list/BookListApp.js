@@ -1,39 +1,27 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import Books from './books/Books';
 import { getBooks, getNotesForBook, deleteNote } from './api/book_api';
 
-export default class BookListApp extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            activeBook: null,
-            books: [],
-            notes: {},
-            loadingBooks: true,
-            loadingNotes: false,
-            deletingNote: 0,
-        };
-        this.handleBookClick = this.handleBookClick.bind(this);
-        this.getNotes = this.getNotes.bind(this);
-        this.deleteNote = this.deleteNote.bind(this);
-    }
-    componentDidMount() {
-        getBooks().then((data) => {
-            this.setState({
-                books: data,
-                loadingBooks: false
+const BookListApp = () => {
+    const [activeBook, setActiveBook] = useState({});
+    const [books, setBooks] = useState([]);
+    const [notes, setNotes] = useState({});
+    const [loadingBooks, setLoadingBooks] = useState(true);
+    const [loadingNotes, setLoadingNotes] = useState(false);
+    const [deletingNote, setDeletingNote] = useState(0);
+
+    useEffect(() => {
+        getBooks().
+            then((data) => {
+                setBooks(data);
+                setLoadingBooks(false);
             });
-        });
-    }
-    getNotes(book) {
-        this.setState({
-            loadingNotes: true
-        });
+    }, []);
+    const getNotes = (book) => {
+        setLoadingNotes(true);
         getNotesForBook(book.id).then((data) => {
-            this.setState({
-                notes: data,
-                loadingNotes: false
-            });
+            setNotes(data);
+            setLoadingNotes(false);
             window.scrollTo({
                 top: 0,
                 left: 0,
@@ -41,33 +29,31 @@ export default class BookListApp extends Component {
             });
         });
     }
-    handleBookClick(book, event) {
-        this.setState({
-            activeBook: book
-        });
-        this.getNotes(book);
+    const handleBookClick = (book, event) => {
+        setActiveBook(book);
+        getNotes(book);
     }
-    deleteNote(note, event) {
+    const deleteNoteFromBook = (note, event) => {
         if (confirm('Delete this note?')) {
-            this.setState({
-                deletingNote: note.id
-            });
+            setDeletingNote(note.id);
             deleteNote(note.id).then((data) => {
-                console.log(data);
-                this.setState({
-                    deletingNote: 0
-                });
-                this.getNotes(this.state.activeBook);
+                setDeletingNote(0);
+                getNotes(activeBook);
             });
         }
     }
-    render() {
-        return (
-            <Books
-                {...this.state}
-                handleBookClick={this.handleBookClick}
-                deleteNote={this.deleteNote}
-            />
-        )
-    }
+    return (
+        <Books
+            books={books}
+            notes={notes}
+            activeBook={activeBook}
+            loadingBooks={loadingBooks}
+            loadingNotes={loadingNotes}
+            deletingNote={deletingNote}
+            handleBookClick={handleBookClick}
+            deleteNote={deleteNoteFromBook}
+        />
+    );
 }
+
+export default BookListApp;
