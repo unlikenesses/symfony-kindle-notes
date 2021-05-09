@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Tag;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -20,14 +21,21 @@ class TagRepository extends ServiceEntityRepository
         parent::__construct($registry, Tag::class);
     }
 
-    public function getTagIds(array $tags): array
+    public function getTagsForUser(User $user)
     {
-        $tagIds = [];
-        foreach ($tags as $tag) {
-            $tagIds[] = $this->getTagId($tag);
-        }
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = '
+            SELECT t.name
+            FROM `note_tag` nt
+            LEFT JOIN tag t ON nt.tag_id = t.id
+            LEFT JOIN note n ON n.id = nt.note_id
+            LEFT JOIN book b ON b.id = n.book_id
+            WHERE b.user_id = :userId
+        ';
+        $stmt = $conn->prepare($sql);
+        $stmt->bindValue('userId', $user->getId());
 
-        return $tagIds;
+        return $stmt->executeQuery();
     }
 
     // /**

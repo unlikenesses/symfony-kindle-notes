@@ -4,7 +4,7 @@ import Notes from '../notes/Notes';
 import PropTypes from 'prop-types';
 
 const Books = (props) => {
-    const { books, notes, activeBook, handleBookClick, loadingBooks, loadingNotes, deleteNote, deletingNote, handleTagChange } = props;
+    const { tags, books, notes, activeBook, handleBookClick, loadingBooks, loadingNotes, deleteNote, deletingNote, handleTagChange } = props;
     if (loadingBooks) {
         return (
             <div className="d-flex justify-content-center mt-5">
@@ -30,6 +30,7 @@ const Books = (props) => {
                 </div>
                 <div className="col p-3">
                     <Notes
+                        tags={tags}
                         book={activeBook}
                         notes={notes}
                         loadingNotes={loadingNotes}

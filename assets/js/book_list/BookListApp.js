@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import Books from './books/Books';
-import { getBooks, getNotesForBook, deleteNote, updateNoteTags } from './api/book_api';
+import { getBooks, getNotesForBook, deleteNote, getTags, updateNoteTags } from './api/book_api';
 
 const BookListApp = () => {
     const [activeBook, setActiveBook] = useState({});
     const [books, setBooks] = useState([]);
     const [notes, setNotes] = useState({});
+    const [tags, setTags] = useState([]);
     const [loadingBooks, setLoadingBooks] = useState(true);
     const [loadingNotes, setLoadingNotes] = useState(false);
     const [deletingNote, setDeletingNote] = useState(0);
@@ -15,6 +16,11 @@ const BookListApp = () => {
             then((data) => {
                 setBooks(data);
                 setLoadingBooks(false);
+            });
+        getTags().
+            then((data) => {
+                const tags = data.tags.map(tag => tag.name);
+                setTags(tags);
             });
     }, []);
     const getNotes = (book) => {
@@ -49,6 +55,7 @@ const BookListApp = () => {
     }
     return (
         <Books
+            tags={tags}
             books={books}
             notes={notes}
             activeBook={activeBook}

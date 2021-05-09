@@ -17,7 +17,7 @@ function BookTitle(props) {
 }
 
 const Notes = (props) => {
-    const { book, loadingNotes, notes, deleteNote, deletingNote, handleTagChange } = props;
+    const { tags, book, loadingNotes, notes, deleteNote, deletingNote, handleTagChange } = props;
     if (loadingNotes) {
         return (
             <div>
@@ -39,6 +39,7 @@ const Notes = (props) => {
                 </p>
                 {notes.data.map((note) => (
                     <Note
+                        tags={tags}
                         key={note.id}
                         note={note}
                         handleTagChange={handleTagChange}

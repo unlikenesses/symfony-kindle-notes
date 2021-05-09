@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Tags from '@yaireo/tagify/dist/react.tagify';
 
 const Note = (props) => {
-    const { note, deleteNote, deletingNote, handleTagChange } = props;
+    const { tags, note, deleteNote, deletingNote, handleTagChange } = props;
     const deletingText = deletingNote === note.id ? 'Deleting...' : 'Delete';
     return (
         <div className="card mb-3">
@@ -27,7 +27,9 @@ const Note = (props) => {
                         onChange={e => handleTagChange(note.id, e.detail.value)}
                         settings={{
                             placeholder: 'Tags...',
-                            maxTags: 5
+                            maxTags: 3,
+                            backspace: 'edit',
+                            whitelist: tags
                         }}
                     />
                     <a className="btn btn-link p-0"

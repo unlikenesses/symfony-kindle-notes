@@ -21,6 +21,13 @@ export function deleteNote(noteId) {
         });
 }
 
+export function getTags() {
+    return fetch('/api/tags')
+        .then(response => {
+            return response.json().then((data) => data);
+        });
+}
+
 export function updateNoteTags(noteId, tags) {
     return fetch('/api/notes/' + noteId + '/tags', {
         method: 'PUT',
