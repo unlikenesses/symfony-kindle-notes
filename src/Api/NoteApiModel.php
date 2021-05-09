@@ -33,4 +33,9 @@ class NoteApiModel
      * @var int
      */
     public $type;
+
+    /**
+     *
+     */
+    public $tags;
 }

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import Books from './books/Books';
-import { getBooks, getNotesForBook, deleteNote } from './api/book_api';
+import { getBooks, getNotesForBook, deleteNote, updateNoteTags } from './api/book_api';
 
 const BookListApp = () => {
     const [activeBook, setActiveBook] = useState({});
@@ -42,6 +42,11 @@ const BookListApp = () => {
             });
         }
     }
+    const handleTagChange = (noteId, newTags) => {
+        newTags = newTags ? JSON.parse(newTags) : [];
+        const tags = newTags.map(tag => tag.value);
+        updateNoteTags(noteId, tags);
+    }
     return (
         <Books
             books={books}
@@ -50,6 +55,7 @@ const BookListApp = () => {
             loadingBooks={loadingBooks}
             loadingNotes={loadingNotes}
             deletingNote={deletingNote}
+            handleTagChange={handleTagChange}
             handleBookClick={handleBookClick}
             deleteNote={deleteNoteFromBook}
         />

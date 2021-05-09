@@ -4,7 +4,7 @@ import Notes from '../notes/Notes';
 import PropTypes from 'prop-types';
 
 const Books = (props) => {
-    const { books, notes, activeBook, handleBookClick, loadingBooks, loadingNotes, deleteNote, deletingNote } = props;
+    const { books, notes, activeBook, handleBookClick, loadingBooks, loadingNotes, deleteNote, deletingNote, handleTagChange } = props;
     if (loadingBooks) {
         return (
             <div className="d-flex justify-content-center mt-5">
@@ -35,6 +35,7 @@ const Books = (props) => {
                         loadingNotes={loadingNotes}
                         deleteNote={deleteNote}
                         deletingNote={deletingNote}
+                        handleTagChange={handleTagChange}
                     />
                 </div>
             </div>
@@ -52,5 +53,6 @@ Books.propTypes = {
     loadingBooks: PropTypes.bool.isRequired,
     loadingNotes: PropTypes.bool.isRequired,
     deleteNote: PropTypes.func.isRequired,
-    deletingNote: PropTypes.number.isRequired
+    deletingNote: PropTypes.number.isRequired,
+    handleTagChange: PropTypes.func.isRequired
 };

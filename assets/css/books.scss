@@ -3,3 +3,13 @@
 .book {
   cursor: pointer;
 }
+
+.note-footer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.tags-input {
+  width: 50%;
+}

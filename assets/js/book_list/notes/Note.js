@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Tags from '@yaireo/tagify/dist/react.tagify';
 
 const Note = (props) => {
-    const { note, deleteNote, deletingNote } = props;
+    const { note, deleteNote, deletingNote, handleTagChange } = props;
     const deletingText = deletingNote === note.id ? 'Deleting...' : 'Delete';
     return (
         <div className="card mb-3">
@@ -20,10 +21,20 @@ const Note = (props) => {
                 <p className="note">{note.note}</p>
             </div>
             <div className="card-footer">
-                <a className="btn btn-link p-0"
-                   onClick={(event) => deleteNote(note, event)}>
-                    {deletingText}
-                </a>
+                <div className="note-footer">
+                    <Tags
+                        value={note.tags.map(tag => tag.name).join(',')}
+                        onChange={e => handleTagChange(note.id, e.detail.value)}
+                        settings={{
+                            placeholder: 'Tags...',
+                            maxTags: 5
+                        }}
+                    />
+                    <a className="btn btn-link p-0"
+                       onClick={(event) => deleteNote(note, event)}>
+                        {deletingText}
+                    </a>
+                </div>
             </div>
         </div>
     )
@@ -35,4 +46,5 @@ Note.propTypes = {
     note: PropTypes.object.isRequired,
     deleteNote: PropTypes.func.isRequired,
     deletingNote: PropTypes.number.isRequired,
+    handleTagChange: PropTypes.func.isRequired
 };

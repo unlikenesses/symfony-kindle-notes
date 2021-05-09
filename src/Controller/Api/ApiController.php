@@ -18,7 +18,7 @@ class ApiController extends AbstractController
     {
         $json = $this->get('serializer')->serialize($data, 'json', [
             AbstractNormalizer::IGNORED_ATTRIBUTES => [
-                'book',
+                'book', 'notes',
             ]
         ]);
 
@@ -57,6 +57,7 @@ class ApiController extends AbstractController
         $model->location = $note->getLocation();
         $model->note = $note->getNote();
         $model->type = $note->getType();
+        $model->tags = $note->getTags();
 
         return $model;
     }

@@ -17,7 +17,7 @@ function BookTitle(props) {
 }
 
 const Notes = (props) => {
-    const { book, loadingNotes, notes } = props;
+    const { book, loadingNotes, notes, deleteNote, deletingNote, handleTagChange } = props;
     if (loadingNotes) {
         return (
             <div>
@@ -41,8 +41,9 @@ const Notes = (props) => {
                     <Note
                         key={note.id}
                         note={note}
-                        deleteNote={props.deleteNote}
-                        deletingNote={props.deletingNote}
+                        handleTagChange={handleTagChange}
+                        deleteNote={deleteNote}
+                        deletingNote={deletingNote}
                     />
                 ))}
             </div>
@@ -58,5 +59,6 @@ Notes.propTypes = {
     notes: PropTypes.object,
     loadingNotes: PropTypes.bool,
     deleteNote: PropTypes.func.isRequired,
-    deletingNote: PropTypes.number.isRequired
+    deletingNote: PropTypes.number.isRequired,
+    handleTagChange: PropTypes.func.isRequired
 };

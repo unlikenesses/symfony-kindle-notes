@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
@@ -59,6 +61,16 @@ class Note
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $deletedAt;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="notes")
+     */
+    private $tags;
+
+    public function __construct()
+    {
+        $this->tags = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -159,5 +171,42 @@ class Note
         $this->deletedAt = $deletedAt;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Tag[]
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function addTag(Tag $tag): self
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags[] = $tag;
+        }
+
+        return $this;
+    }
+
+    public function removeTag(Tag $tag): self
+    {
+        $this->tags->removeElement($tag);
+
+        return $this;
+    }
+
+    public function syncTags(array $newTags): void
+    {
+        $currentTags = $this->getTags();
+        foreach ($currentTags as $tag) {
+            if (! in_array($tag, $newTags)) {
+                $this->removeTag($tag);
+            }
+        }
+        foreach ($newTags as $tag) {
+            $this->addTag($tag);
+        }
     }
 }
