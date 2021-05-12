@@ -52,6 +52,18 @@ const BookListApp = () => {
         newTags = newTags ? JSON.parse(newTags) : [];
         const tags = newTags.map(tag => tag.value);
         updateNoteTags(noteId, tags);
+        updateTagList(tags);
+    }
+    const updateTagList = (newTags) => {
+        for (let tag of newTags) {
+            if (tags.indexOf(tag) < 0) {
+                console.log('adding tag ' + tag);
+                const newTagList = [...tags];
+                newTagList.push(tag);
+                console.log('setting', newTagList);
+                setTags(newTagList);
+            }
+        }
     }
     return (
         <Books

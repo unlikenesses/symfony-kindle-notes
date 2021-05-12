@@ -47,6 +47,7 @@ const Books = (props) => {
 export default Books;
 
 Books.propTypes = {
+    tags: PropTypes.array.isRequired,
     books: PropTypes.array.isRequired,
     notes: PropTypes.object,
     activeBook: PropTypes.object,

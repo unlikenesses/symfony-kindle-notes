@@ -5,6 +5,9 @@ import Tags from '@yaireo/tagify/dist/react.tagify';
 const Note = (props) => {
     const { tags, note, deleteNote, deletingNote, handleTagChange } = props;
     const deletingText = deletingNote === note.id ? 'Deleting...' : 'Delete';
+    const tagChanged = (e) => {
+        handleTagChange(note.id, e.detail.value)
+    }
     return (
         <div className="card mb-3">
             <div className="card-header d-flex justify-content-between">
@@ -24,13 +27,13 @@ const Note = (props) => {
                 <div className="note-footer">
                     <Tags
                         value={note.tags.map(tag => tag.name).join(',')}
-                        onChange={e => handleTagChange(note.id, e.detail.value)}
+                        onChange={e => tagChanged(e)}
                         settings={{
                             placeholder: 'Tags...',
                             maxTags: 3,
                             backspace: 'edit',
-                            whitelist: tags
                         }}
+                        whitelist={tags}
                     />
                     <a className="btn btn-link p-0"
                        onClick={(event) => deleteNote(note, event)}>
@@ -45,6 +48,7 @@ const Note = (props) => {
 export default Note;
 
 Note.propTypes = {
+    tags: PropTypes.array.isRequired,
     note: PropTypes.object.isRequired,
     deleteNote: PropTypes.func.isRequired,
     deletingNote: PropTypes.number.isRequired,

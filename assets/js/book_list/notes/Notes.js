@@ -56,6 +56,7 @@ const Notes = (props) => {
 export default Notes;
 
 Notes.propTypes = {
+    tags: PropTypes.array.isRequired,
     book: PropTypes.object,
     notes: PropTypes.object,
     loadingNotes: PropTypes.bool,
