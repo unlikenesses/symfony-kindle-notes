@@ -8,6 +8,14 @@ const Note = (props) => {
     const tagChanged = (e) => {
         handleTagChange(note.id, e.detail.value)
     }
+    const invalidTag = (e) => {
+        const message = e.detail.message;
+        let displayMessage = message;
+        if (message === 'pattern mismatch') {
+            displayMessage = 'Tags must be between 2 and 20 characters long and may only contain letters and numbers.';
+        }
+        alert(displayMessage);
+    }
     return (
         <div className="card mb-3">
             <div className="card-header d-flex justify-content-between">
@@ -32,8 +40,10 @@ const Note = (props) => {
                             placeholder: 'Tags...',
                             maxTags: 3,
                             backspace: 'edit',
+                            pattern: /^[a-zA-Z0-9\s]{3,20}$/
                         }}
                         whitelist={tags}
+                        onInvalid={e => invalidTag(e)}
                     />
                     <a className="btn btn-link p-0"
                        onClick={(event) => deleteNote(note, event)}>
