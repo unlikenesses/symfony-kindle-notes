@@ -14,6 +14,10 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 class ApiController extends AbstractController
 {
+    protected const API_ERROR_CODES = [
+        'too many tags' => 10,
+    ];
+
     protected function createApiResponse(array $data, int $statusCode = 200): JsonResponse
     {
         $json = $this->get('serializer')->serialize($data, 'json', [

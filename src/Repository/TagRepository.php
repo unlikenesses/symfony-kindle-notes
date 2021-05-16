@@ -38,6 +38,23 @@ class TagRepository extends ServiceEntityRepository
         return $stmt->executeQuery();
     }
 
+    public function getUserTagCount(User $user)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = '
+            SELECT COUNT(DISTINCT t.name)
+            FROM `note_tag` nt
+            LEFT JOIN tag t ON nt.tag_id = t.id
+            LEFT JOIN note n ON n.id = nt.note_id
+            LEFT JOIN book b ON b.id = n.book_id
+            WHERE b.user_id = :userId
+        ';
+        $stmt = $conn->prepare($sql);
+        $stmt->bindValue('userId', $user->getId());
+
+        return $stmt->executeQuery()->fetchNumeric();
+    }
+
     // /**
     //  * @return Tag[] Returns an array of Tag objects
     //  */

@@ -1,12 +1,23 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import PropTypes from 'prop-types';
+import {apiErrors} from '../api/book_api';
 import Tags from '@yaireo/tagify/dist/react.tagify';
 
 const Note = (props) => {
     const { tags, note, deleteNote, deletingNote, handleTagChange } = props;
     const deletingText = deletingNote === note.id ? 'Deleting...' : 'Delete';
+    const tagifyRef = useRef();
     const tagChanged = (e) => {
+        console.log(e);
         handleTagChange(note.id, e.detail.value)
+            .catch((err) => {
+                if (err.message in apiErrors) {
+                    tagifyRef.current.removeTags();
+                    alert(apiErrors[err.message]);
+                } else {
+                    console.error('Unknown API error occurred');
+                }
+            });
     }
     const invalidTag = (e) => {
         const message = e.detail.message;
@@ -34,6 +45,7 @@ const Note = (props) => {
             <div className="card-footer">
                 <div className="note-footer">
                     <Tags
+                        tagifyRef={tagifyRef}
                         value={note.tags.map(tag => tag.name).join(',')}
                         onChange={e => tagChanged(e)}
                         settings={{

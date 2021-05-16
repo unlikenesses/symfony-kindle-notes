@@ -32,8 +32,9 @@ export function updateNoteTags(noteId, tags) {
     return fetch('/api/notes/' + noteId + '/tags', {
         method: 'PUT',
         body: JSON.stringify(tags)
-    })
-        .then(response => {
-            return response.json().then((data) => data);
-        });
+    });
 }
+
+export const apiErrors = {
+    10: 'You have exceeded the maximum amount of allowable tags for a user'
+};

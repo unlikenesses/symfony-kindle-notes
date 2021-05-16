@@ -51,8 +51,16 @@ const BookListApp = () => {
     const handleTagChange = (noteId, newTags) => {
         newTags = newTags ? JSON.parse(newTags) : [];
         const tags = newTags.map(tag => tag.value);
-        updateNoteTags(noteId, tags);
-        updateTagList(tags);
+        return updateNoteTags(noteId, tags)
+            .then((response) => {
+                if (! response.ok) {
+                    return response.json().then(response => {throw Error(response.error)});
+                }
+                return response;
+            })
+            .then(() => {
+                updateTagList(tags);
+            });
     }
     const updateTagList = (newTags) => {
         for (let tag of newTags) {
