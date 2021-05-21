@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import Books from './books/Books';
-import { getBooks, getNotesForBook, deleteNote, getTags, updateNoteTags } from './api/book_api';
+import { getBooks, getNotesForBook, deleteNote, getTags, updateNoteTags } from '../api/book_api';
 
 const BookListApp = () => {
     const [activeBook, setActiveBook] = useState({});

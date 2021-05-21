@@ -25,6 +25,7 @@ Encore
      */
     .addEntry('app', './assets/js/app.js')
     .addEntry('bookList', './assets/js/books.js')
+    .addEntry('tagList', './assets/js/tags.js')
     .addStyleEntry('auth', './assets/css/auth.scss')
     .addStyleEntry('books', './assets/css/books.scss')
 

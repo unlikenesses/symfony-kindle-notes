@@ -52,7 +52,7 @@ class ApiController extends AbstractController
         return $model;
     }
 
-    protected function createNoteApiModel(Note $note): NoteApiModel
+    protected function createNoteApiModel(Note $note, bool $withBook = false): NoteApiModel
     {
         $model = new NoteApiModel();
         $model->id = $note->getId();
@@ -62,6 +62,13 @@ class ApiController extends AbstractController
         $model->note = $note->getNote();
         $model->type = $note->getType();
         $model->tags = $note->getTags();
+        if ($withBook) {
+            $model->source = '';
+            if ($book = $note->getBook()) {
+                $bookModel = $this->createBookApiModel($book);
+                $model->source = $bookModel->author . ', ' . $bookModel->title;
+            }
+        }
 
         return $model;
     }

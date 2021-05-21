@@ -12,6 +12,13 @@ export function getNotesForBook(bookId) {
         });
 }
 
+export function getNotesForTag(tagId) {
+    return fetch('/api/tags/' + tagId + '/notes')
+        .then(response => {
+            return response.json().then((data) => data);
+        });
+}
+
 export function deleteNote(noteId) {
     return fetch('/api/notes/' + noteId, {
         method: 'DELETE'

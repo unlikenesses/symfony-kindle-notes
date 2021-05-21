@@ -25,7 +25,7 @@ class TagRepository extends ServiceEntityRepository
     {
         $conn = $this->getEntityManager()->getConnection();
         $sql = '
-            SELECT DISTINCT t.name
+            SELECT DISTINCT t.name, t.id
             FROM `note_tag` nt
             LEFT JOIN tag t ON nt.tag_id = t.id
             LEFT JOIN note n ON n.id = nt.note_id

@@ -2,6 +2,8 @@
 
 namespace App\Api;
 
+use App\Entity\Book;
+
 class NoteApiModel
 {
     /**
@@ -33,6 +35,11 @@ class NoteApiModel
      * @var int
      */
     public $type;
+
+    /**
+     * @var Book
+     */
+    public $source;
 
     /**
      *
