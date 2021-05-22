@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import Books from './books/Books';
 import { getBooks, getNotesForBook, deleteNote, getTags, updateNoteTags, updateBookCategories } from '../api/book_api';
+import Book from "./books/Book";
+import Notes from "./notes/Notes";
 
 const BookListApp = () => {
     const [activeBook, setActiveBook] = useState({});
@@ -95,21 +96,45 @@ const BookListApp = () => {
             }
         }
     }
+    if (loadingBooks) {
+        return (
+            <div className="d-flex justify-content-center mt-5">
+                <div className="spinner-border" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+            </div>
+        )
+    }
     return (
-        <Books
-            tags={tags}
-            books={books}
-            notes={notes}
-            categories={categories}
-            activeBook={activeBook}
-            loadingBooks={loadingBooks}
-            loadingNotes={loadingNotes}
-            deletingNote={deletingNote}
-            handleTagChange={handleTagChange}
-            handleCategoryChange={handleCategoryChange}
-            handleBookClick={handleBookClick}
-            deleteNote={deleteNoteFromBook}
-        />
+        <div className="container-fluid p-0">
+            <div className="row no-gutters">
+                <div className="col-2 border-right">
+                    {books.map((row) => (
+                        <Book
+                            key={row.id}
+                            title={row.title}
+                            author={row.author}
+                            categories={row.categories}
+                            active={activeBook != null && activeBook.id === row.id}
+                            onClick={(event) => handleBookClick(row, event)}
+                        />
+                    ))}
+                </div>
+                <div className="col p-3">
+                    <Notes
+                        tags={tags}
+                        categories={categories}
+                        book={activeBook}
+                        notes={notes}
+                        loadingNotes={loadingNotes}
+                        deleteNote={deleteNoteFromBook}
+                        deletingNote={deletingNote}
+                        handleTagChange={handleTagChange}
+                        handleCategoryChange={handleCategoryChange}
+                    />
+                </div>
+            </div>
+        </div>
     );
 }
 
