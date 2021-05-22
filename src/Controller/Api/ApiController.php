@@ -5,6 +5,7 @@ namespace App\Controller\Api;
 use App\Api\BookApiModel;
 use App\Api\NoteApiModel;
 use App\Entity\Book;
+use App\Entity\Category;
 use App\Entity\Note;
 use App\Entity\User;
 use Doctrine\Common\Collections\Collection;
@@ -16,6 +17,7 @@ class ApiController extends AbstractController
 {
     protected const API_ERROR_CODES = [
         'too many tags' => 10,
+        'too many categories' => 20,
     ];
 
     protected function createApiResponse(array $data, int $statusCode = 200): JsonResponse
@@ -48,6 +50,12 @@ class ApiController extends AbstractController
         $model->id = $book->getId();
         $model->title = $book->getTitle();
         $model->author = $book->getAuthorFirstName() . ' ' . $book->getAuthorLastName();
+        $model->categories = array_map(function (Category $category) {
+            return [
+                'id' => $category->getId(),
+                'name' => $category->getName(),
+            ];
+        }, $book->getCategory()->toArray());
 
         return $model;
     }

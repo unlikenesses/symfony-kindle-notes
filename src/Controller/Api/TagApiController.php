@@ -15,7 +15,7 @@ class TagApiController extends ApiController
 {
     private $entityManager;
 
-    private const MAX_TAGS = 5;
+    private const MAX_TAGS = 25;
 
     public function __construct(EntityManagerInterface $entityManager)
     {

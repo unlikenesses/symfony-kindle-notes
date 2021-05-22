@@ -8,7 +8,6 @@ const Note = (props) => {
     const deletingText = deletingNote === note.id ? 'Deleting...' : 'Delete';
     const tagifyRef = useRef();
     const tagChanged = (e) => {
-        console.log(e);
         handleTagChange(note.id, e.detail.value)
             .catch((err) => {
                 if (err.message in apiErrors) {

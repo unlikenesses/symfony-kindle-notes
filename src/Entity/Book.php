@@ -57,9 +57,15 @@ class Book
      */
     private $user;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="books")
+     */
+    private $category;
+
     public function __construct()
     {
         $this->notes = new ArrayCollection();
+        $this->category = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -168,5 +174,42 @@ class Book
         $this->user = $user;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Category[]
+     */
+    public function getCategory(): Collection
+    {
+        return $this->category;
+    }
+
+    public function addCategory(Category $category): self
+    {
+        if (!$this->category->contains($category)) {
+            $this->category[] = $category;
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): self
+    {
+        $this->category->removeElement($category);
+
+        return $this;
+    }
+
+    public function syncCategories(array $newCategories): void
+    {
+        $currentCategories = $this->getCategory();
+        foreach ($currentCategories as $category) {
+            if (! in_array($category, $newCategories)) {
+                $this->removeCategory($category);
+            }
+        }
+        foreach ($newCategories as $category) {
+            $this->addCategory($category);
+        }
     }
 }

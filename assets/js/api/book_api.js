@@ -12,6 +12,13 @@ export function getNotesForBook(bookId) {
         });
 }
 
+export function updateBookCategories(bookId, categories) {
+    return fetch('/api/books/' + bookId + '/categories', {
+        method: 'PUT',
+        body: JSON.stringify(categories)
+    });
+}
+
 export function getNotesForTag(tagId) {
     return fetch('/api/tags/' + tagId + '/notes')
         .then(response => {

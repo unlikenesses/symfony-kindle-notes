@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import PropTypes from 'prop-types';
 import Note from './Note';
+import Tags from '@yaireo/tagify/dist/react.tagify';
+import {apiErrors} from "../../api/book_api";
 
 function BookTitle(props) {
     const { book } = props;
@@ -17,7 +19,27 @@ function BookTitle(props) {
 }
 
 const Notes = (props) => {
-    const { tags, book, loadingNotes, notes, deleteNote, deletingNote, handleTagChange } = props;
+    const { tags, categories, book, loadingNotes, notes, deleteNote, deletingNote, handleTagChange, handleCategoryChange } = props;
+    const tagifyRef = useRef();
+    const categoryChanged = (e) => {
+        handleCategoryChange(book.id, e.detail.value)
+            .catch((err) => {
+                if (err.message in apiErrors) {
+                    tagifyRef.current.removeTags();
+                    alert(apiErrors[err.message]);
+                } else {
+                    console.error('Unknown API error occurred');
+                }
+            });
+    }
+    const invalidTag = (e) => {
+        const message = e.detail.message;
+        let displayMessage = message;
+        if (message === 'pattern mismatch') {
+            displayMessage = 'Tags must be between 2 and 20 characters long and may only contain letters and numbers.';
+        }
+        alert(displayMessage);
+    }
     if (loadingNotes) {
         return (
             <div>
@@ -37,6 +59,19 @@ const Notes = (props) => {
                 <p>
                     {notes.numHighlights} Highlights | {notes.numNotes} Notes
                 </p>
+                <Tags
+                    tagifyRef={tagifyRef}
+                    value={book.categories.map(category => category.name).join(',')}
+                    onChange={e => categoryChanged(e)}
+                    settings={{
+                        placeholder: 'Categories...',
+                        maxTags: 3,
+                        backspace: 'edit',
+                        pattern: /^[a-zA-Z0-9\s]{3,20}$/
+                    }}
+                    whitelist={categories}
+                    onInvalid={e => invalidTag(e)}
+                />
                 {notes.data.map((note) => (
                     <Note
                         tags={tags}
@@ -57,10 +92,12 @@ export default Notes;
 
 Notes.propTypes = {
     tags: PropTypes.array.isRequired,
+    categories: PropTypes.array.isRequired,
     book: PropTypes.object,
     notes: PropTypes.object,
     loadingNotes: PropTypes.bool,
     deleteNote: PropTypes.func.isRequired,
     deletingNote: PropTypes.number.isRequired,
-    handleTagChange: PropTypes.func.isRequired
+    handleTagChange: PropTypes.func.isRequired,
+    handleCategoryChange: PropTypes.func.isRequired
 };

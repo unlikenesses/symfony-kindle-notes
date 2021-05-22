@@ -4,7 +4,7 @@ import Notes from '../notes/Notes';
 import PropTypes from 'prop-types';
 
 const Books = (props) => {
-    const { tags, books, notes, activeBook, handleBookClick, loadingBooks, loadingNotes, deleteNote, deletingNote, handleTagChange } = props;
+    const { tags, categories, books, notes, activeBook, handleBookClick, loadingBooks, loadingNotes, deleteNote, deletingNote, handleTagChange, handleCategoryChange } = props;
     if (loadingBooks) {
         return (
             <div className="d-flex justify-content-center mt-5">
@@ -23,6 +23,7 @@ const Books = (props) => {
                             key={row.id}
                             title={row.title}
                             author={row.author}
+                            categories={row.categories}
                             active={activeBook != null && activeBook.id === row.id}
                             onClick={(event) => handleBookClick(row, event)}
                         />
@@ -31,12 +32,14 @@ const Books = (props) => {
                 <div className="col p-3">
                     <Notes
                         tags={tags}
+                        categories={categories}
                         book={activeBook}
                         notes={notes}
                         loadingNotes={loadingNotes}
                         deleteNote={deleteNote}
                         deletingNote={deletingNote}
                         handleTagChange={handleTagChange}
+                        handleCategoryChange={handleCategoryChange}
                     />
                 </div>
             </div>
@@ -48,6 +51,7 @@ export default Books;
 
 Books.propTypes = {
     tags: PropTypes.array.isRequired,
+    categories: PropTypes.array.isRequired,
     books: PropTypes.array.isRequired,
     notes: PropTypes.object,
     activeBook: PropTypes.object,
@@ -56,5 +60,6 @@ Books.propTypes = {
     loadingNotes: PropTypes.bool.isRequired,
     deleteNote: PropTypes.func.isRequired,
     deletingNote: PropTypes.number.isRequired,
-    handleTagChange: PropTypes.func.isRequired
+    handleTagChange: PropTypes.func.isRequired,
+    handleCategoryChange: PropTypes.func.isRequired
 };
