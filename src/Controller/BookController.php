@@ -24,6 +24,8 @@ class BookController extends AbstractController
         $conn = $this->getDoctrine()->getConnection();
         $sql = 'SET FOREIGN_KEY_CHECKS = 0;';
         $sql .= 'TRUNCATE TABLE note; TRUNCATE TABLE book;';
+        $sql .= 'TRUNCATE TABLE category; TRUNCATE TABLE book_category;';
+        $sql .= 'TRUNCATE TABLE tag; TRUNCATE TABLE note_tag;';
         $sql .= 'SET FOREIGN_KEY_CHECKS = 1;';
         $stmt = $conn->prepare($sql);
         $stmt->execute();

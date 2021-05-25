@@ -31,19 +31,6 @@ class ApiController extends AbstractController
         return new JsonResponse($json, $statusCode, [], true);
     }
 
-    protected function findAllBooksByUser(User $user): array
-    {
-        $books = $this->getDoctrine()
-            ->getRepository('App:Book')
-            ->findByUser($user);
-        $models = [];
-        foreach ($books as $book) {
-            $models[] = $this->createBookApiModel($book);
-        }
-
-        return $models;
-    }
-
     protected function createBookApiModel(Book $book): BookApiModel
     {
         $model = new BookApiModel();

@@ -4,7 +4,7 @@ import {apiErrors} from '../../api/book_api';
 import Tags from '@yaireo/tagify/dist/react.tagify';
 
 const Note = (props) => {
-    const { tags, note, deleteNote, deletingNote, handleTagChange } = props;
+    const { tagWhitelist, note, deleteNote, deletingNote, handleTagChange } = props;
     const deletingText = deletingNote === note.id ? 'Deleting...' : 'Delete';
     const tagifyRef = useRef();
     const tagChanged = (e) => {
@@ -53,7 +53,7 @@ const Note = (props) => {
                             backspace: 'edit',
                             pattern: /^[a-zA-Z0-9\s]{3,20}$/
                         }}
-                        whitelist={tags}
+                        whitelist={tagWhitelist}
                         onInvalid={e => invalidTag(e)}
                     />
                     <a className="btn btn-link p-0"
@@ -69,7 +69,7 @@ const Note = (props) => {
 export default Note;
 
 Note.propTypes = {
-    tags: PropTypes.array.isRequired,
+    tagWhitelist: PropTypes.array.isRequired,
     note: PropTypes.object.isRequired,
     deleteNote: PropTypes.func.isRequired,
     deletingNote: PropTypes.number.isRequired,

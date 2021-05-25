@@ -19,7 +19,7 @@ function BookTitle(props) {
 }
 
 const Notes = (props) => {
-    const { tags, categories, book, loadingNotes, notes, deleteNote, deletingNote, handleTagChange, handleCategoryChange } = props;
+    const { tagWhitelist, categoryWhitelist, book, loadingNotes, notes, deleteNote, deletingNote, handleTagChange, handleCategoryChange } = props;
     const tagifyRef = useRef();
     const categoryChanged = (e) => {
         handleCategoryChange(book.id, e.detail.value)
@@ -56,9 +56,6 @@ const Notes = (props) => {
         return (
             <div>
                 <BookTitle book={book}/>
-                <p>
-                    {notes.numHighlights} Highlights | {notes.numNotes} Notes
-                </p>
                 <Tags
                     tagifyRef={tagifyRef}
                     value={book.categories.map(category => category.name).join(',')}
@@ -69,12 +66,15 @@ const Notes = (props) => {
                         backspace: 'edit',
                         pattern: /^[a-zA-Z0-9\s]{3,20}$/
                     }}
-                    whitelist={categories}
+                    whitelist={categoryWhitelist}
                     onInvalid={e => invalidTag(e)}
                 />
+                <p className="mt-2">
+                    {notes.numHighlights} Highlights | {notes.numNotes} Notes
+                </p>
                 {notes.data.map((note) => (
                     <Note
-                        tags={tags}
+                        tagWhitelist={tagWhitelist}
                         key={note.id}
                         note={note}
                         handleTagChange={handleTagChange}
@@ -91,8 +91,8 @@ const Notes = (props) => {
 export default Notes;
 
 Notes.propTypes = {
-    tags: PropTypes.array.isRequired,
-    categories: PropTypes.array.isRequired,
+    tagWhitelist: PropTypes.array.isRequired,
+    categoryWhitelist: PropTypes.array.isRequired,
     book: PropTypes.object,
     notes: PropTypes.object,
     loadingNotes: PropTypes.bool,

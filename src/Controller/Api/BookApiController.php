@@ -3,7 +3,9 @@
 namespace App\Controller\Api;
 
 use App\Entity\Book;
+use App\Entity\Category;
 use App\Entity\Note;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,13 +20,33 @@ class BookApiController extends ApiController
     }
 
     /**
-     * @Route("/api/books", name="apiBooks")
+     * @Route("/api/books/{category}", name="apiBooks")
      */
-    public function getBooks(): JsonResponse
+    public function getBooks(?string $category): JsonResponse
     {
-        $models = $this->findAllBooksByUser($this->getUser());
+        if ($category === 'null') {
+            $books = $this->findAllBooksForUser($this->getUser());
+        } else {
+            $books = $this->findAllBooksByCategoryForUser($category, $this->getUser());
+        }
+        $models = [];
+        foreach ($books as $book) {
+            $models[] = $this->createBookApiModel($book);
+        }
 
         return $this->createApiResponse(['data' => $models]);
+    }
+
+    private function findAllBooksForUser(User $user): array
+    {
+        return $this->em->getRepository(Book::class)
+            ->findByUser($user);
+    }
+
+    private function findAllBooksByCategoryForUser(string $category, User $user): array
+    {
+        return $this->em->getRepository(Book::class)
+            ->findByCategoryAndUser($category, $user);
     }
 
     /**

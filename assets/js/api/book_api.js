@@ -1,5 +1,5 @@
-export function getBooks() {
-    return fetch('/api/books')
+export function getBooks(category) {
+    return fetch('/api/books/' + category)
         .then(response => {
             return response.json().then((data) => data.data);
         });
@@ -30,6 +30,13 @@ export function deleteNote(noteId) {
     return fetch('/api/notes/' + noteId, {
         method: 'DELETE'
     })
+        .then(response => {
+            return response.json().then((data) => data);
+        });
+}
+
+export function getCategories() {
+    return fetch('/api/categories')
         .then(response => {
             return response.json().then((data) => data);
         });

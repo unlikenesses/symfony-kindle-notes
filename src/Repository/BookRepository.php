@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Book;
+use App\Entity\Category;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -25,6 +26,18 @@ class BookRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('b')
             ->andWhere('b.user = :val')
             ->setParameter('val', $user)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findByCategoryAndUser(string $category, User $user): array
+    {
+        return $this->createQueryBuilder('b')
+            ->leftJoin('b.category', 'c')
+            ->andWhere('c.name = :category')
+            ->andWhere('b.user = :user')
+            ->setParameter('category', $category)
+            ->setParameter('user', $user)
             ->getQuery()
             ->getResult();
     }

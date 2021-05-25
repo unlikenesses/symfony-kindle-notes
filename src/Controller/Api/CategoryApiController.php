@@ -22,6 +22,20 @@ class CategoryApiController extends ApiController
     }
 
     /**
+     * @Route("/api/categories", name="apiCategories")
+     */
+    public function getCategories()
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        $categories = array_map(function (Category $row) {
+            return $row->getName();
+        }, $user->getCategories()->toArray());
+
+        return $this->createApiResponse(['categories' => $categories]);
+    }
+
+    /**
      * @Route("/api/books/{book}/categories", name="apiBookCategories", methods="PUT")
      */
     public function updateBookCategories(Book $book, Request $request): JsonResponse
