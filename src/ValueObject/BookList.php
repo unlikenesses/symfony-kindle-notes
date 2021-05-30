@@ -10,7 +10,7 @@ class BookList
     private $list = [];
 
     /**
-     * @var Book
+     * @var ?Book
      */
     private $currentBook;
 

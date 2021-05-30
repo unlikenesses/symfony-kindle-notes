@@ -37,7 +37,7 @@ class NoteApiModel
     public $type;
 
     /**
-     * @var Book
+     * @var string
      */
     public $source;
 

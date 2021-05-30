@@ -94,7 +94,8 @@ class CategoryApiController extends ApiController
     {
         $categoryRepo = $this->entityManager->getRepository(Category::class);
         /** @var Category $category */
-        if ($category = $categoryRepo->findOneBy(['name' => $categoryName])) {
+        $category = $categoryRepo->findOneBy(['name' => $categoryName]);
+        if ($category) {
             return $category;
         }
         $category = new Category();

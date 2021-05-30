@@ -25,8 +25,6 @@ class ImportFileHandler implements MessageHandlerInterface
     public function __invoke(ImportFile $importFile)
     {
         $fileToImport = $importFile->getFileToImport();
-        /** @var User $user */
-//        $user = $this->em->getRepository(User::class)->find($fileToImport->getUserId());
         $books = $this->fileHandler->processFile($fileToImport);
         $this->noteSaver->storeNotes($books, $fileToImport->getUserId());
     }

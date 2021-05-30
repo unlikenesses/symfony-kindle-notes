@@ -114,7 +114,8 @@ class TagApiController extends ApiController
     {
         $tagRepo = $this->entityManager->getRepository(Tag::class);
         /** @var Tag $tag */
-        if ($tag = $tagRepo->findOneBy(['name' => $tagName])) {
+        $tag = $tagRepo->findOneBy(['name' => $tagName]);
+        if ($tag) {
             return $tag;
         }
         $tag = new Tag();
