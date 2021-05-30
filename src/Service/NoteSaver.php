@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use DateTime;
+use App\Entity\User;
 use App\Entity\Book;
 use App\Entity\Note;
 use App\ValueObject\Book as BookObject;
@@ -44,14 +45,14 @@ class NoteSaver
         $this->security = $security;
     }
 
-    public function storeNotes(BookListObject $parsedBooks): void
+    public function storeNotes(BookListObject $parsedBooks, int $userId): void
     {
         foreach ($parsedBooks->getList() as $book) {
-            $this->storeBookNotes($book);
+            $this->storeBookNotes($book, $userId);
         }
     }
 
-    private function storeBookNotes(BookObject $book): array
+    private function storeBookNotes(BookObject $book, int $userId): array
     {
         $newBook = false;
         $numNotes = 0;
@@ -59,7 +60,7 @@ class NoteSaver
         $bookToAdd = $this->bookRepository->findOneByTitleString($metadata['titleString']);
         if (!$bookToAdd) {
             $newBook = true;
-            $bookToAdd = $this->addBook($metadata);
+            $bookToAdd = $this->addBook($metadata, $userId);
         }
 
         foreach ($book->getNotes() as $note) {
@@ -71,8 +72,10 @@ class NoteSaver
         return ['newBook' => $newBook, 'numNotes' => $numNotes];
     }
 
-    private function addBook(array $metadata): Book
+    private function addBook(array $metadata, int $userId): Book
     {
+        /** @var User $user */
+        $user = $this->entityManager->getRepository(User::class)->find($userId);
         /** @var AuthorObject $author */
         $author = $metadata['author'];
         $book = new Book();
@@ -80,7 +83,7 @@ class NoteSaver
             ->setTitle($metadata['title'])
             ->setAuthorFirstName($author->getFirstName())
             ->setAuthorLastName($author->getLastName())
-            ->setUser($this->security->getUser());
+            ->setUser($user);
         $this->entityManager->persist($book);
         $this->entityManager->flush();
 

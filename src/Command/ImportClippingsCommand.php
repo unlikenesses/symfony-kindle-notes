@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use _HumbugBoxe5640220fe34\React\Http\Io\UploadedFile;
 use App\Service\FileHandler;
 use App\Service\NoteSaver;
 use Symfony\Component\Console\Command\Command;
@@ -34,7 +33,7 @@ class ImportClippingsCommand extends Command
         $output->writeln('Importing file ' . $filename . '...');
         $file = new File($filename);
         $output->writeln('Size: ' . $file->getSize() . ' bytes.');
-        $books = $this->fileHandler->handleFile($file);
+        $books = $this->fileHandler->processFile($file->getFilename());
         $this->noteSaver->storeNotes($books);
 
         return 0;

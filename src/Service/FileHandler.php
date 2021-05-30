@@ -8,58 +8,38 @@ use App\Service\Parser\LineReaderInterface;
 use App\Service\Parser\Actions\ActionInterface;
 use App\Service\Parser\Actions\InitialiseNoteAction;
 use App\Service\Parser\TitleStringParserInterface;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use App\ValueObject\FileToImport;
 
 class FileHandler
 {
-    /**
-     * @var FileUploader
-     */
-    private $uploader;
-
-    /**
-     * @var FileReader
-     */
     private $fileReader;
-
-    /**
-     * @var LineReaderInterface
-     */
     private $lineReader;
-
-    /**
-     * @var BookList
-     */
     private $bookList;
-
-    /**
-     * @var TitleStringParserInterface
-     */
     private $titleStringParser;
 
-    public function __construct(FileUploader $uploader, FileReader $fileReader, LineReaderInterface $lineReader, TitleStringParserInterface $titleStringParser)
+    public function __construct(FileReader $fileReader, LineReaderInterface $lineReader, TitleStringParserInterface $titleStringParser)
     {
         $this->bookList = new BookList();
-        $this->uploader = $uploader;
         $this->fileReader = $fileReader;
         $this->lineReader = $lineReader;
         $this->titleStringParser = $titleStringParser;
     }
 
-    public function handleFile(UploadedFile $file): BookList
+    public function processFile(FileToImport $fileToImport): BookList
     {
-        $filename = $this->uploader->upload($file);
-        $this->readFile($filename);
+        foreach ($this->readFile($fileToImport->getFilename()) as $line) {
+            $action = $this->getAction(new FileLine($line));
+            $this->bookList = $action->execute($this->bookList);
+        }
 
         return $this->bookList;
     }
 
-    private function readFile(string $filename): void
+    private function readFile(string $filename): iterable
     {
         $this->fileReader->openFile($filename);
         while ($line = $this->fileReader->readLine()) {
-            $action = $this->getAction(new FileLine($line));
-            $this->bookList = $action->execute($this->bookList);
+            yield $line;
         }
         $this->fileReader->closeFile();
     }
