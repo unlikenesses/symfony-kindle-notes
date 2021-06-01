@@ -4,10 +4,9 @@ namespace App\Repository;
 
 use App\Entity\Book;
 use App\Entity\Note;
-use App\Entity\Tag;
 use App\ValueObject\NoteMetadata;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Note|null find($id, $lockMode = null, $lockVersion = null)
