@@ -12,4 +12,4 @@ jobs:
       - name: Static analysis
         run: ./vendor/bin/phpstan analyse src
       - name: Run tests
-        run: './bin/phpunit'
+        run: ./vendor/bin/phpunit
