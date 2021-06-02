@@ -1,5 +1,5 @@
 # symfony-kindle-notes
 
-[![Build Status](http://178.128.192.111:8080/buildStatus/icon?job=pippy)](http://178.128.192.111:8080/job/pippy/)
+[![build-and-test](https://github.com/unlikenesses/symfony-kindle-notes/actions/workflows/build-test.yml/badge.svg)](https://github.com/unlikenesses/symfony-kindle-notes/actions/workflows/build-test.yml)
 
 A Symfony app to manage Kindle notes
