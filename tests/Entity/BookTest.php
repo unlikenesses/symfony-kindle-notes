@@ -3,7 +3,6 @@
 namespace App\Tests\Entity;
 
 use App\Entity\Book;
-use App\Tests\DatabaseTestCase;
 use PHPUnit\Framework\TestCase;
 
 class BookTest extends TestCase

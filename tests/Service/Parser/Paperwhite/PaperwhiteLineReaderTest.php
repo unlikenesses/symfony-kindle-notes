@@ -18,7 +18,7 @@ class PaperwhiteLineReaderTest extends TestCase
      */
     private $lineReader;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->lineReader = new PaperwhiteLineReader();
     }
