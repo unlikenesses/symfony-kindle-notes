@@ -9,6 +9,7 @@ const BookListApp = () => {
     const [books, setBooks] = useState([]);
     const [notes, setNotes] = useState({});
     const [tagWhitelist, setTagWhitelist] = useState([]);
+    const [activeCategory, setActiveCategory] = useState('');
     const [categoryWhitelist, setCategoryWhitelist] = useState([]);
     const [loadingBooks, setLoadingBooks] = useState(true);
     const [loadingNotes, setLoadingNotes] = useState(false);
@@ -30,23 +31,21 @@ const BookListApp = () => {
             });
     }, []);
     const categoryHeader = () => {
-        if (getQueryStringCategory()) {
+        if (activeCategory !== '') {
             return <p className="border-bottom p-3">
-                <mark>{getQueryStringCategory()}</mark>
+                Category: <mark>{decodeURIComponent(activeCategory)}</mark>
             </p>;
         }
     }
     const getQueryStringCategory = () => {
-        let search = window.location.search;
-        let params = new URLSearchParams(search);
+        let category = null;
+        let path = window.location.pathname.split('/');
+        if (path.length > 2 && path[2] === 'category') {
+            category = path[3];
+            setActiveCategory(category);
+        }
 
-        return params.get('category');
-    }
-    const setQueryStringCategory = (category) => {
-        let search = window.location.search;
-        let params = new URLSearchParams(search);
-
-        params.set('category', category);
+        return category;
     }
     const getNotes = (book) => {
         setLoadingNotes(true);
@@ -74,13 +73,19 @@ const BookListApp = () => {
         }
     }
     const onCategoryPillClick = (category) => {
-        setQueryStringCategory(category);
+        setCategoryURL(category);
+        setActiveCategory(category);
         setLoadingBooks(true);
         getBooks(category).
             then((data) => {
                 setBooks(data);
                 setLoadingBooks(false);
             });
+    }
+    const setCategoryURL = (category) => {
+        let path = window.location.pathname.split('/');
+        category = encodeURIComponent(category);
+        window.history.pushState({}, '', '/' + path[1] + '/category/' + category);
     }
     const handleTagChange = (noteId, newTags) => {
         newTags = newTags ? JSON.parse(newTags) : [];
@@ -96,6 +101,15 @@ const BookListApp = () => {
                 updateTagWhitelist(tags);
             });
     }
+    const updateTagWhitelist = (newTags) => {
+        for (let tag of newTags) {
+            if (tagWhitelist.indexOf(tag) < 0) {
+                const newTagList = [...tagWhitelist];
+                newTagList.push(tag);
+                setTagWhitelist(newTagList);
+            }
+        }
+    }
     const handleCategoryChange = (bookId, newCategories) => {
         newCategories = newCategories ? JSON.parse(newCategories) : [];
         const categories = newCategories.map(category => category.value);
@@ -107,17 +121,13 @@ const BookListApp = () => {
                 return response;
             })
             .then(() => {
+                updateBookCategory(bookId, categories);
                 updateCategoryWhitelist(categories);
             });
     }
-    const updateTagWhitelist = (newTags) => {
-        for (let tag of newTags) {
-            if (tagWhitelist.indexOf(tag) < 0) {
-                const newTagList = [...tagWhitelist];
-                newTagList.push(tag);
-                setTagWhitelist(newTagList);
-            }
-        }
+    const updateBookCategory = (bookId, newCategories) => {
+        const book = books.find(book => book.id === bookId);
+        book.categories = newCategories;
     }
     const updateCategoryWhitelist = (newCategories) => {
         for (let category of newCategories) {

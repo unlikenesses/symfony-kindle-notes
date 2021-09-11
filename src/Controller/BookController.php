@@ -10,6 +10,7 @@ class BookController extends AbstractController
 {
     /**
      * @Route("/books", name="books")
+     * @Route("/books/category/{category}", name="booksCategory")
      */
     public function index(): Response
     {
