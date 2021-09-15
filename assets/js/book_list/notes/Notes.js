@@ -19,8 +19,9 @@ function BookTitle(props) {
 }
 
 const Notes = (props) => {
-    const { tagWhitelist, categoryWhitelist, book, loadingNotes, notes, deleteNote, deletingNote, handleTagChange, handleCategoryChange } = props;
+    const { tagWhitelist, categoryWhitelist, book, loadingNotes, notes, deleteBook, deletingBook, deleteNote, deletingNote, handleTagChange, handleCategoryChange } = props;
     const tagifyRef = useRef();
+    const deletingText = deletingBook === book.id ? 'Deleting...' : 'Delete Book';
     const categoryChanged = (e) => {
         handleCategoryChange(book.id, e.detail.value)
             .catch((err) => {
@@ -28,7 +29,7 @@ const Notes = (props) => {
                     tagifyRef.current.removeTags();
                     alert(apiErrors[err.message]);
                 } else {
-                    console.error('Unknown API error occurred');
+                    console.error('Unknown API error occurred', err.message);
                 }
             });
     }
@@ -69,8 +70,16 @@ const Notes = (props) => {
                     whitelist={categoryWhitelist}
                     onInvalid={e => invalidTag(e)}
                 />
-                <p className="mt-2">
-                    {notes.numHighlights} Highlights | {notes.numNotes} Notes
+                <p className="mt-2 d-flex justify-content-between">
+                    <span>
+                        {notes.numHighlights} Highlights | {notes.numNotes} Notes
+                    </span>
+                    <span>
+                        <a className="btn btn-link p-0"
+                           onClick={(event) => deleteBook(book, event)}>
+                            {deletingText}
+                        </a>
+                    </span>
                 </p>
                 {notes.data.map((note) => (
                     <Note
@@ -96,6 +105,8 @@ Notes.propTypes = {
     book: PropTypes.object,
     notes: PropTypes.object,
     loadingNotes: PropTypes.bool,
+    deleteBook: PropTypes.func.isRequired,
+    deletingBook: PropTypes.number.isRequired,
     deleteNote: PropTypes.func.isRequired,
     deletingNote: PropTypes.number.isRequired,
     handleTagChange: PropTypes.func.isRequired,

@@ -24,6 +24,7 @@ class BookRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('b')
             ->andWhere('b.user = :val')
+            ->andWhere('b.deletedAt IS NULL')
             ->setParameter('val', $user)
             ->getQuery()
             ->getResult();
@@ -35,6 +36,7 @@ class BookRepository extends ServiceEntityRepository
             ->leftJoin('b.category', 'c')
             ->andWhere('c.name = :category')
             ->andWhere('b.user = :user')
+            ->andWhere('b.deletedAt IS NULL')
             ->setParameter('category', $category)
             ->setParameter('user', $user)
             ->getQuery()

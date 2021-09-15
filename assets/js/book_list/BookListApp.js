@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { getBooks, getNotesForBook, deleteNote, getTags, updateNoteTags, getCategories, updateBookCategories } from '../api/book_api';
+import { getBooks, getNotesForBook, deleteBook, deleteNote, getTags, updateNoteTags, getCategories, updateBookCategories } from '../api/book_api';
 import Book from "./books/Book";
 import Notes from "./notes/Notes";
 
@@ -14,6 +14,7 @@ const BookListApp = () => {
     const [loadingBooks, setLoadingBooks] = useState(true);
     const [loadingNotes, setLoadingNotes] = useState(false);
     const [deletingNote, setDeletingNote] = useState(0);
+    const [deletingBook, setDeletingBook] = useState(0);
     useEffect(() => {
         getBooks(getQueryStringCategory()).
             then((data) => {
@@ -62,6 +63,15 @@ const BookListApp = () => {
     const handleBookClick = (book, event) => {
         setActiveBook(book);
         getNotes(book);
+    }
+    const deleteSelectedBook = (book, event) => {
+        if (confirm('Delete this book?')) {
+            setDeletingBook(book.id);
+            deleteBook(book.id).then((data) => {
+                setDeletingBook(0);
+                window.location = '/books';
+            });
+        }
     }
     const deleteNoteFromBook = (note, event) => {
         if (confirm('Delete this note?')) {
@@ -118,16 +128,25 @@ const BookListApp = () => {
                 if (! response.ok) {
                     return response.json().then(response => {throw Error(response.error)});
                 }
-                return response;
+                return response.json();
             })
-            .then(() => {
-                updateBookCategory(bookId, categories);
+            .then((data) => {
+                console.log('categories', data.categories);
+                updateBookCategory(bookId, data.categories);
                 updateCategoryWhitelist(categories);
             });
     }
-    const updateBookCategory = (bookId, newCategories) => {
+    const updateBookCategory = (bookId, categories) => {
         const book = books.find(book => book.id === bookId);
-        book.categories = newCategories;
+        // let newCategories = [];
+        // categories.forEach((category, idx) => {
+        //     newCategories.push({
+        //         'id': idx,
+        //         'name': category
+        //     });
+        // })
+        console.log('updating book with categories', categories)
+        book.categories = categories;
     }
     const updateCategoryWhitelist = (newCategories) => {
         for (let category of newCategories) {
@@ -171,6 +190,8 @@ const BookListApp = () => {
                         book={activeBook}
                         notes={notes}
                         loadingNotes={loadingNotes}
+                        deleteBook={deleteSelectedBook}
+                        deletingBook={deletingBook}
                         deleteNote={deleteNoteFromBook}
                         deletingNote={deletingNote}
                         handleTagChange={handleTagChange}

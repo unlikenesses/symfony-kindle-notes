@@ -26,6 +26,15 @@ export function getNotesForTag(tagId) {
         });
 }
 
+export function deleteBook(bookId) {
+    return fetch('/api/books/' + bookId, {
+        method: 'DELETE'
+    })
+        .then(response => {
+            return response.json().then((data) => data);
+        });
+}
+
 export function deleteNote(noteId) {
     return fetch('/api/notes/' + noteId, {
         method: 'DELETE'
@@ -57,5 +66,6 @@ export function updateNoteTags(noteId, tags) {
 }
 
 export const apiErrors = {
-    10: 'You have exceeded the maximum amount of allowable tags for a user'
+    10: 'You have exceeded the maximum amount of allowable tags for a user',
+    20: 'You have exceeded the maximum amount of allowable categories for a user'
 };

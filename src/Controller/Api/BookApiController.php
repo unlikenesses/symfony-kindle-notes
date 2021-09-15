@@ -20,7 +20,7 @@ class BookApiController extends ApiController
     }
 
     /**
-     * @Route("/api/books/{category}", name="apiBooks")
+     * @Route("/api/books/{category}", name="apiBooks", methods="GET")
      */
     public function getBooks(?string $category): JsonResponse
     {
@@ -47,6 +47,17 @@ class BookApiController extends ApiController
     {
         return $this->em->getRepository(Book::class)
             ->findByCategoryAndUser($category, $user);
+    }
+
+    /**
+     * @Route("/api/books/{book}", name="apiDeleteBook", methods="DELETE")
+     */
+    public function deleteBook(Book $book): JsonResponse
+    {
+        $book->setDeletedAt(new \DateTime());
+        $this->em->flush();
+
+        return $this->createApiResponse(['message' => 'success']);
     }
 
     /**
