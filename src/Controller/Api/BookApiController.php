@@ -37,10 +37,30 @@ class BookApiController extends ApiController
         return $this->createApiResponse(['data' => $models]);
     }
 
+    /**
+     * @Route("/api/deleted/books", name="apiDeletedBooks", methods="GET")
+     */
+    public function getDeletedBooks(): JsonResponse
+    {
+        $books = $this->findDeletedBooksForUser($this->getUser());
+        $models = [];
+        foreach ($books as $book) {
+            $models[] = $this->createBookApiModel($book);
+        }
+
+        return $this->createApiResponse(['data' => $models]);
+    }
+
     private function findAllBooksForUser(User $user): array
     {
         return $this->em->getRepository(Book::class)
             ->findByUser($user);
+    }
+
+    private function findDeletedBooksForUser(User $user): array
+    {
+        return $this->em->getRepository(Book::class)
+            ->findDeletedByUser($user);
     }
 
     private function findAllBooksByCategoryForUser(string $category, User $user): array

@@ -23,6 +23,7 @@ Encore
     .addEntry('app', './assets/js/app.js')
     .addEntry('bookList', './assets/js/books.js')
     .addEntry('tagList', './assets/js/tags.js')
+    .addEntry('trash', './assets/js/trash.js')
     .addStyleEntry('auth', './assets/css/auth.scss')
     .addStyleEntry('books', './assets/css/books.scss')
 

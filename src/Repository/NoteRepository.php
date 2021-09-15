@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Book;
 use App\Entity\Note;
+use App\Entity\User;
 use App\ValueObject\NoteMetadata;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -29,6 +30,17 @@ class NoteRepository extends ServiceEntityRepository
             ->setParameter('book', $book)
             ->getQuery()
             ->getResult();
+    }
+
+    public function findDeletedByUser(User $user): array
+    {
+        return [];
+//        return $this->createQueryBuilder('b')
+//            ->andWhere('b.user = :val')
+//            ->andWhere('b.deletedAt IS NOT NULL')
+//            ->setParameter('val', $user)
+//            ->getQuery()
+//            ->getResult();
     }
 
     public function findNoteInBook(NoteMetadata $noteMetadata, Book $book): ?Note

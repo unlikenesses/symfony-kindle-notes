@@ -5,10 +5,24 @@ export function getBooks(category) {
         });
 }
 
+export function getDeletedBooks() {
+    return fetch('/api/deleted/books')
+        .then(response => {
+            return response.json().then((data) => data.data);
+        });
+}
+
 export function getNotesForBook(bookId) {
     return fetch('/api/books/' + bookId + '/notes')
         .then(response => {
             return response.json().then((data) => data);
+        });
+}
+
+export function getDeletedNotes() {
+    return fetch('/api/deleted/notes')
+        .then(response => {
+            return response.json().then((data) => data.data);
         });
 }
 

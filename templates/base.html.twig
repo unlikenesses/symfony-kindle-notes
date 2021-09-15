@@ -34,6 +34,11 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link{% if route == 'trash' %} active{% endif %}" href="{{ path('trash') }}">
+                    Trash
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="{{ path('truncate_db') }}">
                     Truncate DB!
                 </a>
