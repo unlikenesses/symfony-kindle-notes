@@ -14,7 +14,7 @@ class CategoryApiController extends ApiController
 {
     private $entityManager;
 
-    private const MAX_CATEGORIES = 10;
+    private const MAX_CATEGORIES = 50;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
@@ -50,7 +50,10 @@ class CategoryApiController extends ApiController
         }
         $categoryIds = $this->syncBookCategories($book, $categories);
 
-        return $this->createApiResponse(['message' => 'success']);
+        return $this->createApiResponse([
+            'message' => 'success',
+            'categories' => $this->createBookCategories($book),
+        ]);
     }
 
     private function addingCategory(Book $book, array $categories): bool

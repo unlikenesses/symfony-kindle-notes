@@ -3,7 +3,7 @@
 namespace App\Controller\Api;
 
 use App\Entity\Note;
-use Doctrine\ORM\EntityManagerInterface;;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 

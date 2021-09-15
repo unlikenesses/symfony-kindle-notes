@@ -37,14 +37,19 @@ class ApiController extends AbstractController
         $model->id = $book->getId();
         $model->title = $book->getTitle();
         $model->author = $book->getAuthorFirstName() . ' ' . $book->getAuthorLastName();
-        $model->categories = array_map(function (Category $category) {
+        $model->categories = $this->createBookCategories($book);
+
+        return $model;
+    }
+
+    protected function createBookCategories(Book $book): array
+    {
+        return array_map(function (Category $category) {
             return [
                 'id' => $category->getId(),
                 'name' => $category->getName(),
             ];
         }, $book->getCategory()->toArray());
-
-        return $model;
     }
 
     protected function createNoteApiModel(Note $note, bool $withBook = false): NoteApiModel
