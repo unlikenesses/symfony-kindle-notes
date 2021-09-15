@@ -58,13 +58,15 @@ class NoteSaver
         $numNotes = 0;
         $metadata = $book->getMetadata();
         $bookToAdd = $this->bookRepository->findOneByTitleString($metadata['titleString']);
+        /** @var User $user */
+        $user = $this->entityManager->getRepository(User::class)->find($userId);
         if (!$bookToAdd) {
             $newBook = true;
-            $bookToAdd = $this->addBook($metadata, $userId);
+            $bookToAdd = $this->addBook($metadata, $user);
         }
 
         foreach ($book->getNotes() as $note) {
-            if ($this->saveImportedNote($note, $bookToAdd)) {
+            if ($this->saveImportedNote($note, $bookToAdd, $user)) {
                 $numNotes++;
             }
         }
@@ -72,10 +74,8 @@ class NoteSaver
         return ['newBook' => $newBook, 'numNotes' => $numNotes];
     }
 
-    private function addBook(array $metadata, int $userId): Book
+    private function addBook(array $metadata, User $user): Book
     {
-        /** @var User $user */
-        $user = $this->entityManager->getRepository(User::class)->find($userId);
         /** @var AuthorObject $author */
         $author = $metadata['author'];
         $book = new Book();
@@ -90,7 +90,7 @@ class NoteSaver
         return $book;
     }
 
-    private function saveImportedNote(NoteObject $note, Book $book): bool
+    private function saveImportedNote(NoteObject $note, Book $book, User $user): bool
     {
         if ($note->getText() &&
             $note->getMetadata() &&
@@ -131,7 +131,8 @@ class NoteSaver
                 ->setNote($noteText)
                 ->setType($noteType)
                 ->setBook($book)
-                ->setHash($hash);
+                ->setHash($hash)
+                ->setUser($user);
             $this->entityManager->persist($newNote);
             $this->entityManager->flush();
 

@@ -63,6 +63,12 @@ class Note
     private $deletedAt;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="books")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
+    /**
      * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="notes")
      */
     private $tags;
@@ -169,6 +175,18 @@ class Note
     public function setDeletedAt(?\DateTimeInterface $deletedAt): self
     {
         $this->deletedAt = $deletedAt;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
