@@ -34,13 +34,12 @@ class NoteRepository extends ServiceEntityRepository
 
     public function findDeletedByUser(User $user): array
     {
-        return [];
-//        return $this->createQueryBuilder('b')
-//            ->andWhere('b.user = :val')
-//            ->andWhere('b.deletedAt IS NOT NULL')
-//            ->setParameter('val', $user)
-//            ->getQuery()
-//            ->getResult();
+        return $this->createQueryBuilder('b')
+            ->andWhere('b.user = :val')
+            ->andWhere('b.deletedAt IS NOT NULL')
+            ->setParameter('val', $user)
+            ->getQuery()
+            ->getResult();
     }
 
     public function findNoteInBook(NoteMetadata $noteMetadata, Book $book): ?Note

@@ -7,6 +7,8 @@ const TrashBooks = (props) => {
             <thead>
                 <tr>
                     <th>Books</th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
         );
