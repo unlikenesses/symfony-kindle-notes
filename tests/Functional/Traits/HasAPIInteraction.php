@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Functional\API;
+namespace App\Tests\Functional\Traits;
 
 trait HasAPIInteraction
 {

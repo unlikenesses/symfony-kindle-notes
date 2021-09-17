@@ -5,10 +5,10 @@ namespace App\Tests\Functional;
 use App\Entity\Book;
 use App\Entity\Note;
 use App\Entity\User;
-use App\DataFixtures\AppFixtures;
 use App\Repository\BookRepository;
 use App\Repository\NoteRepository;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManager;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -21,25 +21,22 @@ class FunctionalTestCase extends WebTestCase
     protected NoteRepository $noteRepository;
     protected UserRepository $userRepository;
     protected KernelBrowser $client;
+    protected EntityManager $entityManager;
 
     protected function setUp(): void
     {
         $this->client = self::createClient();
 
-        $entityManager = $this->client->getContainer()
+        $this->entityManager = $this->client->getContainer()
             ->get('doctrine')
             ->getManager();
 
-        $this->bookRepository = $entityManager
+        $this->bookRepository = $this->entityManager
             ->getRepository(Book::class);
-        $this->noteRepository = $entityManager
+        $this->noteRepository = $this->entityManager
             ->getRepository(Note::class);
-        $this->userRepository = $entityManager
+        $this->userRepository = $this->entityManager
             ->getRepository(User::class);
-
-        $this->loadFixtures([
-            AppFixtures::class,
-        ]);
     }
 
     protected function loginUser()

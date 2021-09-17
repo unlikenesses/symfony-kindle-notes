@@ -67,4 +67,13 @@ class NoteRepository extends ServiceEntityRepository
 
         return $query->getQuery()->getOneOrNullResult();
     }
+
+    public function countNotes(): int
+    {
+        return $this->createQueryBuilder('n')
+            ->select('COUNT(n.id)')
+            ->andWhere('n.deletedAt IS NULL')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

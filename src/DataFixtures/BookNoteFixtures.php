@@ -9,7 +9,7 @@ use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class AppFixtures extends Fixture
+class BookNoteFixtures extends Fixture
 {
     protected const TEST_DATA = [
         'books' => [
@@ -88,12 +88,13 @@ class AppFixtures extends Fixture
                 ->setUser($this->user);
             foreach ($bookData['notes'] as $noteData) {
                 $note = new Note();
-                $note->setBook($book);
-                $note->setType($noteData['type']);
-                $note->setPage($noteData['page']);
-                $note->setNote($noteData['note']);
-                $note->setDate(new DateTime($noteData['date']));
-                $note->setHash($this->calculateNoteHash($noteData));
+                $note->setBook($book)
+                    ->setType($noteData['type'])
+                    ->setPage($noteData['page'])
+                    ->setNote($noteData['note'])
+                    ->setDate(new DateTime($noteData['date']))
+                    ->setHash($this->calculateNoteHash($noteData))
+                    ->setUser($this->user);
                 $manager->persist($note);
             }
             $manager->persist($book);

@@ -2,11 +2,21 @@
 
 namespace App\Tests\Functional\API;
 
+use App\DataFixtures\BookNoteFixtures;
 use App\Tests\Functional\FunctionalTestCase;
+use App\Tests\Functional\Traits\HasAPIInteraction;
 
 class NoteAPITest extends FunctionalTestCase
 {
     use HasAPIInteraction;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->loadFixtures([
+            BookNoteFixtures::class,
+        ]);
+    }
 
     public function testDeletingANoteSoftDeletesIt()
     {

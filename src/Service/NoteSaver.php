@@ -13,7 +13,6 @@ use App\ValueObject\BookList as BookListObject;
 use App\Repository\BookRepository;
 use App\Repository\NoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Security\Core\Security;
 
 class NoteSaver
 {
@@ -32,17 +31,11 @@ class NoteSaver
      */
     private $noteRepository;
 
-    /**
-     * @var Security
-     */
-    private $security;
-
-    public function __construct(EntityManagerInterface $entityManager, BookRepository $bookRepository, NoteRepository $noteRepository, Security $security)
+    public function __construct(EntityManagerInterface $entityManager, BookRepository $bookRepository, NoteRepository $noteRepository)
     {
         $this->entityManager = $entityManager;
         $this->bookRepository = $bookRepository;
         $this->noteRepository = $noteRepository;
-        $this->security = $security;
     }
 
     public function storeNotes(BookListObject $parsedBooks, int $userId): void

@@ -2,7 +2,6 @@
 
 namespace App\MessageHandler;
 
-use App\Entity\User;
 use App\Message\ImportFile;
 use App\Service\FileHandler;
 use App\Service\NoteSaver;
