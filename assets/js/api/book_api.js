@@ -49,6 +49,16 @@ export function deleteBook(bookId) {
         });
 }
 
+export function updateBookTitle(bookId, title) {
+    return fetch('/api/books/' + bookId + '/title', {
+        method: 'PUT',
+        body: JSON.stringify(title)
+    })
+        .then(response => {
+            return response.json().then((data) => data);
+        });
+}
+
 export function deleteNote(noteId) {
     return fetch('/api/notes/' + noteId, {
         method: 'DELETE'

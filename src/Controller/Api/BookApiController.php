@@ -7,6 +7,7 @@ use App\Entity\Category;
 use App\Entity\Note;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -109,5 +110,19 @@ class BookApiController extends ApiController
         $noteRepo = $this->em->getRepository(Note::class);
 
         return $noteRepo->getUndeletedNotesForBook($book);
+    }
+
+    /**
+     * @Route("/api/books/{book}/title", name="apiBookTitle", methods="PUT")
+     */
+    public function updateBookTitle(Book $book, Request $request): JsonResponse
+    {
+        $title = json_decode($request->getContent());
+        $book->setTitle($title);
+        $this->em->flush();
+
+        return $this->createApiResponse([
+            'message' => 'success',
+        ]);
     }
 }

@@ -1,25 +1,12 @@
 import React, {useRef} from 'react';
 import PropTypes from 'prop-types';
+import BookHeader from "./BookHeader";
 import Note from './Note';
 import Tags from '@yaireo/tagify/dist/react.tagify';
 import {apiErrors} from "../../api/book_api";
 
-function BookTitle(props) {
-    const { book } = props;
-    if (book) {
-        return (
-            <div>
-                <h2>{book.title}</h2>
-                <h3>{book.author}</h3>
-            </div>
-        )
-    } else {
-        return null;
-    }
-}
-
-const Notes = (props) => {
-    const { tagWhitelist, categoryWhitelist, book, loadingNotes, notes, deleteBook, deletingBook, deleteNote, deletingNote, handleTagChange, handleCategoryChange } = props;
+const NoteSection = (props) => {
+    const { tagWhitelist, categoryWhitelist, book, loadingNotes, notes, deleteBook, deletingBook, deleteNote, deletingNote, handleTagChange, handleCategoryChange, saveBookTitle } = props;
     const tagifyRef = useRef();
     const deletingText = deletingBook === book.id ? 'Deleting...' : 'Delete Book';
     const categoryChanged = (e) => {
@@ -44,7 +31,10 @@ const Notes = (props) => {
     if (loadingNotes) {
         return (
             <div>
-                <BookTitle book={book}/>
+                <BookHeader
+                    book={book}
+                    saveBookTitle={saveBookTitle}
+                />
                 <div className="d-flex justify-content-center mt-5">
                     <div className="spinner-border" role="status">
                         <span className="sr-only">Loading...</span>
@@ -56,7 +46,10 @@ const Notes = (props) => {
     if (notes.data) {
         return (
             <div>
-                <BookTitle book={book}/>
+                <BookHeader
+                    book={book}
+                    saveBookTitle={saveBookTitle}
+                />
                 <Tags
                     tagifyRef={tagifyRef}
                     value={book.categories.map(category => category.name).join(',')}
@@ -97,9 +90,9 @@ const Notes = (props) => {
     return <div></div>
 }
 
-export default Notes;
+export default NoteSection;
 
-Notes.propTypes = {
+NoteSection.propTypes = {
     tagWhitelist: PropTypes.array.isRequired,
     categoryWhitelist: PropTypes.array.isRequired,
     book: PropTypes.object,
@@ -110,5 +103,6 @@ Notes.propTypes = {
     deleteNote: PropTypes.func.isRequired,
     deletingNote: PropTypes.number.isRequired,
     handleTagChange: PropTypes.func.isRequired,
-    handleCategoryChange: PropTypes.func.isRequired
+    handleCategoryChange: PropTypes.func.isRequired,
+    saveBookTitle: PropTypes.func.isRequired
 };

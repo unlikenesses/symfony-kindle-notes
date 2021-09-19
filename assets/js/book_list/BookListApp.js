@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import { getBooks, getNotesForBook, deleteBook, deleteNote, getTags, updateNoteTags, getCategories, updateBookCategories } from '../api/book_api';
-import Book from "./books/Book";
-import Notes from "./notes/Notes";
+import { getBooks, getNotesForBook, deleteBook, deleteNote, getTags, updateNoteTags, getCategories, updateBookCategories, updateBookTitle } from '../api/book_api';
+import NavBook from "./nav/NavBook";
+import NoteSection from "./main/NoteSection";
 
 
 const BookListApp = () => {
@@ -157,6 +157,27 @@ const BookListApp = () => {
             }
         }
     }
+    const saveBookTitle = (book, title) => {
+        return updateBookTitle(book.id, title)
+            .then((data) => {
+                if (data.message === 'success') {
+                    book.title = title;
+                    updateBook(book);
+                }
+            });
+    }
+    const updateBook = (book) => {
+        let index = books.findIndex(b => b.id === book.id);
+        if (index === -1) {
+            console.error('Error updating book: no book with ID ' + book.id + ' found');
+        } else {
+            setBooks([
+                ...books.slice(0, index),
+                Object.assign({}, books[index], book),
+                ...books.slice(index+1)
+            ]);
+        }
+    }
     if (loadingBooks) {
         return (
             <div className="d-flex justify-content-center mt-5">
@@ -172,7 +193,7 @@ const BookListApp = () => {
                 <div className="col-2 border-right">
                     {categoryHeader()}
                     {books.map((row) => (
-                        <Book
+                        <NavBook
                             key={row.id}
                             title={row.title}
                             author={row.author}
@@ -184,7 +205,7 @@ const BookListApp = () => {
                     ))}
                 </div>
                 <div className="col p-3">
-                    <Notes
+                    <NoteSection
                         tagWhitelist={tagWhitelist}
                         categoryWhitelist={categoryWhitelist}
                         book={activeBook}
@@ -196,6 +217,7 @@ const BookListApp = () => {
                         deletingNote={deletingNote}
                         handleTagChange={handleTagChange}
                         handleCategoryChange={handleCategoryChange}
+                        saveBookTitle={saveBookTitle}
                     />
                 </div>
             </div>

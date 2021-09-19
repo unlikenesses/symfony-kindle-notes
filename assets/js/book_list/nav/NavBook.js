@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Book = (props) => {
+const NavBook = (props) => {
     return (
         <div className="border-bottom p-3 book" onClick={props.onClick}>
             <h5>{props.title}</h5>
@@ -21,9 +21,9 @@ const Book = (props) => {
     )
 }
 
-export default Book;
+export default NavBook;
 
-Book.propTypes = {
+NavBook.propTypes = {
     title: PropTypes.string,
     author: PropTypes.string,
     categories: PropTypes.array,
