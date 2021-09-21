@@ -61,6 +61,6 @@ class FunctionalTestCase extends WebTestCase
     {
         $response = $this->getClientResponse();
 
-        return $response->data;
+        return $response->data ?? null;
     }
 }

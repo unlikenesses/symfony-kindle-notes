@@ -3,6 +3,7 @@
 namespace App\Tests\Functional\Import;
 
 use App\DataFixtures\UserFixtures;
+use App\Entity\Book;
 use App\Service\FileHandler;
 use App\Service\FileReader;
 use App\Service\NoteSaver;
@@ -125,6 +126,29 @@ class ImportTest extends FunctionalTestCase
         // Confirm note count has not increased
         $noteCount = $this->noteRepository->countNotes();
         $this->assertEquals(self::MINIMAL_CLIPPINGS_NOTE_COUNT - 1, $noteCount);
+    }
+
+    public function testReimportingWhenBookTitleChangedDoesNotRestoreOriginalTitle()
+    {
+        // Import
+        $this->doImport(self::MINIMAL_CLIPPINGS_FILE);
+        // Get first book
+        $this->loginUser();
+        $books = $this->getBooks();
+        $firstBook = $books[0];
+        $oldTitle= $firstBook->title;
+        // Update its title
+        $newTitle = 'here is a new title';
+        $this->updateBookTitle($firstBook->id, $newTitle);
+        $books = $this->getBooks();
+        $firstBook = $books[0];
+        $this->assertSame($newTitle, $firstBook->title);
+        // Now reimport
+        $this->doImport(self::MINIMAL_CLIPPINGS_FILE);
+        // Get first book
+        $books = $this->getBooks();
+        $firstBook = $books[0];
+        $this->assertSame($newTitle, $firstBook->title);
     }
 
     private function doImport(string $filename): BookList
