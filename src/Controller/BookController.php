@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Book;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -10,6 +11,7 @@ class BookController extends AbstractController
 {
     /**
      * @Route("/books", name="books")
+     * @Route("/books/book/{book}", name="singleBoook")
      * @Route("/books/category/{category}", name="booksCategory")
      */
     public function index(): Response

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { getBooks, getNotesForBook, deleteBook, deleteNote, getTags, updateNoteTags, getCategories, updateBookCategories, updateBookTitle } from '../api/book_api';
+import { getBooks, getSingleBook, getNotesForBook, deleteBook, deleteNote, getTags, updateNoteTags, getCategories, updateBookCategories, updateBookTitle } from '../api/book_api';
 import NavBook from "./nav/NavBook";
 import NoteSection from "./main/NoteSection";
 
@@ -16,11 +16,17 @@ const BookListApp = () => {
     const [deletingNote, setDeletingNote] = useState(0);
     const [deletingBook, setDeletingBook] = useState(0);
     useEffect(() => {
-        getBooks(getQueryStringCategory()).
-            then((data) => {
-                setBooks(data);
-                setLoadingBooks(false);
-            });
+        let path = window.location.pathname.split('/');
+        let p;
+        if (path.length > 2 && path[2] === 'book') {
+            p = getSingleBook(path[3]);
+        } else {
+            p = getBooks(getQueryStringCategory());
+        }
+        p.then((data) => {
+            setBooks(data);
+            setLoadingBooks(false);
+        });
         getTags().
             then((data) => {
                 const tags = data.tags.map(tag => tag.name);

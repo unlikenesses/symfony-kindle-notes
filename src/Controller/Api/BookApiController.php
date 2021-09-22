@@ -21,7 +21,7 @@ class BookApiController extends ApiController
     }
 
     /**
-     * @Route("/api/books/{category}", name="apiBooks", methods="GET")
+     * @Route("/api/books/category/{category}", name="apiBooks", methods="GET")
      */
     public function getBooks(?string $category): JsonResponse
     {
@@ -34,6 +34,18 @@ class BookApiController extends ApiController
         foreach ($books as $book) {
             $models[] = $this->createBookApiModel($book);
         }
+
+        return $this->createApiResponse(['data' => $models]);
+    }
+
+    /**
+     * @Route("/api/books/book/{book}", name="apiSingleBook", methods="GET")
+     */
+    public function getBook(Book $book): JsonResponse
+    {
+        $models = [
+            $this->createBookApiModel($book),
+        ];
 
         return $this->createApiResponse(['data' => $models]);
     }

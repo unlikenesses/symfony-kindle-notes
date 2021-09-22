@@ -1,5 +1,12 @@
 export function getBooks(category) {
-    return fetch('/api/books/' + category)
+    return fetch('/api/books/category/' + category)
+        .then(response => {
+            return response.json().then((data) => data.data);
+        });
+}
+
+export function getSingleBook(bookId) {
+    return fetch('/api/books/book/' + bookId)
         .then(response => {
             return response.json().then((data) => data.data);
         });

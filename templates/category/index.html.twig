@@ -23,7 +23,9 @@
                     {% for book in details.books %}
                         <tr>
                             <td>
-                            {{ book.title }} ({{ book.authorFirstName ~ ' ' ~ book.authorLastName }})
+                                <a href="/books/book/{{ book.id }}">
+                                    {{ book.title }} ({{ book.authorFirstName ~ ' ' ~ book.authorLastName }})
+                                </a>
                             </td>
                         </tr>
                     {% endfor %}
