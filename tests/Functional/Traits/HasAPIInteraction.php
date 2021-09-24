@@ -6,7 +6,7 @@ trait HasAPIInteraction
 {
     protected function getBooks(string $category = 'null')
     {
-        $this->client->request('GET', '/api/books/' . $category);
+        $this->client->request('GET', '/api/books/category/' . $category);
 
         return $this->getData();
     }
