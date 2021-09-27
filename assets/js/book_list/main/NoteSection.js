@@ -4,6 +4,7 @@ import BookHeader from "./BookHeader";
 import Note from './Note';
 import Tags from '@yaireo/tagify/dist/react.tagify';
 import {apiErrors} from "../../api/book_api";
+import Spinner from "../../common/Spinner";
 
 const NoteSection = (props) => {
     const { tagWhitelist, categoryWhitelist, book, loadingNotes, notes, deleteBook, deletingBook, deleteNote, deletingNote, handleTagChange, handleCategoryChange, saveBookTitle } = props;
@@ -35,11 +36,7 @@ const NoteSection = (props) => {
                     book={book}
                     saveBookTitle={saveBookTitle}
                 />
-                <div className="d-flex justify-content-center mt-5">
-                    <div className="spinner-border" role="status">
-                        <span className="sr-only">Loading...</span>
-                    </div>
-                </div>
+                <Spinner />
             </div>
         )
     }
@@ -63,12 +60,12 @@ const NoteSection = (props) => {
                     whitelist={categoryWhitelist}
                     onInvalid={e => invalidTag(e)}
                 />
-                <p className="mt-2 d-flex justify-content-between">
-                    <span>
+                <p className="mt-2 mb-4 flex justify-between">
+                    <span className="text-gray-600">
                         {notes.numHighlights} Highlights | {notes.numNotes} Notes
                     </span>
                     <span>
-                        <a className="btn btn-link p-0"
+                        <a className="cursor-pointer hover:underline text-blue-400"
                            onClick={(event) => deleteBook(book, event)}>
                             {deletingText}
                         </a>

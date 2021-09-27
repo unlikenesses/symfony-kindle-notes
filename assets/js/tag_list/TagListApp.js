@@ -42,25 +42,23 @@ const TagListApp = () => {
         )
     }
     return (
-        <div className="container-fluid p-0">
-            <div className="row no-gutters">
-                <div className="col-2 border-right">
-                    {tags.map((row) => (
-                        <Tag
-                            key={row.id}
-                            name={row.name}
-                            active={activeTag != null && activeTag.id === row.id}
-                            onClick={(event) => handleTagClick(row, event)}
-                        />
-                    ))}
-                </div>
-                <div className="col p-3">
-                    <Notes
-                        tag={activeTag}
-                        notes={notes}
-                        loadingNotes={loadingNotes}
+        <div className="grid grid-cols-10">
+            <div className="col-span-2 border-r border-gray-400">
+                {tags.map((row) => (
+                    <Tag
+                        key={row.id}
+                        name={row.name}
+                        active={activeTag != null && activeTag.id === row.id}
+                        onClick={(event) => handleTagClick(row, event)}
                     />
-                </div>
+                ))}
+            </div>
+            <div className="col-span-8 p-3">
+                <Notes
+                    tag={activeTag}
+                    notes={notes}
+                    loadingNotes={loadingNotes}
+                />
             </div>
         </div>
     );

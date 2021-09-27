@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 const Tag = (props) => {
     return (
-        <div className="border-bottom p-3 book" onClick={props.onClick}>
+        <div className="border-b border-gray-400 p-5 cursor-pointer" onClick={props.onClick}>
             <h5>{props.name}</h5>
         </div>
     )

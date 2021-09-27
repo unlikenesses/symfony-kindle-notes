@@ -8,14 +8,14 @@ const BookHeader = (props) => {
     }
     if (book) {
         return (
-            <div>
-                <h2>
+            <div className="mb-2">
+                <h2 className="text-xl">
                     <EditableText
                         text={book.title}
                         saveText={handleBookTitleSave}
                     />
                 </h2>
-                <h3>{book.author}</h3>
+                <h3 className="text-lg text-gray-600">{book.author}</h3>
             </div>
         )
     } else {

@@ -1,28 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Note from './Note';
+import Spinner from "../../common/Spinner";
 
 const Notes = (props) => {
     const { tag, loadingNotes, notes } = props;
     if (loadingNotes) {
         return (
             <div>
-                <h2>{tag.name}</h2>
-                <div className="d-flex justify-content-center mt-5">
-                    <div className="spinner-border" role="status">
-                        <span className="sr-only">Loading...</span>
-                    </div>
-                </div>
+                <h2 className="text-lg">{tag.name}</h2>
+                <Spinner marginTop={12} />
             </div>
         )
     }
     if (notes.data) {
-        console.log(notes.data);
         return (
             <div>
-                <h2>{tag.name}</h2>
-                <p>
-                    {notes.numHighlights} Highlights | {notes.numNotes} Notes
+                <h2 className="text-lg">{tag.name}</h2>
+                <p className="mt-2 mb-4 flex justify-between">
+                    <span className="text-gray-600">
+                        {notes.numHighlights} Highlights | {notes.numNotes} Notes
+                    </span>
                 </p>
                 {notes.data.map((note) => (
                     <Note

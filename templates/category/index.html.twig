@@ -8,18 +8,18 @@
 {% endblock %}
 
 {% block body %}
-    <div>
-        <table class="table">
-            <tbody>
+    <div class="p-8">
+        <table class="min-w-full divide-y divide-gray-200">
+            <tbody class="bg-white divide-y divide-gray-200">
             {% for category, details in categories %}
             <tr>
-                <td>
-                    <h4>
+                <td class="py-4">
+                    <h4 class="text-lg font-bold mb-1">
                         <a href="/books/category/{{ category }}">
                             {{ category }}
                         </a>
                     </h4>
-                    <table class="table table-striped table-hover">
+                    <table class="bg-white divide-y divide-gray-200">
                     {% for book in details.books %}
                         <tr>
                             <td>

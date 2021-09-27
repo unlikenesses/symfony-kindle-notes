@@ -5,7 +5,7 @@ import Tags from '@yaireo/tagify/dist/react.tagify';
 
 const Note = (props) => {
     const { tagWhitelist, note, deleteNote, deletingNote, handleTagChange } = props;
-    const deletingText = deletingNote === note.id ? 'Deleting...' : 'Delete';
+    const deletingText = deletingNote === note.id ? 'Deleting...' : 'Delete Note';
     const tagifyRef = useRef();
     const tagChanged = (e) => {
         handleTagChange(note.id, e.detail.value)
@@ -27,8 +27,8 @@ const Note = (props) => {
         alert(displayMessage);
     }
     return (
-        <div className="card mb-3">
-            <div className="card-header d-flex justify-content-between">
+        <div className="rounded border border-gray-200 overflow-hidden shadow-md mb-6">
+            <div className="bg-gray-50 border-b border-gray-200 p-4 flex justify-between text-gray-600 text-sm">
                 <div>
                     {note.page ? 'Page ' + note.page : ''}
                     {note.page && note.location ? ' ' : ''}
@@ -38,29 +38,27 @@ const Note = (props) => {
                     {note.date}
                 </div>
             </div>
-            <div className="card-body">
+            <div className="p-4">
                 <p className="note">{note.note}</p>
             </div>
-            <div className="card-footer">
-                <div className="note-footer">
-                    <Tags
-                        tagifyRef={tagifyRef}
-                        value={note.tags.map(tag => tag.name).join(',')}
-                        onChange={e => tagChanged(e)}
-                        settings={{
-                            placeholder: 'Tags...',
-                            maxTags: 3,
-                            backspace: 'edit',
-                            pattern: /^[a-zA-Z0-9\s]{3,20}$/
-                        }}
-                        whitelist={tagWhitelist}
-                        onInvalid={e => invalidTag(e)}
-                    />
-                    <a className="btn btn-link p-0"
-                       onClick={(event) => deleteNote(note, event)}>
-                        {deletingText}
-                    </a>
-                </div>
+            <div className="p-4 bg-gray-50 border-t border-gray-200 flex justify-between">
+                <Tags
+                    tagifyRef={tagifyRef}
+                    value={note.tags.map(tag => tag.name).join(',')}
+                    onChange={e => tagChanged(e)}
+                    settings={{
+                        placeholder: 'Tags...',
+                        maxTags: 3,
+                        backspace: 'edit',
+                        pattern: /^[a-zA-Z0-9\s]{3,20}$/
+                    }}
+                    whitelist={tagWhitelist}
+                    onInvalid={e => invalidTag(e)}
+                />
+                <a className="cursor-pointer hover:underline text-blue-400"
+                   onClick={(event) => deleteNote(note, event)}>
+                    {deletingText}
+                </a>
             </div>
         </div>
     )

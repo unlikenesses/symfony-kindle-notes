@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 
 const NavBook = (props) => {
     return (
-        <div className="border-bottom p-3 book" onClick={props.onClick}>
+        <div className="border-b border-gray-400 p-5 cursor-pointer" onClick={props.onClick}>
             <h5>{props.title}</h5>
-            <h6>{props.author}</h6>
-            <div className="d-flex justify-content-start flex-wrap">
+            <h6 className="text-gray-600 mb-2">{props.author}</h6>
+            <div className="flex justify-start flex-wrap">
             {props.categories.map(category =>
                 <div
                     key={category.id}
-                    className="badge badge-pill badge-primary mr-1 mb-1"
+                    className="bg-blue-500 hover:bg-blue-700 text-sm text-white py-1 px-3 rounded-full mr-1 mb-1"
                     onClick={e => props.onCategoryPillClick(category.name)}
                 >
                     {category.name}

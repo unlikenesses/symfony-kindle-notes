@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { getBooks, getSingleBook, getNotesForBook, deleteBook, deleteNote, getTags, updateNoteTags, getCategories, updateBookCategories, updateBookTitle } from '../api/book_api';
 import NavBook from "./nav/NavBook";
 import NoteSection from "./main/NoteSection";
+import Spinner from "../common/Spinner";
 
 
 const BookListApp = () => {
@@ -39,7 +40,7 @@ const BookListApp = () => {
     }, []);
     const categoryHeader = () => {
         if (activeCategory !== '') {
-            return <p className="border-bottom p-3">
+            return <p className="border-b border-gray-400 p-3">
                 Category: <mark>{decodeURIComponent(activeCategory)}</mark>
             </p>;
         }
@@ -186,46 +187,40 @@ const BookListApp = () => {
     }
     if (loadingBooks) {
         return (
-            <div className="d-flex justify-content-center mt-5">
-                <div className="spinner-border" role="status">
-                    <span className="sr-only">Loading...</span>
-                </div>
-            </div>
+            <Spinner marginTop={28} />
         )
     }
     return (
-        <div className="container-fluid p-0">
-            <div className="row no-gutters">
-                <div className="col-2 border-right">
-                    {categoryHeader()}
-                    {books.map((row) => (
-                        <NavBook
-                            key={row.id}
-                            title={row.title}
-                            author={row.author}
-                            categories={row.categories}
-                            active={activeBook != null && activeBook.id === row.id}
-                            onClick={(event) => handleBookClick(row, event)}
-                            onCategoryPillClick={onCategoryPillClick}
-                        />
-                    ))}
-                </div>
-                <div className="col p-3">
-                    <NoteSection
-                        tagWhitelist={tagWhitelist}
-                        categoryWhitelist={categoryWhitelist}
-                        book={activeBook}
-                        notes={notes}
-                        loadingNotes={loadingNotes}
-                        deleteBook={deleteSelectedBook}
-                        deletingBook={deletingBook}
-                        deleteNote={deleteNoteFromBook}
-                        deletingNote={deletingNote}
-                        handleTagChange={handleTagChange}
-                        handleCategoryChange={handleCategoryChange}
-                        saveBookTitle={saveBookTitle}
+        <div className="grid grid-cols-10">
+            <div className="col-span-2 border-r border-gray-400">
+                {categoryHeader()}
+                {books.map((row) => (
+                    <NavBook
+                        key={row.id}
+                        title={row.title}
+                        author={row.author}
+                        categories={row.categories}
+                        active={activeBook != null && activeBook.id === row.id}
+                        onClick={(event) => handleBookClick(row, event)}
+                        onCategoryPillClick={onCategoryPillClick}
                     />
-                </div>
+                ))}
+            </div>
+            <div className="col-span-8 p-3">
+                <NoteSection
+                    tagWhitelist={tagWhitelist}
+                    categoryWhitelist={categoryWhitelist}
+                    book={activeBook}
+                    notes={notes}
+                    loadingNotes={loadingNotes}
+                    deleteBook={deleteSelectedBook}
+                    deletingBook={deletingBook}
+                    deleteNote={deleteNoteFromBook}
+                    deletingNote={deletingNote}
+                    handleTagChange={handleTagChange}
+                    handleCategoryChange={handleCategoryChange}
+                    saveBookTitle={saveBookTitle}
+                />
             </div>
         </div>
     );

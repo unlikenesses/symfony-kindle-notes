@@ -13,7 +13,7 @@ Encore
     .setPublicPath('/build')
     // only needed for CDN's or sub-directory deploy
     //.setManifestKeyPrefix('build/')
-
+    .enablePostCssLoader()
     /*
      * ENTRY CONFIG
      *
@@ -26,9 +26,6 @@ Encore
     .addEntry('trash', './assets/js/trash.js')
     .addStyleEntry('auth', './assets/css/auth.scss')
     .addStyleEntry('books', './assets/css/books.scss')
-
-    // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
-    .enableStimulusBridge('./assets/controllers.json')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()

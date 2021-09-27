@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from "prop-types";
+import Spinner from "../common/Spinner";
 
 const TrashNotes = (props) => {
     const tableHead = () => {
         return (
-            <thead>
+            <thead className="min-w-full divide-y divide-gray-200">
                 <tr>
                     <th>Notes</th>
                     <th></th>
@@ -14,25 +15,21 @@ const TrashNotes = (props) => {
     }
     if (props.loadingNotes) {
         return (
-            <div className="row no-gutters">
+            <div className="">
                 <table className="table table-hover">
                     {tableHead()}
-                    <tbody>
-                        <div className="d-flex justify-content-center mt-5">
-                            <div className="spinner-border" role="status">
-                                <span className="sr-only">Loading...</span>
-                            </div>
-                        </div>
+                    <tbody className="divide-y divide-gray-200">
+                        <Spinner marginTop={2} />
                     </tbody>
                 </table>
             </div>
         );
     } else {
         return (
-            <div className="row no-gutters">
+            <div className="">
                 <table className="table table-hover">
                     {tableHead()}
-                    <tbody>
+                    <tbody className="divide-y divide-gray-200">
                     {props.notes.map((row) => (
                         <tr
                             key={row.id}

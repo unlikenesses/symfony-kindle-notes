@@ -3,16 +3,14 @@
 {% block title %}Import{% endblock %}
 
 {% block body %}
-    <div class="container mt-4">
+    <div class="p-8 mt-4">
         <form method="post" enctype="multipart/form-data" class="">
             <input type="hidden" name="token" value="{{ csrf_token('import') }}">
             <div class="form-group">
-                <div class="custom-file">
-                    <input type="file" name="clippings_file" class="custom-file-input" required>
-                    <label class="custom-file-label" for="clippings_file">Clippings File</label>
-                </div>
+                <label class="text-lg" for="clippings_file">Clippings File:</label>
+                <input type="file" name="clippings_file" class="custom-file-input" required>
             </div>
-            <button class="btn btn-primary" type="submit">Import</button>
+            <button class="font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 py-2 px-4" type="submit">Import</button>
             {% for error in errors %}
                 <div class="alert alert-danger mt-3">{{ error }}</div>
             {% endfor %}

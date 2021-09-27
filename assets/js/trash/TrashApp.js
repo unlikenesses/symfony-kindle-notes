@@ -21,7 +21,7 @@ const TrashApp = () => {
             });
     }, []);
     return (
-        <div className="container-fluid">
+        <div className="p-8">
             <TrashBooks
                 books={books}
                 loadingBooks={loadingBooks}
