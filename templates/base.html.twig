@@ -42,16 +42,19 @@
     {% endif %}
             </div>
             <div class="hidden md:block">
-                <div class="ml-4 flex items-center md:ml-6">
+                <div class="relative inline-block text-left dropdown-toggle">
             {% if is_granted('ROLE_USER') %}
-                    <a class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white" href="#">
                         {{ app.user.username }}
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white" href="{{ path('app_profile') }}">Profile</a>
-                        <a class="dropdown-item px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white" href="{{ path('app_logout') }}">Logout</a>
+                    <div class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden menu">
+                        <div class="py-1">
+                            <a class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm" href="{{ path('app_profile') }}">Profile</a>
+                            <a class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm" href="{{ path('app_logout') }}">Logout</a>
+                        </div>
                     </div>
             {% else %}
+                <div class="ml-4 flex items-center md:ml-6">
                     <a class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white" href="{{ path('app_login') }}">Login</a>
                     <a class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white" href="{{ path('app_register') }}">Register</a>
             {% endif %}
@@ -61,6 +64,8 @@
     </div>
 </nav>
 {% block body %}{% endblock %}
-{% block javascripts %}{% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+{% endblock %}
 </body>
 </html>

@@ -4,24 +4,30 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    {{ encore_entry_link_tags('auth') }}
 {% endblock %}
 
 {% block body %}
-    <form class="form-signin" method="post">
+<div class="flex items-center justify-center p-8">
+    <form class="max-wd-m w-1/5" method="post">
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('register') }}">
         <h1 class="h3 mb-3 font-weight-normal">Register</h1>
-        <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" value="remember-me"> I agree to the Terms and Conditions
-            </label>
+        <div class="rounded-md shadow-sm -space-y-px">
+            <label for="inputEmail" class="sr-only">Email address</label>
+            <input type="email" name="email" id="inputEmail" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 sm:text-sm" placeholder="Email address" required autofocus>
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="password" name="password" id="inputPassword" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 sm:text-sm" placeholder="Password" required>
         </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">
+        <div class="my-4">
+            <div class="flex items-center">
+                <input type="checkbox" class="h-4 w-4 text-gray-600 focus:ring-gray-500 border-gray-300 rounded" name="terms">
+                <label for="terms" class="ml-2 block text-sm text-gray-900">
+                    I agree to the Terms and Conditions
+                </label>
+            </div>
+        </div>
+        <button class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500" type="submit">
             Register
         </button>
     </form>
+</div>
 {% endblock %}

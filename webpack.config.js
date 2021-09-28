@@ -24,7 +24,6 @@ Encore
     .addEntry('bookList', './assets/js/books.js')
     .addEntry('tagList', './assets/js/tags.js')
     .addEntry('trash', './assets/js/trash.js')
-    .addStyleEntry('auth', './assets/css/auth.scss')
     .addStyleEntry('books', './assets/css/books.scss')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
