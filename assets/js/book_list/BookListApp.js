@@ -4,7 +4,6 @@ import NavBook from "./nav/NavBook";
 import NoteSection from "./main/NoteSection";
 import Spinner from "../common/Spinner";
 
-
 const BookListApp = () => {
     const [activeBook, setActiveBook] = useState({});
     const [books, setBooks] = useState([]);
