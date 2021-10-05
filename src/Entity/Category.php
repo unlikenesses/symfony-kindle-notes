@@ -77,6 +77,13 @@ class Category
         return $this->books;
     }
 
+    public function getUndeletedBooks(): array
+    {
+        return array_filter($this->books->toArray(), function (Book $book) {
+            return is_null($book->getDeletedAt());
+        });
+    }
+
     public function addBook(Book $book): self
     {
         if (!$this->books->contains($book)) {

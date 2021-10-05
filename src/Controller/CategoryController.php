@@ -40,7 +40,7 @@ class CategoryController extends AbstractController
         foreach ($categories as $category) {
             $assigned[$category->getName()] = [
                 'id' => $category->getId(),
-                'books' => $category->getBooks(),
+                'books' => $category->getUndeletedBooks(),
             ];
         }
 

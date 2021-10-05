@@ -20,15 +20,21 @@
                         </a>
                     </h4>
                     <table class="bg-white divide-y divide-gray-200">
-                    {% for book in details.books %}
-                        <tr>
-                            <td>
-                                <a href="/books/book/{{ book.id }}">
-                                    {{ book.title }} ({{ book.authorFirstName ~ ' ' ~ book.authorLastName }})
-                                </a>
-                            </td>
-                        </tr>
-                    {% endfor %}
+                        {% if details.books|length %}
+                            {% for book in details.books %}
+                                <tr>
+                                    <td>
+                                        <a href="/books/book/{{ book.id }}">
+                                            {{ book.title }} ({{ book.authorFirstName ~ ' ' ~ book.authorLastName }})
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td>No books with this category</td>
+                            </tr>
+                        {% endif %}
                     </table>
                 </td>
             </tr>
