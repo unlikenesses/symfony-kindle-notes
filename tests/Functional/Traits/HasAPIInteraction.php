@@ -25,6 +25,13 @@ trait HasAPIInteraction
         return $this->getClientResponse();
     }
 
+    protected function restoreBook(array $bookIds)
+    {
+        $this->client->request('PUT', '/api/books/restore', [], [], [], json_encode($bookIds));
+
+        return $this->getClientResponse();
+    }
+
     protected function updateBookTitle(int $bookId, string $title)
     {
         $this->client->request('PUT', '/api/books/' . $bookId . '/title', [], [], [], json_encode($title));

@@ -106,7 +106,12 @@ const TrashApp = () => {
         }
         if (action === 'delete') {
             permaDeleteBooks(bookIds).
-                then((data) => {
+                then(() => {
+                    getBooks();
+                });
+        } else if (action === 'restore') {
+            restoreBooks(bookIds).
+                then(() => {
                     getBooks();
                 });
         }

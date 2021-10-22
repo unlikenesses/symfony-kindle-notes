@@ -105,13 +105,64 @@ class BookAPITest extends FunctionalTestCase
         $secondUser = $this->createUser();
         $secondUsersBook = $this->createBook($secondUser, true);
         $this->loginUser();
-        // Check we can not soft-delete the book
+        // Check we can not perma-delete the book
         $this->permaDeleteBook([$secondUsersBook->getId()]);
         $this->assertResponseStatusCodeSame(500);
         // Check it is still in the database
         $this->entityManager->clear(Book::class);
         $book = $this->bookRepository->find($secondUsersBook->getId());
         $this->assertNotNull($book);
+    }
+
+    public function testRestoringABookMakesItAvailableAgain()
+    {
+        $this->loginUser();
+        // Get books
+        $books = $this->getBooks();
+        $this->assertCount(2, $books);
+        // Delete a book
+        $bookToDelete = $books[0]->id;
+        $response = $this->deleteBook($bookToDelete);
+        $this->assertResponseStatusCodeSame(200);
+        $this->assertSame('success', $response->message);
+        // Check it is not returned by the API
+        $books = $this->getBooks();
+        $this->assertCount(1, $books);
+        // Check the book still exists in the database
+        $book = $this->bookRepository->find($bookToDelete);
+        $this->assertNotNull($book);
+        // Now restore it
+        $response = $this->restoreBook([$bookToDelete]);
+        $this->assertResponseStatusCodeSame(200);
+        $this->assertSame('success', $response->message);
+        // Check the book is available again
+        $this->entityManager->clear(Book::class);
+        $book = $this->bookRepository->find($bookToDelete);
+        $this->assertNull($book->getDeletedAt());
+        $books = $this->getBooks();
+        $this->assertCount(2, $books);
+    }
+
+    public function testNotPossibleToRestoreABookIfItIsNotSoftDeleted()
+    {
+        $this->loginUser();
+        // Get books
+        $books = $this->getBooks();
+        $this->assertCount(2, $books);
+        // Check we cannot restore a book
+        $bookToDelete = $books[0]->id;
+        $this->restoreBook([$bookToDelete]);
+        $this->assertResponseStatusCodeSame(500);
+    }
+
+    public function testNotPossibleToRestoreABookYouDoNotOwn()
+    {
+        $secondUser = $this->createUser();
+        $secondUsersBook = $this->createBook($secondUser, true);
+        $this->loginUser();
+        // Check we can not restore the book
+        $this->restoreBook([$secondUsersBook->getId()]);
+        $this->assertResponseStatusCodeSame(500);
     }
 
     private function createBook(User $user, bool $softDeleted = false): Book

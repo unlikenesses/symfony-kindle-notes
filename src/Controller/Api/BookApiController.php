@@ -121,6 +121,28 @@ class BookApiController extends ApiController
     }
 
     /**
+     * @Route("/api/books/restore", name="apiRestoreBooks", methods="PUT")
+     */
+    public function restoreBooks(Request $request): JsonResponse
+    {
+        $bookIds = json_decode($request->getContent());
+        foreach ($bookIds as $bookId) {
+            /** @var Book $book */
+            $book = $this->em->getRepository(Book::class)->find($bookId);
+            if ($book->getUser()->getId() !== $this->getUser()->getId()) {
+                throw new WrongOwnerException();
+            }
+            if (is_null($book->getDeletedAt())) {
+                throw new PermaDeleteActiveBookException();
+            }
+            $book->setDeletedAt(null);
+            $this->em->flush();
+        }
+
+        return $this->createApiResponse(['message' => 'success']);
+    }
+
+    /**
      * @Route("/api/books/{book}/notes", name="apiNotes")
      */
     public function getNotesForBook(Book $book): JsonResponse
