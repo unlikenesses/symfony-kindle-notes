@@ -52,6 +52,16 @@ class FunctionalTestCase extends WebTestCase
         return $users[0];
     }
 
+    protected function createUser(string $email = 'another_user@example.com', string $password = 'pwdpwd'): User
+    {
+        $user = new User();
+        $user->setEmail($email);
+        $user->setPassword($password);
+        $this->entityManager->persist($user);
+
+        return $user;
+    }
+
     protected function getClientResponse()
     {
         return json_decode($this->client->getResponse()->getContent());

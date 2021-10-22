@@ -6,6 +6,8 @@ use App\Entity\Book;
 use App\Entity\Category;
 use App\Entity\Note;
 use App\Entity\User;
+use App\Exception\PermaDeleteActiveBookException;
+use App\Exception\WrongOwnerException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -87,8 +89,33 @@ class BookApiController extends ApiController
      */
     public function deleteBook(Book $book): JsonResponse
     {
+        if ($book->getUser()->getId() !== $this->getUser()->getId()) {
+            throw new WrongOwnerException();
+        }
         $book->setDeletedAt(new \DateTime());
         $this->em->flush();
+
+        return $this->createApiResponse(['message' => 'success']);
+    }
+
+    /**
+     * @Route("/api/books/permaDelete", name="apiPermaDeleteBooks", methods="PUT")
+     */
+    public function permaDeleteBooks(Request $request): JsonResponse
+    {
+        $bookIds = json_decode($request->getContent());
+        foreach ($bookIds as $bookId) {
+            /** @var Book $book */
+            $book = $this->em->getRepository(Book::class)->find($bookId);
+            if ($book->getUser()->getId() !== $this->getUser()->getId()) {
+                throw new WrongOwnerException();
+            }
+            if (is_null($book->getDeletedAt())) {
+                throw new PermaDeleteActiveBookException();
+            }
+            $this->em->remove($book);
+            $this->em->flush();
+        }
 
         return $this->createApiResponse(['message' => 'success']);
     }
@@ -129,6 +156,7 @@ class BookApiController extends ApiController
      */
     public function updateBookTitle(Book $book, Request $request): JsonResponse
     {
+        // TODO: Check logged-in user owns this book
         $title = json_decode($request->getContent());
         $book->setTitle($title);
         $this->em->flush();

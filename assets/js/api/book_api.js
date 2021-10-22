@@ -96,6 +96,35 @@ export function updateNoteTags(noteId, tags) {
     });
 }
 
+export function permaDeleteBooks(ids) {
+    return fetch('/api/books/permaDelete', {
+        method: 'PUT',
+        body: JSON.stringify(ids)
+    });
+}
+
+export function permaDeleteNotes(ids) {
+    return fetch('/api/notes/permaDelete', {
+        method: 'PUT',
+        body: JSON.stringify(ids)
+    });
+}
+
+export function restoreBooks(ids) {
+    return fetch('/api/books/restore', {
+        method: 'PUT',
+        body: JSON.stringify(ids)
+    });
+}
+
+export function restoreNotes(ids) {
+    return fetch('/api/notes/restore', {
+        method: 'PUT',
+        body: JSON.stringify(ids)
+    });
+}
+
+
 export const apiErrors = {
     10: 'You have exceeded the maximum amount of allowable tags for a user',
     20: 'You have exceeded the maximum amount of allowable categories for a user'

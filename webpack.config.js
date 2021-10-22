@@ -24,7 +24,8 @@ Encore
     .addEntry('bookList', './assets/js/books.js')
     .addEntry('tagList', './assets/js/tags.js')
     .addEntry('trash', './assets/js/trash.js')
-    .addStyleEntry('books', './assets/css/books.scss')
+    .addStyleEntry('booksStyles', './assets/css/books.scss')
+    .addStyleEntry('trashStyles', './assets/css/trash.scss')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()

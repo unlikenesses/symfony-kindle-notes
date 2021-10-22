@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from "prop-types";
 import Spinner from "../common/Spinner";
 
 const TrashSection = (props) => {
+    const [action, setAction] = useState(null);
     const tableHead = () => {
         return (
             <thead className="min-w-full divide-y divide-gray-200">
@@ -63,7 +64,22 @@ const TrashSection = (props) => {
                     ))}
                     </tbody>
                 </table>
-                
+                <div className="flex">
+                    <select
+                        name="action"
+                        onChange={e => setAction(e.target.value)}
+                        className="mt-1 form-select block pl-3 pr-10 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5 mr-2">
+                        <option value="">With selected:</option>
+                        <option value="delete">Delete permanently</option>
+                        <option value="restore">Restore</option>
+                    </select>
+                    <button
+                        onClick={() => props.handleAction(action)}
+                        className="rounded-md text-white text-sm bg-blue-600 hover:bg-blue-700 px-3"
+                    >
+                        Go
+                    </button>
+                </div>
             </div>
         );
     }
