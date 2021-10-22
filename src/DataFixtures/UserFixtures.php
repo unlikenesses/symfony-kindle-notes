@@ -8,6 +8,8 @@ use Doctrine\Persistence\ObjectManager;
 
 class UserFixtures extends Fixture
 {
+    protected $user;
+    
     public static function getGroups(): array
     {
         return ['testing'];
