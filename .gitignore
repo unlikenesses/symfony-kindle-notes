@@ -33,3 +33,4 @@ yarn-error.log
 ###< symfony/webpack-encore-bundle ###
 
 *.txt
+!src/DataFixtures/*.txt

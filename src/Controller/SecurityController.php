@@ -6,8 +6,8 @@ use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
@@ -43,7 +43,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/register", name="app_register")
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, CsrfTokenManagerInterface $csrfTokenManager)
+    public function register(Request $request, UserPasswordHasherInterface $passwordEncoder, CsrfTokenManagerInterface $csrfTokenManager)
     {
         if ($request->isMethod('POST')) {
             $token = new CsrfToken('register', $request->request->get('_csrf_token'));
@@ -53,7 +53,7 @@ class SecurityController extends AbstractController
 
             $user = new User();
             $user->setEmail($request->request->get('email'));
-            $user->setPassword($passwordEncoder->encodePassword(
+            $user->setPassword($passwordEncoder->hashPassword(
                 $user,
                 $request->request->get('password')
             ));
