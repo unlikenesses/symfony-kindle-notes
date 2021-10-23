@@ -39,9 +39,11 @@ class FunctionalTestCase extends WebTestCase
             ->getRepository(User::class);
     }
 
-    protected function loginUser()
+    protected function loginUser(User $user = null)
     {
-        $user = $this->getUser();
+        if (! $user) {
+            $user = $this->getUser();
+        }
         $this->client->loginUser($user);
     }
 
@@ -72,5 +74,35 @@ class FunctionalTestCase extends WebTestCase
         $response = $this->getClientResponse();
 
         return $response->data ?? null;
+    }
+
+    protected function createBook(User $user, bool $softDeletedBook = false, bool $softDeletedNote = false): array
+    {
+        $book = new Book();
+        $book->setTitle('aaaa')
+            ->setTitleString('aaaa')
+            ->setAuthorFirstName('Jim')
+            ->setAuthorLastName('Smith')
+            ->setYear('1980')
+            ->setUser($user);
+        if ($softDeletedBook) {
+            $book->setDeletedAt(new \DateTime());
+        }
+        $note = new Note();
+        $note->setBook($book)
+            ->setType(1)
+            ->setPage(99)
+            ->setNote('a test note here')
+            ->setDate(new \DateTime())
+            ->setHash('it dont matter')
+            ->setUser($user);
+        if ($softDeletedNote) {
+            $note->setDeletedAt(new \DateTime());
+        }
+        $this->entityManager->persist($note);
+        $this->entityManager->persist($book);
+        $this->entityManager->flush();
+
+        return [$book, $note];
     }
 }

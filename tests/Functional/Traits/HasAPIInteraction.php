@@ -52,4 +52,18 @@ trait HasAPIInteraction
 
         return $this->getClientResponse();
     }
+
+    protected function permaDeleteNote(array $noteIds)
+    {
+        $this->client->request('PUT', '/api/notes/permaDelete', [], [], [], json_encode($noteIds));
+
+        return $this->getClientResponse();
+    }
+
+    protected function restoreNote(array $noteIds)
+    {
+        $this->client->request('PUT', '/api/notes/restore', [], [], [], json_encode($noteIds));
+
+        return $this->getClientResponse();
+    }
 }

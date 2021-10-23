@@ -117,7 +117,23 @@ const TrashApp = () => {
         }
     }
     const handleNotesAction = (action) => {
-        console.log('action = ' + action)
+        let noteIds = notes.filter((note) => {
+            return note.checked;
+        }).map(note => note.id);
+        if (noteIds.length < 1) {
+            return;
+        }
+        if (action === 'delete') {
+            permaDeleteNotes(noteIds).
+            then(() => {
+                getNotes();
+            });
+        } else if (action === 'restore') {
+            restoreNotes(noteIds).
+            then(() => {
+                getNotes();
+            });
+        }
     }
     return (
         <div className="p-8">

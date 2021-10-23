@@ -6,7 +6,8 @@ use App\Entity\Book;
 use App\Entity\Category;
 use App\Entity\Note;
 use App\Entity\User;
-use App\Exception\PermaDeleteActiveBookException;
+use App\Exception\PermaDeleteActiveBookOrNoteException;
+use App\Exception\RestoreActiveBookOrNoteException;
 use App\Exception\WrongOwnerException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -111,7 +112,7 @@ class BookApiController extends ApiController
                 throw new WrongOwnerException();
             }
             if (is_null($book->getDeletedAt())) {
-                throw new PermaDeleteActiveBookException();
+                throw new PermaDeleteActiveBookOrNoteException();
             }
             $this->em->remove($book);
             $this->em->flush();
@@ -133,7 +134,7 @@ class BookApiController extends ApiController
                 throw new WrongOwnerException();
             }
             if (is_null($book->getDeletedAt())) {
-                throw new PermaDeleteActiveBookException();
+                throw new RestoreActiveBookOrNoteException();
             }
             $book->setDeletedAt(null);
             $this->em->flush();

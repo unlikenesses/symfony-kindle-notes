@@ -3,7 +3,6 @@
 namespace App\Tests\Functional\API;
 
 use App\Entity\Book;
-use App\Entity\User;
 use App\DataFixtures\BookNoteFixtures;
 use App\Tests\Functional\FunctionalTestCase;
 use App\Tests\Functional\Traits\HasAPIInteraction;
@@ -45,7 +44,7 @@ class BookAPITest extends FunctionalTestCase
     public function testNotPossibleToSoftDeleteABookYouDoNotOwn()
     {
         $secondUser = $this->createUser();
-        $secondUsersBook = $this->createBook($secondUser);
+        [$secondUsersBook, $note] = $this->createBook($secondUser);
         $this->loginUser();
         // Check we can not soft-delete the book
         $this->deleteBook($secondUsersBook->getId());
@@ -103,7 +102,7 @@ class BookAPITest extends FunctionalTestCase
     public function testNotPossibleToPermaDeleteABookYouDoNotOwn()
     {
         $secondUser = $this->createUser();
-        $secondUsersBook = $this->createBook($secondUser, true);
+        [$secondUsersBook, $note] = $this->createBook($secondUser, true);
         $this->loginUser();
         // Check we can not perma-delete the book
         $this->permaDeleteBook([$secondUsersBook->getId()]);
@@ -158,28 +157,10 @@ class BookAPITest extends FunctionalTestCase
     public function testNotPossibleToRestoreABookYouDoNotOwn()
     {
         $secondUser = $this->createUser();
-        $secondUsersBook = $this->createBook($secondUser, true);
+        [$secondUsersBook, $note] = $this->createBook($secondUser, true);
         $this->loginUser();
         // Check we can not restore the book
         $this->restoreBook([$secondUsersBook->getId()]);
         $this->assertResponseStatusCodeSame(500);
-    }
-
-    private function createBook(User $user, bool $softDeleted = false): Book
-    {
-        $book = new Book();
-        $book->setTitle('aaaa')
-            ->setTitleString('aaaa')
-            ->setAuthorFirstName('Jim')
-            ->setAuthorLastName('Smith')
-            ->setYear('1980')
-            ->setUser($user);
-        if ($softDeleted) {
-            $book->setDeletedAt(new \DateTime());
-        }
-        $this->entityManager->persist($book);
-        $this->entityManager->flush();
-
-        return $book;
     }
 }
