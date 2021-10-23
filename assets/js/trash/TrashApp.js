@@ -105,10 +105,11 @@ const TrashApp = () => {
             return;
         }
         if (action === 'delete') {
-            permaDeleteBooks(bookIds).
-                then(() => {
+            if (confirm('Delete this book permanently? This action cannot be undone.')) {
+                permaDeleteBooks(bookIds).then(() => {
                     getBooks();
                 });
+            }
         } else if (action === 'restore') {
             restoreBooks(bookIds).
                 then(() => {
@@ -124,10 +125,11 @@ const TrashApp = () => {
             return;
         }
         if (action === 'delete') {
-            permaDeleteNotes(noteIds).
-            then(() => {
-                getNotes();
-            });
+            if (confirm('Delete this note permanently? This action cannot be undone.')) {
+                permaDeleteNotes(noteIds).then(() => {
+                    getNotes();
+                });
+            }
         } else if (action === 'restore') {
             restoreNotes(noteIds).
             then(() => {
