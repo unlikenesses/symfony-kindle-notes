@@ -83,6 +83,34 @@ class BookAPITest extends FunctionalTestCase
         $this->assertNull($book);
     }
 
+    public function testPermaDeletingABookRemovesItsNotesFromDatabase()
+    {
+        $this->loginUser();
+        // Get books
+        $books = $this->getBooks();
+        $this->assertCount(2, $books);
+        // Test book's notes
+        $bookToDelete = $books[0]->id;
+        $notes = $this->getNotes($bookToDelete);
+        $this->assertCount(2, $notes);
+        // Delete a book
+        $response = $this->deleteBook($bookToDelete);
+        $this->assertResponseStatusCodeSame(200);
+        // Check the book still exists in the database
+        $book = $this->bookRepository->find($bookToDelete);
+        $this->assertNotNull($book);
+        // Now perma-delete it
+        $response = $this->permaDeleteBook([$bookToDelete]);
+        $this->assertResponseStatusCodeSame(200);
+        // Check the book has been removed from the database
+        $this->entityManager->clear(Book::class);
+        $book = $this->bookRepository->find($bookToDelete);
+        $this->assertNull($book);
+        // Check the notes have been removed from the database
+        $notes = $this->getNotes($bookToDelete);
+        $this->assertNull($notes);
+    }
+
     public function testNotPossibleToPermaDeleteABookIfItIsNotSoftDeleted()
     {
         $this->loginUser();
