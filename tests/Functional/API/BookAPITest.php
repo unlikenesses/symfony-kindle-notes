@@ -213,6 +213,5 @@ class BookAPITest extends FunctionalTestCase
         $newTitle = 'this is the new title';
         $this->updateBookTitle($secondUsersBook->getId(), $newTitle);
         $this->assertResponseStatusCodeSame(500);
-        $book = $secondUsersBook->refresh();
     }
 }
