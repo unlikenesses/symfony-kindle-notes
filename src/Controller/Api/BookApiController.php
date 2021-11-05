@@ -179,7 +179,9 @@ class BookApiController extends ApiController
      */
     public function updateBookTitle(Book $book, Request $request): JsonResponse
     {
-        // TODO: Check logged-in user owns this book
+        if ($book->getUser()->getId() !== $this->getUser()->getId()) {
+            throw new WrongOwnerException();
+        }
         $title = json_decode($request->getContent());
         $book->setTitle($title);
         $this->em->flush();
