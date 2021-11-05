@@ -191,4 +191,28 @@ class BookAPITest extends FunctionalTestCase
         $this->restoreBook([$secondUsersBook->getId()]);
         $this->assertResponseStatusCodeSame(500);
     }
+
+    public function testCanUpdateABooksTitle()
+    {
+        $this->loginUser();
+        $books = $this->getBooks();
+        $bookToUpdate = $books[0];
+        $newTitle = 'this is the new title';
+        $this->updateBookTitle($bookToUpdate->id, $newTitle);
+        $this->assertResponseStatusCodeSame(200);
+        $books = $this->getBooks();
+        $book = $books[0];
+        $this->assertSame($newTitle, $book->title);
+    }
+
+    public function testCannotUpdateTitleOfBookYouDoNotOwn()
+    {
+        $secondUser = $this->createUser();
+        [$secondUsersBook, $note] = $this->createBook($secondUser);
+        $this->loginUser();
+        $newTitle = 'this is the new title';
+        $this->updateBookTitle($secondUsersBook->getId(), $newTitle);
+        $this->assertResponseStatusCodeSame(500);
+        $book = $secondUsersBook->refresh();
+    }
 }
