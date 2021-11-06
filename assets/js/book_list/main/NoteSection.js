@@ -7,7 +7,7 @@ import {apiErrors} from "../../api/book_api";
 import Spinner from "../../common/Spinner";
 
 const NoteSection = (props) => {
-    const { tagWhitelist, categoryWhitelist, book, loadingNotes, notes, deleteBook, deletingBook, deleteNote, deletingNote, handleTagChange, handleCategoryChange, saveBookTitle } = props;
+    const { tagWhitelist, categoryWhitelist, book, loadingNotes, notes, deleteBook, deletingBook, deleteNote, deletingNote, handleTagChange, handleCategoryChange, saveBookTitle, saveBookAuthor } = props;
     const tagifyRef = useRef();
     const deletingText = deletingBook === book.id ? 'Deleting...' : 'Delete Book';
     const categoryChanged = (e) => {
@@ -35,6 +35,7 @@ const NoteSection = (props) => {
                 <BookHeader
                     book={book}
                     saveBookTitle={saveBookTitle}
+                    saveBookAuthor={saveBookAuthor}
                 />
                 <Spinner />
             </div>
@@ -46,6 +47,7 @@ const NoteSection = (props) => {
                 <BookHeader
                     book={book}
                     saveBookTitle={saveBookTitle}
+                    saveBookAuthor={saveBookAuthor}
                 />
                 <Tags
                     tagifyRef={tagifyRef}
@@ -101,5 +103,6 @@ NoteSection.propTypes = {
     deletingNote: PropTypes.number.isRequired,
     handleTagChange: PropTypes.func.isRequired,
     handleCategoryChange: PropTypes.func.isRequired,
-    saveBookTitle: PropTypes.func.isRequired
+    saveBookTitle: PropTypes.func.isRequired,
+    saveBookAuthor: PropTypes.func.isRequired
 };

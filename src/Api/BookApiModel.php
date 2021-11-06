@@ -19,5 +19,15 @@ class BookApiModel
      */
     public $author;
 
+    /**
+     * @var string
+     */
+    public $firstName;
+
+    /**
+     * @var string
+     */
+    public $lastName;
+
     public $categories;
 }

@@ -37,6 +37,8 @@ class ApiController extends AbstractController
         $model->id = $book->getId();
         $model->title = $book->getTitle();
         $model->author = $book->getAuthorFirstName() . ' ' . $book->getAuthorLastName();
+        $model->firstName = $book->getAuthorFirstName();
+        $model->lastName = $book->getAuthorLastName();
         $model->categories = $this->createBookCategories($book);
 
         return $model;

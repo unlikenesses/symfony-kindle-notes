@@ -3,7 +3,6 @@
 namespace App\Controller\Api;
 
 use App\Entity\Book;
-use App\Entity\Category;
 use App\Entity\Note;
 use App\Entity\User;
 use App\Exception\PermaDeleteActiveBookOrNoteException;
@@ -184,6 +183,24 @@ class BookApiController extends ApiController
         }
         $title = json_decode($request->getContent());
         $book->setTitle($title);
+        $this->em->flush();
+
+        return $this->createApiResponse([
+            'message' => 'success',
+        ]);
+    }
+
+    /**
+     * @Route("/api/books/{book}/author", name="apiBookAuthor", methods="PUT")
+     */
+    public function updateBookAuthor(Book $book, Request $request): JsonResponse
+    {
+        if ($book->getUser()->getId() !== $this->getUser()->getId()) {
+            throw new WrongOwnerException();
+        }
+        $author = json_decode($request->getContent());
+        $book->setAuthorFirstName($author->firstName);
+        $book->setAuthorLastName($author->lastName);
         $this->em->flush();
 
         return $this->createApiResponse([

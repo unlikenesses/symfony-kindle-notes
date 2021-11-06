@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { getBooks, getSingleBook, getNotesForBook, deleteBook, deleteNote, getTags, updateNoteTags, getCategories, updateBookCategories, updateBookTitle } from '../api/book_api';
+import { getBooks, getSingleBook, getNotesForBook, deleteBook, deleteNote, getTags, updateNoteTags, getCategories, updateBookCategories, updateBookTitle, updateBookAuthor } from '../api/book_api';
 import NavBook from "./nav/NavBook";
 import NoteSection from "./main/NoteSection";
 import Spinner from "../common/Spinner";
@@ -172,6 +172,17 @@ const BookListApp = () => {
                 }
             });
     }
+    const saveBookAuthor = (book, firstName, lastName) => {
+        return updateBookAuthor(book.id, firstName, lastName)
+            .then((data) => {
+                if (data.message === 'success') {
+                    book.firstName = firstName;
+                    book.lastName = lastName;
+                    book.author = firstName + ' ' + lastName;
+                    updateBook(book);
+                }
+            });
+    }
     const updateBook = (book) => {
         let index = books.findIndex(b => b.id === book.id);
         if (index === -1) {
@@ -219,6 +230,7 @@ const BookListApp = () => {
                     handleTagChange={handleTagChange}
                     handleCategoryChange={handleCategoryChange}
                     saveBookTitle={saveBookTitle}
+                    saveBookAuthor={saveBookAuthor}
                 />
             </div>
         </div>

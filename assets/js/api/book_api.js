@@ -66,6 +66,19 @@ export function updateBookTitle(bookId, title) {
         });
 }
 
+export function updateBookAuthor(bookId, firstName, lastName) {
+    return fetch('/api/books/' + bookId + '/author', {
+        method: 'PUT',
+        body: JSON.stringify({
+            firstName: firstName,
+            lastName: lastName
+        })
+    })
+        .then(response => {
+            return response.json().then((data) => data);
+        });
+}
+
 export function deleteNote(noteId) {
     return fetch('/api/notes/' + noteId, {
         method: 'DELETE'

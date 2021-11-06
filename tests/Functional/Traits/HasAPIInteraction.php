@@ -39,6 +39,16 @@ trait HasAPIInteraction
         return $this->getClientResponse();
     }
 
+    protected function updateBookAuthor(int $bookId, string $firstName, string $lastName)
+    {
+        $this->client->request('PUT', '/api/books/' . $bookId . '/author', [], [], [], json_encode([
+            'firstName' => $firstName,
+            'lastName' => $lastName,
+        ]));
+
+        return $this->getClientResponse();
+    }
+
     protected function getNotes(int $bookId)
     {
         $this->client->request('GET', '/api/books/' . $bookId . '/notes');
